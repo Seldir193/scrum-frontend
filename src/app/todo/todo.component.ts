@@ -3,7 +3,9 @@ import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
-import { CdkDragDrop, moveItemInArray } from 'angular/cdk/drag-drop';
+
+import { DragDropModule , moveItemInArray } from '@angular/cdk/drag-drop';
+
 
 interface Todo {
   id: number;
@@ -22,7 +24,7 @@ interface Todo {
 export class TodoComponent implements OnInit {
   todos: Todo[] = [];
   newTodo: string = '';
-  constructor(private http: HttpClient,private router: Router) {}
+  constructor(private http: HttpClient, private router: Router) {}
 
   ngOnInit(): void {
       this.getTodos();
@@ -57,7 +59,7 @@ export class TodoComponent implements OnInit {
     this.updateTodo(todo);
   }
 
-  drop(event: CdkDragDrop<Todo[]>) {
+  drop(event:  DragDropModule<Todo[]>) {
     moveItemInArray(this.todos,event.previousIndex, event.currentIndex);
   }
 
