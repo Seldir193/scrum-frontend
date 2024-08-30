@@ -1,0 +1,40 @@
+.form-container{
+    width:300px;
+    margin:0 auto;
+}
+
+form{
+    display: flex;
+    flex-direction: column;
+}
+
+input{
+    margin-bottom: 10px;
+    padding:10px;
+    border:1px solid #ccc;
+    border-radius: 4px;
+}
+
+button{
+    padding:10px;
+    background-color: #28a745;
+    color:white;
+    border:none;
+    border-radius: 4px;
+    cursor:pointer;
+}
+
+button:hover{
+    background-color: #218838;
+}
+
+.left-life{
+    width:16px;
+    height:16px;
+    align-content: center;
+    margin-top: 15px;
+    cursor: pointer;
+    border-radius: 50%;
+    background-color: white;
+    transition: transform 0.3s ease-in-out, filter 0.3s ease-in-out, background-color 0.3s ease-in-out;
+}

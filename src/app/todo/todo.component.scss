@@ -1,0 +1,29 @@
+.todo-container{
+    width:300px;
+    margin:0 auto;
+}
+
+ul{
+    list-style: none;
+    padding:0;
+}
+
+li{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+    background-color: #f4f4f4;
+    padding:10px;
+    border-radius:4px;
+}
+
+input[type="text"]{
+    border:none;
+    background: transparent;
+    width:70%;
+}
+
+button{
+    margin-left:10px;
+}

@@ -1,0 +1,16 @@
+<div todo-container>
+    <form (ngSubmit)="addTodo()">
+      
+      <input [(ngModel)]="newTodo" placeholder="Neue Aufgabe hinzufügen" name="newTodo" required/>
+      <button type="submit">Hinzufügen</button>
+    </form>
+
+    <ul>
+        <li *ngFor="let todo of todos" cdkDrag>
+            <input type="checkbox" (change)="toggleDelayed(todo)"  [checked="todo.delayed"]/>
+            <input [(ngModel)]="todo.text" (blur)="updateTodo(todo)" />
+            <button (click)="deleteTodo(todo.id)">Löschen</button>
+        </li>
+    </ul>
+    <img class="left-life" src="assets/img/right.svg" alt="Zur Login-Seite" (click)="navigateToLogin()">
+</div>
