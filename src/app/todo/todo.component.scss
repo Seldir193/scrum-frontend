@@ -27,3 +27,38 @@ input[type="text"]{
 button{
     margin-left:10px;
 }
+
+.left-life{
+    width:16px;
+    height:16px;
+    align-content: center;
+    margin-top: 15px;
+    cursor: pointer;
+    border-radius: 50%;
+    background-color: white;
+    transition: transform 0.3s ease-in-out, filter 0.3s ease-in-out, background-color 0.3s ease-in-out;
+}
+
+
+
+
+
+
+.logout-container{
+    width:300px;
+    margin:0 auto;
+    text-align: center;
+}
+
+.button{
+    padding:10px;
+    background-color: #dc3545;
+    color:white;
+    border:none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.button:hover{
+    background-color: #c82333;
+}

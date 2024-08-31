@@ -1,10 +1,13 @@
-<div form-container>
+<div class="form-container">
     <form (ngSubmit)="register()">
       <h2>Registrierung</h2>
       <input [(ngModel)]="username" placeholder="Benutzername" name="username" required>
       <input type="email" [(ngModel)]="email" placeholder="E-Mail-Adresse" name="email" required>
       <input type="password" [(ngModel)]="password" placeholder="Passwort" name="password" required>
-      <button type="submit">Registrierung</button>
+      <button>Registrierung</button>
     </form>
     <img class="left-life" src="assets/img/left.svg" alt="Zur Login-Seite" (click)="navigateToLogin()">
 </div>
+
+
+

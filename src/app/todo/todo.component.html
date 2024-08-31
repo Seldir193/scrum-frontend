@@ -1,5 +1,5 @@
 <div todo-container>
-    <form (ngSubmit)="addTodo()">
+    <form (ngSubmit)="addTodo()" #todoForm="ngForm">
       
       <input [(ngModel)]="newTodo" placeholder="Neue Aufgabe hinzufügen" name="newTodo" required/>
       <button type="submit">Hinzufügen</button>
@@ -13,4 +13,10 @@
         </li>
     </ul>
     <img class="left-life" src="assets/img/right.svg" alt="Zur Login-Seite" (click)="navigateToLogin()">
+
+    <div class="logout-container">
+        <h2>Abmelden</h2>
+        <button class="button" (click)="logout()">Abmelden</button>
+    </div>
+    
 </div>

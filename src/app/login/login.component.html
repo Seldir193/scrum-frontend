@@ -1,9 +1,11 @@
-<div form-container>
-    <form (ngSubmit)="login()">
-      <h2>Anmelden</h2>
-      <input type="email" [(ngModel)]="email" placeholder="E-Mail-Adresse" name="email" required/>
-      <input type="password" [(ngModel)]="password" placeholder="Passwort" name="password" required/>
-      <button type="submit">Anmelden</button>
-    </form>
-    <img class="left-life" src="assets/img/right.svg" alt="Zur Login-Seite" (click)="navigateToLogin()">
+<div class="form-container">
+  <form [formGroup]="form" (ngSubmit)="login()">
+    <h2>Anmelden</h2>
+    <input type="username" formControlName="username" placeholder="Username"  required/>
+    <input type="password" formControlName="password" placeholder="Passwort"  required/>
+    <button type="submit">Anmelden</button>
+    
+  </form>
+  <img class="left-life" src="assets/img/right.svg" alt="Zur Login-Seite" (click)="navigateToLogin()">
 </div>
+
