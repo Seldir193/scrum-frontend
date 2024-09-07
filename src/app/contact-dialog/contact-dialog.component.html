@@ -1,0 +1,29 @@
+
+
+
+
+<h1 mat-dialog-title>Add Contact</h1>
+<div mat-dialog-content class="dialog-content">
+  <mat-form-field appearance="fill" class="full-width">
+    <mat-label>Name</mat-label>
+    <input matInput [(ngModel)]="contact.name" />
+  </mat-form-field>
+
+  <mat-form-field appearance="fill" class="full-width">
+    <mat-label>Email</mat-label>
+    <input matInput [(ngModel)]="contact.email" />
+  </mat-form-field>
+
+  <mat-form-field appearance="fill" class="full-width">
+    <mat-label>Phone Number</mat-label>
+    <input matInput [(ngModel)]="contact.phoneNumber" />
+  </mat-form-field>
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="close()">Cancel</button>
+  <button mat-button (click)="createContact()" cdkFocusInitial>Create Contact</button>
+</div>
+
+
+
+  

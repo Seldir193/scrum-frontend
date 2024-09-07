@@ -1,0 +1,10 @@
+<div class="header-container">
+  <div class="menu-container">
+    <button mat-button [matMenuTriggerFor]="menu">Menu</button>
+    <mat-menu #menu="matMenu">
+      <button mat-menu-item (click)="logout()">Logout</button>
+    </mat-menu>
+  </div>
+  
+  <h1>KanbanFlow</h1>
+</div>

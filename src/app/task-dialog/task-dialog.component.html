@@ -1,0 +1,34 @@
+
+
+
+
+<h1 mat-dialog-title>Task</h1>
+<div mat-dialog-content class="dialog-content">
+  <mat-form-field appearance="fill" class="full-width">
+    <mat-label>Task Name</mat-label>
+    <input matInput [(ngModel)]="task.name" />
+  </mat-form-field>
+
+  <mat-form-field appearance="fill" class="full-width">
+    <mat-label>Description</mat-label>
+    <textarea matInput [(ngModel)]="task.description"></textarea>
+  </mat-form-field>
+
+  <mat-form-field appearance="fill">
+    <mat-label>Select Contacts</mat-label>
+    <mat-select [(ngModel)]="selectedContacts" multiple>
+      <mat-option *ngFor="let contact of allContacts"  [value]="contact">
+        {{ contact.name }} ({{ contact.email }}) - {{ contact.phoneNumber }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+
+</div>
+
+
+
+<div mat-dialog-actions>
+  <button mat-button (click)="onNoClick()">Cancel</button>
+  <button mat-button (click)="save()">Save</button>
+</div>

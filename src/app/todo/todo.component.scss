@@ -1,64 +1,193 @@
-.todo-container{
-    width:300px;
-    margin:0 auto;
+
+.main-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start; /* Beide Container am oberen Rand ausrichten */
+}
+
+.todo-container {
+  flex: 1;
+  //margin-right: 20px; /* Abstand zwischen Todo- und Kontaktliste */
+}
+
+.contacts-list {
+  flex: 1;
+  max-width: 300px; /* Optionale Begrenzung der Breite der Kontaktliste */
 }
 
 ul{
-    list-style: none;
-    padding:0;
+  list-style: none;
+  padding:0;
 }
 
-li{
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 10px;
-    background-color: #f4f4f4;
-    padding:10px;
-    border-radius:4px;
-}
 
 input[type="text"]{
-    border:none;
-    background: transparent;
-    width:70%;
+  border:none;
+  background: transparent;
+  width:70%;
 }
 
 button{
-    margin-left:10px;
+  margin-left:10px;
 }
 
 .left-life{
-    width:16px;
-    height:16px;
-    align-content: center;
-    margin-top: 15px;
-    cursor: pointer;
-    border-radius: 50%;
-    background-color: white;
-    transition: transform 0.3s ease-in-out, filter 0.3s ease-in-out, background-color 0.3s ease-in-out;
+  width:16px;
+  height:16px;
+  align-content: center;
+  margin-top: 15px;
+  cursor: pointer;
+  border-radius: 50%;
+  background-color: white;
+  transition: transform 0.3s ease-in-out, filter 0.3s ease-in-out, background-color 0.3s ease-in-out;
 }
 
-
-
-
-
-
 .logout-container{
-    width:300px;
-    margin:0 auto;
-    text-align: center;
+  width:300px;
+  margin:0 auto;
+  text-align: center;
 }
 
 .button{
-    padding:10px;
-    background-color: #dc3545;
-    color:white;
-    border:none;
-    border-radius: 4px;
-    cursor: pointer;
+  padding:10px;
+  background-color: #dc3545;
+  color:white;
+  border:none;
+  border-radius: 4px;
+  cursor: pointer;
 }
 
 .button:hover{
-    background-color: #c82333;
+  background-color: #c82333;
 }
+
+.taskStreet{
+  display: flex;
+  width:260px;
+  justify-content: space-between; /* Distributes space between the items */
+
+  img{
+      width:30px;
+      height:30px;
+      cursor: pointer;
+  }
+}
+
+.edit-card {
+  border: 1px solid #e0e0e0;
+  box-shadow: 0px 0px 10px 3px rgba(0, 0, 0, 0.08);
+  border-radius: 24px;
+ // width: 230px;
+  padding: 16px;
+  margin-bottom: 10px;
+  background-color: #fff;
+  
+  h2 {
+      margin: 0 0 16px;
+    }
+  
+    button {
+      margin: 0 8px;
+    }
+}
+
+
+.todo-card {
+  border: 0px 0px 10px 3px rgba(0, 0, 0, 0.08);
+  border-radius: 24px;
+  width: 230px;
+  padding: 16px;
+  margin-bottom: 10px;
+}
+
+.contacts-list h3 {
+  margin: 0;
+  font-size: 16px;
+  padding:10px;
+}
+
+.contacts-list ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.contacts-list li {
+  margin: 5px 0;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
+
+
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+}
+
+.main-container {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  gap:50px;
+}
+
+.contacts-list {
+  width: 25%; /* Oder eine andere Breite nach Bedarf */
+  margin-right: 20px; /* Abstand zwischen Contacts und Tasks */
+
+  button{
+    cursor: pointer;
+  }
+}
+
+.tasks-container {
+  display: flex;
+  flex-direction: row;
+  //width: 75%; /* Oder eine andere Breite nach Bedarf */
+  gap: 50px; /* Abstand zwischen To-Do und Do Today */
+}
+
+.todo-container, .do-today-container {
+  width: 50%; /* Gleiche Breite für To-Do und Do Today */
+}
+
+.todo-card {
+  margin-bottom: 20px; /* Abstand zwischen den Aufgaben */
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  cursor: pointer;
+  cursor: move; 
+}
+
+.taskStreet {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px; /* Abstand zwischen der taskStreet und der Liste */
+}
+
+.taskStreet img {
+  cursor: pointer;
+  width: 24px; /* Beispielgröße */
+}
+
+.do-today-container {
+  display: flex;
+  gap:20px;
+}
+
+  
+
+
+
+
+
+
+
+  
+
+

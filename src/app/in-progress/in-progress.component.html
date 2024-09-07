@@ -1,0 +1,28 @@
+
+  <div class="in-progress-container" cdkDropListGroup>
+    <div class="taskStreet"  cdkDropList [cdkDropListData]="inProgress" (cdkDropListDropped)="drop($event)">
+      <h3>In progress</h3>
+      <img (click)="openAddInProgressDialog()" src="assets/img/plus.svg" alt="Add Task">
+    </div>
+  
+    <ul>
+      <li *ngFor="let progress of inProgress" cdkDrag class="todo-card">
+        <input type="checkbox" [(ngModel)]="progress.delayed" (change)="toggleDelayed(progress)" />
+        <div class="edit-card">
+          <h2>{{ progress.text }}</h2>
+          <p>Description: {{ progress.description }}</p>
+          <p>Contacts:</p>
+          <ul>
+            <li *ngFor="let contact of progress.contacts">
+              <strong>{{ contact.name }}</strong><br>
+              Email: {{ contact.email }}<br>
+              Phone: {{ contact.phoneNumber }}
+            </li>
+          </ul>
+          <button (click)="addContactsInProgress(progress)">Edit</button>
+          <button (click)="deleteInProgress(progress.id)">Delete</button>
+        </div>
+      </li>
+    </ul>
+  </div>
+  

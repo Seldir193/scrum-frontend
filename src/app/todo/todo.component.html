@@ -1,22 +1,66 @@
-<div todo-container>
-    <form (ngSubmit)="addTodo()" #todoForm="ngForm">
-      
-      <input [(ngModel)]="newTodo" placeholder="Neue Aufgabe hinzufügen" name="newTodo" required/>
-      <button type="submit">Hinzufügen</button>
-    </form>
+<app-header></app-header>
 
+<div class="container">
+
+
+<div class="main-container">
+
+  <div class="contacts-list">
+    <h3>Contacts</h3>
     <ul>
-        <li *ngFor="let todo of todos" cdkDrag>
-            <input type="checkbox" (change)="toggleDelayed(todo)"  [checked="todo.delayed"]/>
-            <input [(ngModel)]="todo.text" (blur)="updateTodo(todo)" />
-            <button (click)="deleteTodo(todo.id)">Löschen</button>
-        </li>
+      <li *ngFor="let contact of contacts">
+        <strong>{{ contact.name }}</strong><br>
+        Email: {{ contact.email }}<br>
+        Phone: {{ contact.phoneNumber }}
+        <button (click)="deleteContact(contact.id)">Delete</button> 
+      </li>
     </ul>
-    <img class="left-life" src="assets/img/right.svg" alt="Zur Login-Seite" (click)="navigateToLogin()">
+    <button (click)="openContactDialog()">Add New Contact</button>
+  </div>
 
-    <div class="logout-container">
-        <h2>Abmelden</h2>
-        <button class="button" (click)="logout()">Abmelden</button>
-    </div>
-    
+
+<div class="tasks-container" cdkDropListGroup>
+  <div class="todo-container" >
+
+  <div class="taskStreet" cdkDropList  id="todoContainer"   [cdkDropListData]="todos" (cdkDropListDropped)="drop($event)">
+    <h1>To-do</h1>
+    <img (click)="addNewTask()" src="assets/img/plus.svg" alt="Add Task">
+  </div>
+
+  <ul>
+    <li class="todo-card example-box" *ngFor="let todo of todos"  cdkDrag>
+      <input type="checkbox" [(ngModel)]="todo.delayed" (change)="toggleDelayed(todo)" />
+      
+      <div class="edit-card">
+        <h2>{{ todo.text }}</h2>
+        <p>Description: {{ todo.description }}</p>
+
+        <p>Contacts:</p>
+        <ul>
+          <li *ngFor="let contact of todo.contacts">
+            <strong>{{ contact.name }}</strong><br>
+            Email: {{ contact.email }}<br>
+            Phone: {{ contact.phoneNumber }}
+          </li>
+        </ul>
+  
+        <button (click)="openEditDialog(todo)">Edit</button>
+        <button (click)="deleteTodo(todo.id)">Delete</button>
+      </div>
+         </li>
+  </ul>
+
+  </div>
+
+
+  <app-do-today></app-do-today>
+  <app-in-progress></app-in-progress>
+  <app-done></app-done>
+  
 </div>
+
+</div>
+</div>
+
+
+

@@ -1,0 +1,30 @@
+
+
+
+
+<div class="do-today-container" cdkDropListGroup>
+  <div class="taskStreet" cdkDropList  id="todayContainer"  [cdkDropListData]="todayTasks" (cdkDropListDropped)="onDrop($event)">
+    <h3>Do Today</h3>
+    <img (click)="openAddDoTodayDialog()" src="assets/img/plus.svg" alt="Add Task">
+  </div>
+
+  <ul>
+    <li *ngFor=" let task of todayTasks" cdkDrag class="todo-card">
+      <input type="checkbox" [(ngModel)]="task.delayed" (change)="toggleDelayed(task)" />
+      <div class="edit-card">
+        <h2>{{ task.text }}</h2>
+        <p>Description: {{ task.description }}</p>
+        <p>Contacts:</p>
+        <ul>
+          <li *ngFor="let contact of task.contacts">
+            <strong>{{ contact.name }}</strong><br>
+            Email: {{ contact.email }}<br>
+            Phone: {{ contact.phoneNumber }}
+          </li>
+        </ul>
+        <button (click)="addContactsToTask(task)">Edit</button>
+        <button (click)="deleteDoTodayTask(task.id)">Delete</button>
+      </div>
+    </li>
+  </ul>
+</div>
