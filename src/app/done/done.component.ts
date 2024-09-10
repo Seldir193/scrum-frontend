@@ -18,6 +18,11 @@ import { DoneService } from '../done.service';
 import { Done } from '../done.service';
 import { CdkDragDrop, moveItemInArray,transferArrayItem } from '@angular/cdk/drag-drop';
 import { DragDropModule } from '@angular/cdk/drag-drop';
+import { TaskmanagerService } from '../taskmanager.service';
+
+
+
+
 
 
 @Component({
@@ -44,7 +49,11 @@ export class DoneComponent implements OnInit {
     private todayTaskService: TodayTaskService,
     private router: Router,
     private inProgressService: InProgressService,
-    private doneService: DoneService
+    private doneService: DoneService,
+    private taskmanagerService: TaskmanagerService
+    
+
+   
   ) {}
 
   ngOnInit(): void {
@@ -61,27 +70,19 @@ export class DoneComponent implements OnInit {
     );
   }
 
+  drop(event: CdkDragDrop<Todo[] | TodayTask[] | InProgress[] | Done[]>) {
+    this.taskmanagerService.handleDrop(event);
+  }
+
+
+
   getDone(): void {
     this.doneService.getDone().subscribe(done => {
       this.done = done; // Nur Aufgaben für Do Today laden
     });
   }
 
-  drop(event: CdkDragDrop<Done[]>) {
-    if (event.previousContainer === event.container) {
-      moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
-     
-    } else {
-      transferArrayItem(
-        event.previousContainer.data,
-        event.container.data,
-        event.previousIndex,
-        event.currentIndex
-      );
-    }
-  }
-
-
+ 
   toggleDelayed(done: Done): void {
     done.delayed = !done.delayed;
     

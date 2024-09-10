@@ -1,66 +1,75 @@
+
+
+
+
+
+
+
+
+
 <app-header></app-header>
 
 <div class="container">
 
+  <div class="main-container">
 
-<div class="main-container">
+    <div class="contacts-list " >
+      <h3>Contacts</h3>
+      <ul>
+        <li *ngFor="let contact of contacts">
+          <strong>{{ contact.name }}</strong><br>
+          Email: {{ contact.email }}<br>
+          Phone: {{ contact.phoneNumber }}
+          <button (click)="deleteContact(contact.id)">Delete</button> 
+        </li>
+      </ul>
+      <button (click)="openContactDialog()">Add New Contact</button>
+    </div>
 
-  <div class="contacts-list">
-    <h3>Contacts</h3>
-    <ul>
-      <li *ngFor="let contact of contacts">
-        <strong>{{ contact.name }}</strong><br>
-        Email: {{ contact.email }}<br>
-        Phone: {{ contact.phoneNumber }}
-        <button (click)="deleteContact(contact.id)">Delete</button> 
-      </li>
-    </ul>
-    <button (click)="openContactDialog()">Add New Contact</button>
-  </div>
-
-
-<div class="tasks-container" cdkDropListGroup>
-  <div class="todo-container" >
-
-  <div class="taskStreet" cdkDropList  id="todoContainer"   [cdkDropListData]="todos" (cdkDropListDropped)="drop($event)">
-    <h1>To-do</h1>
-    <img (click)="addNewTask()" src="assets/img/plus.svg" alt="Add Task">
-  </div>
-
-  <ul>
-    <li class="todo-card example-box" *ngFor="let todo of todos"  cdkDrag>
-      <input type="checkbox" [(ngModel)]="todo.delayed" (change)="toggleDelayed(todo)" />
+    <div class="tasks-container example-container " cdkDropListGroup>
       
-      <div class="edit-card">
-        <h2>{{ todo.text }}</h2>
-        <p>Description: {{ todo.description }}</p>
-
-        <p>Contacts:</p>
+      <!-- Todo Container -->
+      <div class=" example-list" cdkDropList id="todoContainer"
+            
+           [cdkDropListData]="todos"
+           [cdkDropListConnectedTo]="['todoContainer', 'todayContainer','inProgress', 'doneContainer']"
+           (cdkDropListDropped)="drop($event)">
+        <h1>To-do</h1>
+        <img (click)="addNewTask()" src="assets/img/plus.svg" alt="Add Task">
+        
+        <!-- Task List for 'To-do' -->
         <ul>
-          <li *ngFor="let contact of todo.contacts">
-            <strong>{{ contact.name }}</strong><br>
-            Email: {{ contact.email }}<br>
-            Phone: {{ contact.phoneNumber }}
+          <li *ngFor="let todo of todos" cdkDrag class="todo-card example-box ">
+            <input type="checkbox" [(ngModel)]="todo.delayed" (change)="toggleDelayed(todo)" />
+            <div class="edit-card">
+              <h2>{{ todo.text }}</h2>
+              <p>Description: {{ todo.description }}</p>
+              <p>Contacts:</p>
+              <ul>
+                <li *ngFor="let contact of todo.contacts">
+                  <strong>{{ contact.name }}</strong><br>
+                  Email: {{ contact.email }}<br>
+                  Phone: {{ contact.phoneNumber }}
+                </li>
+              </ul>
+              <button (click)="openEditDialog(todo)">Edit</button>
+              <button (click)="deleteTodo(todo.id)">Delete</button>
+            </div>
           </li>
         </ul>
-  
-        <button (click)="openEditDialog(todo)">Edit</button>
-        <button (click)="deleteTodo(todo.id)">Delete</button>
       </div>
-         </li>
-  </ul>
+
+      <!-- Do Today Component -->
+      <app-do-today></app-do-today>
+      
+      <!-- In Progress Component -->
+      <app-in-progress></app-in-progress>
+      
+      <!-- Done Component -->
+      <app-done></app-done>
+      
+    </div>
 
   </div>
 
-
-  <app-do-today></app-do-today>
-  <app-in-progress></app-in-progress>
-  <app-done></app-done>
-  
 </div>
-
-</div>
-</div>
-
-
-

@@ -1,4 +1,3 @@
-
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
@@ -6,15 +5,21 @@ import { catchError } from 'rxjs/operators';
 import { of } from 'rxjs';
 import { Contact } from './contact.model';
 
-export interface TodayTask {
+
+import { Todo } from './todo.service';
+
+
+export interface TodayTask  {
   id: number;
   text: string;
   delayed: boolean;
   user: number;
   description?: string;
   contacts: Contact[];
+ 
   status?: string;
 }
+
 
 @Injectable({
   providedIn: 'root'
@@ -50,10 +55,19 @@ export class TodayTaskService {
     return this.http.delete<void>(`${this.apiUrl}${id}/`, { headers: this.getAuthHeaders() });
   }
 
-
-
   updateTodayTask(task: TodayTask): Observable<void> {
-    return this.http.patch<void>(`${this.apiUrl}${task.id}/`, task, { headers: this.getAuthHeaders() })
+    const updateData = { 
+      text: task.text,
+      delayed: task.delayed,
+      description: task.description,
+      user: task.user,
+      contacts: task.contacts.map(contact => contact.id),
+      status: task.status
+    };
+  
+
+
+    return this.http.patch<void>(`${this.apiUrl}${task.id}/`,updateData , { headers: this.getAuthHeaders() })
       .pipe(
         catchError(error => {
           console.error('Fehler beim Aktualisieren der TodayTask:', error);
@@ -62,24 +76,28 @@ export class TodayTaskService {
       );
   }
 
-  
   getContacts(): Observable<Contact[]> {
     return this.http.get<Contact[]>(this.contactsUrl, { headers: this.getAuthHeaders() });
   }
 
-  
 
-  updateTodayTaskStatus(task: TodayTask): Observable<void> {
-    const updateData = { status: task.status };  // Nur das Status-Feld senden
-    return this.http.put<void>(`${this.apiUrl}todaytasks/${task.id}/`, updateData, { headers: this.getAuthHeaders() })
+  updateTodayTaskStatus(todayTask: TodayTask): Observable<void> {
+    const updateData = { status: todayTask.status };
+  
+    return this.http.patch<void>(`${this.apiUrl}${todayTask.id}/`, updateData, { headers: this.getAuthHeaders() })
       .pipe(
         catchError(error => {
           console.error('Fehler beim Aktualisieren der TodayTask:', error);
-          return of();  // Fehlerbehandlung oder Rückgabe eines leeren Observables im Fehlerfall
+          return of(); // Fehlerbehandlung oder Rückgabe eines leeren Observables im Fehlerfall
         })
       );
   }
 
-  
+
+
+
+
 
 }
+  
+

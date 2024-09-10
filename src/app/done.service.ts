@@ -13,7 +13,7 @@ export interface Done {
   user: number;
   description?: string;
   contacts: Contact[];
-  
+  status?: string;
 }
 
 @Injectable({
@@ -63,5 +63,15 @@ export class  DoneService {
 
   getContacts(): Observable<Contact[]> {
     return this.http.get<Contact[]>(this.contactsUrl, { headers: this.getAuthHeaders() });
+  }
+  updateDoneStatus(done: Done): Observable<void> {
+    const updateData = { status: done.status };  // Nur das Status-Feld senden
+    return this.http.patch<void>(`${this.apiUrl}${done.id}/`, updateData, { headers: this.getAuthHeaders() })
+      .pipe(
+        catchError(error => {
+          console.error('Fehler beim Aktualisieren des Done:', error);
+          return of(); // Fehlerbehandlung oder Rückgabe eines leeren Observables im Fehlerfall
+        })
+      );
   }
 }

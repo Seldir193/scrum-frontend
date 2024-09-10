@@ -19,9 +19,11 @@ import { InProgressComponent } from '../in-progress/in-progress.component';
 import { DoneComponent } from '../done/done.component';
 import { CdkDragDrop, moveItemInArray,transferArrayItem }  from '@angular/cdk/drag-drop';
 import { DragDropModule } from '@angular/cdk/drag-drop';
-import { TodayTaskService } from '../today-task.service';
-import { HttpClient } from '@angular/common/http';
+import { TodayTaskService , TodayTask} from '../today-task.service';
 
+import { InProgressService,InProgress } from '../in-progress.service';
+import { DoneService,Done } from '../done.service';
+import { TaskmanagerService } from '../taskmanager.service';
 
 export interface Todo {
   id: number;
@@ -50,7 +52,16 @@ export class TodoComponent implements OnInit {
   contacts: Contact[] = [];
   
    
-  constructor(private http: HttpClient,private todoService: TodoService, private router: Router, public dialog: MatDialog,private contactService: ContactService,private todayTaskService: TodayTaskService,) {}
+  constructor(
+     private todoService: TodoService, 
+     private router: Router, public dialog: MatDialog,
+     private contactService: ContactService,
+     private todayTaskService: TodayTaskService,
+     private inProgressService: InProgressService,
+     private doneService: DoneService,
+     private taskmanagerService: TaskmanagerService
+  )
+     {}
 
   ngOnInit(): void {
     this.checkAuthentication();
@@ -96,6 +107,12 @@ export class TodoComponent implements OnInit {
     return localStorage.getItem('access_token');
   }
 
+
+  drop(event: CdkDragDrop<Todo[] | TodayTask[] | InProgress[] | Done[]>) {
+    this.taskmanagerService.handleDrop(event);
+  }
+
+
   editTodoText(todo: Todo, newText: string) {
     if (newText.trim()) {
       todo.text = newText;
@@ -103,57 +120,6 @@ export class TodoComponent implements OnInit {
     }
   }
 
-  drop(event: CdkDragDrop<Todo[]>) {
-    if (event.previousContainer === event.container) {
-      moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
-    } else {
-      transferArrayItem(
-        event.previousContainer.data,
-        event.container.data,
-        event.previousIndex,
-        event.currentIndex
-      );
-    }
-  
-    const movedTodo = event.container.data[event.currentIndex];
-    let newStatus: string;
-    let updateService: any;
-  
-    switch (event.container.id) {
-      case 'todayContainer':
-        newStatus = 'todaytasks';
-        updateService = this.todayTaskService;
-        break;
-      case 'todoContainer':
-        newStatus = 'todos';
-        updateService = this.todoService;
-        break;
-      default:
-        newStatus = '';
-        console.warn('Unbekannter Container-ID:', event.container.id);
-        break;
-    }
-  
-    if (newStatus && updateService) {
-      movedTodo.status = newStatus;
-  
-      // Call the appropriate service based on the status
-      this.todoService.updateTodoStatus(movedTodo).subscribe(
-        () => console.log('Todo updated successfully'),
-        (error: any) => console.error('Error updating todo', error)
-      );
-    } else {
-      console.error('Kein gültiger Status oder Service gefunden.');
-    }
-  }
-  
-
- 
-
-
-  
-  
-  
 
   deleteContact(id: number | undefined): void {
     if (id !== undefined) {
@@ -162,8 +128,8 @@ export class TodoComponent implements OnInit {
       });
     }
   }
- 
 
+  
   getTodos() {
     this.todoService.getTodos().subscribe(data => this.todos = data);
   }

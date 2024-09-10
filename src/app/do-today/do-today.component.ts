@@ -13,6 +13,9 @@ import { TodayTask } from '../today-task.service';
 import { TodoComponent } from '../todo/todo.component';
 import { CdkDragDrop, moveItemInArray,transferArrayItem } from '@angular/cdk/drag-drop';
 import { DragDropModule } from '@angular/cdk/drag-drop';
+import { InProgressService,InProgress } from '../in-progress.service';
+import { DoneService,Done } from '../done.service';
+import { TaskmanagerService } from '../taskmanager.service';
 
 
 @Component({
@@ -37,7 +40,13 @@ export class DoTodayComponent implements OnInit {
     private contactService: ContactService ,
     private dialog: MatDialog,
     private todayTaskService: TodayTaskService,
-    private router: Router
+    private router: Router,
+    private inProgressService: InProgressService,
+    private doneService: DoneService,
+    private taskmanagerService: TaskmanagerService
+    
+
+    
   ) {}
 
   ngOnInit(): void {
@@ -47,8 +56,6 @@ export class DoTodayComponent implements OnInit {
     this.getContacts(); // Kontakte beim Initialisieren abrufen
    
   }
-
-  
 
   private getContacts(): void {
     this.contactService.getContacts().subscribe(
@@ -63,51 +70,12 @@ export class DoTodayComponent implements OnInit {
     });
   }
 
-
-  onDrop(event: CdkDragDrop<Todo[] | TodayTask[]>) {
-    if (event.previousContainer === event.container) {
-      moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
-    } else {
-      transferArrayItem(
-        event.previousContainer.data,
-        event.container.data,
-        event.previousIndex,
-        event.currentIndex
-      );
-    }
-
-    const movedTask = event.container.data[event.currentIndex];
-    let newStatus: string;
-    let updateService: any;
-
-    switch (event.container.id) {
-      case 'todayContainer':
-        newStatus = 'todaytasks';
-        updateService = this.todayTaskService;
-        break;
-      case 'todoContainer':
-        newStatus = 'todos';
-        updateService = this.todoService;
-        break;
-      default:
-        newStatus = '';
-        console.warn('Unbekannter Container-ID:', event.container.id);
-        break;
-    }
-
-    if (newStatus && updateService) {
-      movedTask.status = newStatus;
-
-      // Call the appropriate service based on the status
-      updateService.updateTodayTaskStatus(movedTask).subscribe(
-        () => console.log('Task updated successfully'),
-        (error: any) => console.error('Error updating task', error)
-      );
-    } else {
-      console.error('Kein gültiger Status oder Service gefunden.');
-    }
+  drop(event: CdkDragDrop<Todo[] | TodayTask[] | InProgress[] | Done[]>) {
+    this.taskmanagerService.handleDrop(event);
   }
 
+
+  
 
   toggleDelayed(task: TodayTask): void {
     task.delayed = !task.delayed;
@@ -133,6 +101,8 @@ export class DoTodayComponent implements OnInit {
         selectedContacts: [] // Initial keine ausgewählten Kontakte
       }
     });
+
+
   
     dialogRef.afterClosed().subscribe((result: TaskDialogData & { selectedContacts: Contact[] }) => {
       if (result) {
@@ -189,6 +159,11 @@ export class DoTodayComponent implements OnInit {
       }
     );
   }
+
+
+  
+
+
 
   loadContacts(): void {
     this.contactService.getContacts().subscribe(contacts => {

@@ -1,27 +1,37 @@
 
-<div class="in-progress-container" cdkDropListGroup>
-    <div class="taskStreet"cdkDropList [cdkDropListData]="done" (cdkDropListDropped)="drop($event)" >
+
+
+
+
+  <div class="done-container  example-container" cdkDropListGroup>
+    <div class="example-list" 
+         id="doneContainer"
+         cdkDropList 
+         [cdkDropListData]="done" 
+         [cdkDropListConnectedTo]="['todoContainer', 'todayContainer','inProgress', 'doneContainer']"
+         (cdkDropListDropped)="drop($event)">
       <h3>Done</h3>
       <img (click)="openAddDoneDialog()" src="assets/img/plus.svg" alt="Add Task">
-    </div>
+    
   
     <ul>
-      <li *ngFor="let done of done" cdkDrag class="todo-card">
-        <input type="checkbox" [(ngModel)]="done.delayed" (change)="toggleDelayed(done)" />
+      <li *ngFor="let task of done" cdkDrag class="todo-card example-box">
+        <input type="checkbox" [(ngModel)]="task.delayed" (change)="toggleDelayed(task)" />
         <div class="edit-card">
-          <h2>{{ done.text }}</h2>
-          <p>Description: {{ done.description }}</p>
+          <h2>{{ task.text }}</h2>
+          <p>Description: {{ task.description }}</p>
           <p>Contacts:</p>
           <ul>
-            <li *ngFor="let contact of done.contacts">
+            <li *ngFor="let contact of task.contacts">
               <strong>{{ contact.name }}</strong><br>
               Email: {{ contact.email }}<br>
               Phone: {{ contact.phoneNumber }}
             </li>
           </ul>
-          <button (click)="addContactsDone(done)">Edit</button>
-          <button (click)="deleteDone(done.id)">Delete</button>
+          <button (click)="addContactsDone(task)">Edit</button>
+          <button (click)="deleteDone(task.id)">Delete</button>
         </div>
       </li>
     </ul>
   </div>
+</div>

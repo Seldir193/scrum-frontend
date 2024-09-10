@@ -20,7 +20,8 @@ import { InProgressComponent } from './in-progress/in-progress.component';
 import { InProgressService } from './in-progress.service';
 import { DoneComponent } from './done/done.component';
 import { DoneService } from './done.service';
-import { DragDropModule } from '@angular/cdk/drag-drop';
+import { TaskmanagerService } from './taskmanager.service';
+
 
 
 
@@ -46,10 +47,9 @@ export const appConfig: ApplicationConfig = {
     InProgressService,
     DoneComponent,
     DoneService,
-    DragDropModule
+    TaskmanagerService
   
-    
-    
-   
+  
+
   ]
 };

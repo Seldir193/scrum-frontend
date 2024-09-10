@@ -16,6 +16,11 @@ import { InProgressService } from '../in-progress.service';
 import { InProgress } from '../in-progress.service';
 import { CdkDragDrop, moveItemInArray,transferArrayItem } from '@angular/cdk/drag-drop';
 import { DragDropModule } from '@angular/cdk/drag-drop';
+import { DoneService,Done } from '../done.service';
+import { TaskmanagerService } from '../taskmanager.service';
+
+
+
 
 @Component({
   selector: 'app-in-progress',
@@ -41,6 +46,11 @@ export class InProgressComponent implements OnInit {
     private todayTaskService: TodayTaskService,
     private router: Router,
     private inProgressService: InProgressService,
+    private doneService: DoneService,
+    private taskmanagerService: TaskmanagerService
+    
+
+   
   ) {}
 
   ngOnInit(): void {
@@ -57,27 +67,17 @@ export class InProgressComponent implements OnInit {
     );
   }
 
+  drop(event: CdkDragDrop<Todo[] | TodayTask[] | InProgress[] | Done[]>) {
+    this.taskmanagerService.handleDrop(event);
+  }
+
+
+
   getInProgress(): void {
     this.inProgressService.getInProgress().subscribe(progress => {
       this.inProgress = progress; // Nur Aufgaben für Do Today laden
     });
   }
-
-  drop(event: CdkDragDrop<InProgress[]>) {
-    if (event.previousContainer === event.container) {
-      moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
-     
-    } else {
-      transferArrayItem(
-        event.previousContainer.data,
-        event.container.data,
-        event.previousIndex,
-        event.currentIndex
-      );
-    }
-  }
-
-
 
   toggleDelayed(progress: InProgress): void {
     progress.delayed = !progress.delayed;
@@ -92,7 +92,7 @@ export class InProgressComponent implements OnInit {
       }
     );
   }
-  
+
   openAddInProgressDialog(): void {
     const dialogRef = this.dialog.open(TaskDialogComponent, {
       width: '400px',

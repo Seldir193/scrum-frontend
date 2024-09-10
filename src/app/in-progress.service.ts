@@ -13,6 +13,7 @@ export interface InProgress {
   user: number;
   description?: string;
   contacts: Contact[];
+  status?: string;
 }
 
 @Injectable({
@@ -63,4 +64,17 @@ export class InProgressService {
   getContacts(): Observable<Contact[]> {
     return this.http.get<Contact[]>(this.contactsUrl, { headers: this.getAuthHeaders() });
   }
+
+  updateInProgressStatus(inProgress: InProgress): Observable<void> {
+    const updateData = { status: inProgress.status };  // Nur das Status-Feld senden
+    return this.http.patch<void>(`${this.apiUrl}${inProgress.id}/`, updateData, { headers: this.getAuthHeaders() })
+      .pipe(
+        catchError(error => {
+          console.error('Fehler beim Aktualisieren des InProgress:', error);
+          return of(); // Fehlerbehandlung oder Rückgabe eines leeren Observables im Fehlerfall
+        })
+      );
+  }
 }
+  
+

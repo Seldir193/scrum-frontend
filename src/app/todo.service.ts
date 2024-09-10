@@ -4,8 +4,7 @@ import { Observable } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { of } from 'rxjs';
 import { Contact } from './contact.model';
-
-export interface Todo {
+export interface Todo  {
   id: number;
   text: string;
   delayed: boolean;
@@ -22,6 +21,7 @@ export class TodoService {
   private apiUrl = 'http://localhost:8000/api/todos/';
   private contactsUrl = 'http://localhost:8000/api/contacts/';
   newTodo: string = '';
+  
   constructor(private http: HttpClient) {}
 
   private getAuthHeaders(): HttpHeaders {
@@ -41,18 +41,19 @@ export class TodoService {
       );
     }
 
-  addTodo(todo: Todo): Observable<Todo> {
-    return this.http.post<Todo>(this.apiUrl, todo, { headers: this.getAuthHeaders() });
-  }
+ 
 
-  updateTodo(todo: Todo): Observable<void> {
-    
-    return this.http.patch<void>(`${this.apiUrl}${todo.id}/`, todo, { headers: this.getAuthHeaders() });
-  }
+    addTodo(todo: Todo): Observable<Todo> {
+      return this.http.post<Todo>(this.apiUrl, todo, { headers: this.getAuthHeaders() });
+    }
+
+ 
+
+ 
+    updateTodo(todo: Todo): Observable<void> {
+      return this.http.patch<void>(`${this.apiUrl}${todo.id}/`, todo, { headers: this.getAuthHeaders() });
+    }
   
-  deleteTodo(id: number): Observable<void> {
-    return this.http.delete<void>(`${this.apiUrl}${id}/`, { headers: this.getAuthHeaders() });
-  }
 
   logout(): Observable<void> {
     const token = localStorage.getItem('access_token');
@@ -66,9 +67,22 @@ export class TodoService {
     return this.http.get<Contact[]>(this.contactsUrl, { headers: this.getAuthHeaders() });
   }
 
+
+  deleteTodo(id: number): Observable<void> {
+    const url = `${this.apiUrl}${id}/`;  // Prüfe, ob der Schrägstrich am Ende nötig ist
+    return this.http.delete<void>(url, { headers: this.getAuthHeaders() })
+   
+      .pipe(
+        catchError(error => {
+          console.error('Error deleting task', error);
+          return of();
+        })
+      );
+  }
+
   updateTodoStatus(todo: Todo): Observable<void> {
-    const updateData = { status: todo.status };  // Nur das Status-Feld senden
-    return this.http.put<void>(`${this.apiUrl}todos/${todo.id}/`, updateData, { headers: this.getAuthHeaders() })
+    const updateData = { status: todo.status  };  // Nur das Status-Feld senden
+    return this.http.patch<void>(`${this.apiUrl}${todo.id}/`, updateData, { headers: this.getAuthHeaders() })
       .pipe(
         catchError(error => {
           console.error('Fehler beim Aktualisieren des Todos:', error);
@@ -76,7 +90,6 @@ export class TodoService {
         })
       );
   }
-  
 }
 
 

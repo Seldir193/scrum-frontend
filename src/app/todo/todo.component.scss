@@ -1,13 +1,42 @@
 
-.main-container {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start; /* Beide Container am oberen Rand ausrichten */
+
+.cdk-drag-preview {
+  box-sizing: border-box;
+  border-radius: 4px;
+  box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.2),
+              0 8px 10px 1px rgba(0, 0, 0, 0.14),
+              0 3px 14px 2px rgba(0, 0, 0, 0.12);
 }
+
+.cdk-drag-placeholder {
+  opacity: 0;
+}
+
+.cdk-drag-animating {
+  transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+
+
+.example-list.cdk-drop-list-dragging .example-box:not(.cdk-drag-placeholder) {
+  transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+.example-list {
+  
+  img{
+      width:30px;
+      height:30px;
+      cursor: pointer;
+  }
+}
+
+
+
 
 .todo-container {
   flex: 1;
-  //margin-right: 20px; /* Abstand zwischen Todo- und Kontaktliste */
+  
 }
 
 .contacts-list {
@@ -61,23 +90,10 @@ button{
   background-color: #c82333;
 }
 
-.taskStreet{
-  display: flex;
-  width:260px;
-  justify-content: space-between; /* Distributes space between the items */
-
-  img{
-      width:30px;
-      height:30px;
-      cursor: pointer;
-  }
-}
-
 .edit-card {
   border: 1px solid #e0e0e0;
   box-shadow: 0px 0px 10px 3px rgba(0, 0, 0, 0.08);
   border-radius: 24px;
- // width: 230px;
   padding: 16px;
   margin-bottom: 10px;
   background-color: #fff;
@@ -118,8 +134,6 @@ button{
   border-radius: 5px;
 }
 
-
-
 .container {
   display: flex;
   flex-direction: column;
@@ -129,9 +143,8 @@ button{
 
 .main-container {
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
   width: 100%;
-  gap:50px;
 }
 
 .contacts-list {
@@ -147,7 +160,7 @@ button{
   display: flex;
   flex-direction: row;
   //width: 75%; /* Oder eine andere Breite nach Bedarf */
-  gap: 50px; /* Abstand zwischen To-Do und Do Today */
+  gap: 20px; /* Abstand zwischen To-Do und Do Today */
 }
 
 .todo-container, .do-today-container {
@@ -163,31 +176,7 @@ button{
   cursor: move; 
 }
 
-.taskStreet {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 10px; /* Abstand zwischen der taskStreet und der Liste */
-}
-
-.taskStreet img {
-  cursor: pointer;
-  width: 24px; /* Beispielgröße */
-}
-
 .do-today-container {
   display: flex;
   gap:20px;
 }
-
-  
-
-
-
-
-
-
-
-  
-
-
