@@ -32,7 +32,7 @@
       <div class=" example-list" cdkDropList id="todoContainer"
             
            [cdkDropListData]="todos"
-           [cdkDropListConnectedTo]="['todoContainer', 'todayContainer','inProgress', 'doneContainer']"
+           [cdkDropListConnectedTo]="['todoContainer', 'todayContainer','inProgressContainer', 'doneContainer']"
            (cdkDropListDropped)="drop($event)">
         <h1>To-do</h1>
         <img (click)="addNewTask()" src="assets/img/plus.svg" alt="Add Task">

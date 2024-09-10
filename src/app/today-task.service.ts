@@ -56,18 +56,7 @@ export class TodayTaskService {
   }
 
   updateTodayTask(task: TodayTask): Observable<void> {
-    const updateData = { 
-      text: task.text,
-      delayed: task.delayed,
-      description: task.description,
-      user: task.user,
-      contacts: task.contacts.map(contact => contact.id),
-      status: task.status
-    };
-  
-
-
-    return this.http.patch<void>(`${this.apiUrl}${task.id}/`,updateData , { headers: this.getAuthHeaders() })
+    return this.http.patch<void>(`${this.apiUrl}${task.id}/`,task , { headers: this.getAuthHeaders() })
       .pipe(
         catchError(error => {
           console.error('Fehler beim Aktualisieren der TodayTask:', error);

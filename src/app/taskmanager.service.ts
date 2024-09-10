@@ -116,8 +116,7 @@ export class TaskmanagerService {
       default: return null;
     }
   }
-  
-  
+
   addTaskToNewList(newStatus: string, movedTask: any) {
     switch (newStatus) {
       case 'todaytasks':
@@ -136,5 +135,4 @@ export class TaskmanagerService {
         console.warn('Unbekannter Status:', newStatus);
     }
   }
-
 }

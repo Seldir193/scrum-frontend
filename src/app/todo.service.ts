@@ -80,6 +80,9 @@ export class TodoService {
       );
   }
 
+
+  
+
   updateTodoStatus(todo: Todo): Observable<void> {
     const updateData = { status: todo.status  };  // Nur das Status-Feld senden
     return this.http.patch<void>(`${this.apiUrl}${todo.id}/`, updateData, { headers: this.getAuthHeaders() })
@@ -90,6 +93,9 @@ export class TodoService {
         })
       );
   }
+
+
+
 }
 
 

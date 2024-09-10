@@ -51,6 +51,7 @@ export class InProgressService {
     return this.http.delete<void>(`${this.apiUrl}${id}/`, { headers: this.getAuthHeaders() });
   }
 
+
   updateInProgress(progress: InProgress): Observable<void> {
     return this.http.patch<void>(`${this.apiUrl}${progress.id}/`, progress, { headers: this.getAuthHeaders() })
       .pipe(
@@ -65,6 +66,9 @@ export class InProgressService {
     return this.http.get<Contact[]>(this.contactsUrl, { headers: this.getAuthHeaders() });
   }
 
+
+
+  
   updateInProgressStatus(inProgress: InProgress): Observable<void> {
     const updateData = { status: inProgress.status };  // Nur das Status-Feld senden
     return this.http.patch<void>(`${this.apiUrl}${inProgress.id}/`, updateData, { headers: this.getAuthHeaders() })
@@ -75,6 +79,8 @@ export class InProgressService {
         })
       );
   }
+
+
 }
   
 
