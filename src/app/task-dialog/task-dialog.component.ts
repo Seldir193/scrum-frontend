@@ -11,16 +11,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatSelectModule } from '@angular/material/select';
-import { Contact } from '../contact.model';
-
-
-export interface TaskDialogData {
-  name: string;
-  description?: string;
-  contacts: Contact[];
-  selectedContacts: Contact[];
-  category: 'do-today' | 'other';
-}
+import { Contact,TaskDialogData } from '../task.model';
 
 @Component({
   selector: 'app-task-dialog',
@@ -44,8 +35,6 @@ export class TaskDialogComponent implements OnInit {
   selectedContacts: Contact[] = [];
   allContacts: Contact[] = [];
 
-  
-
   constructor(
     public dialogRef: MatDialogRef<TaskDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: TaskDialogData,
@@ -63,7 +52,6 @@ export class TaskDialogComponent implements OnInit {
     this.loadContacts();
   }
 
-
   loadContacts(): void {
     this.contactService.getContacts().subscribe(
       (contacts: Contact[]) => {
@@ -75,7 +63,6 @@ export class TaskDialogComponent implements OnInit {
     );
   }
 
-
   save(): void {
     this.dialogRef.close({
       name: this.task.name,
@@ -83,7 +70,6 @@ export class TaskDialogComponent implements OnInit {
       selectedContacts: this.selectedContacts
     });
   }
-
 
   close(): void {
     this.dialogRef.close();

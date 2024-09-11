@@ -1,16 +1,9 @@
-
-
-
-
-
-// contact.service.ts
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { of } from 'rxjs';
-import { Contact } from './contact.model';
-
+import { Contact } from './task.model';
 
 
 @Injectable({
@@ -50,9 +43,6 @@ export class ContactService {
   deleteContact(id: number): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}${id}/`, { headers: this.getAuthHeaders() });
   }
-
- 
-
 }
  
   

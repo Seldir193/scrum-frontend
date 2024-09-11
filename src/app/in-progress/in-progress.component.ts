@@ -1,34 +1,22 @@
-
 import { Component, OnInit } from '@angular/core';
-import { TodoService, Todo } from '../todo.service'; // Verwende denselben Service
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ContactService } from '../contact.service';
-import { Contact } from '../contact.model';
 import { MatDialog } from '@angular/material/dialog';
-import { TaskDialogComponent } from '../task-dialog/task-dialog.component';
 import { Router } from '@angular/router';
-import { TaskDialogData } from '../task-dialog/task-dialog.component';
-import { TodayTaskService } from '../today-task.service';
-import { TodayTask } from '../today-task.service';
-import { TodoComponent } from '../todo/todo.component';
-import { InProgressService } from '../in-progress.service';
-import { InProgress } from '../in-progress.service';
-import { CdkDragDrop, moveItemInArray,transferArrayItem } from '@angular/cdk/drag-drop';
-import { DragDropModule } from '@angular/cdk/drag-drop';
-import { DoneService,Done } from '../done.service';
+import { CdkDragDrop } from '@angular/cdk/drag-drop';
 import { TaskmanagerService } from '../taskmanager.service';
-
-
-
+import { TaskService } from '../task.service';  // Import TaskService
+import { InProgress, Todo, Contact, TaskDialogData } from '../task.model';
+import { DragDropModule } from '@angular/cdk/drag-drop';
+import { TaskDialogComponent } from '../task-dialog/task-dialog.component';
 
 @Component({
   selector: 'app-in-progress',
   standalone: true,
-  imports: [CommonModule, FormsModule,TodoComponent,DragDropModule],
+  imports: [CommonModule, FormsModule,DragDropModule],
   templateUrl: './in-progress.component.html',
-  styleUrl: './in-progress.component.scss'
-
+  styleUrls: ['./in-progress.component.scss']
 })
 export class InProgressComponent implements OnInit {
   todos: Todo[] = [];
@@ -37,53 +25,44 @@ export class InProgressComponent implements OnInit {
   newTodo: Todo = { id: 0, text: '', delayed: false, user: 0, contacts: [] };
   contacts: Contact[] = [];
   inProgress: InProgress[] = [];
-  selectedTodo: Todo | null = null; // Hinzufügen von 'selectedTodo'
+  selectedTodo: Todo | null = null;
 
   constructor(
-    private todoService: TodoService,
-    private contactService: ContactService ,
+    private contactService: ContactService,
     private dialog: MatDialog,
-    private todayTaskService: TodayTaskService,
     private router: Router,
-    private inProgressService: InProgressService,
-    private doneService: DoneService,
-    private taskmanagerService: TaskmanagerService
-    
-
-   
+    private taskmanagerService: TaskmanagerService,
+    private taskService: TaskService  // Verwende den TaskService
   ) {}
 
   ngOnInit(): void {
-    this.getInProgress();
+    this.getInProgressTasks();
     this.loadContacts();
-    //this.loadTodayTasks();
-    this.getContacts(); // Kontakte beim Initialisieren abrufen
+    this.getContacts();
   }
 
   private getContacts(): void {
     this.contactService.getContacts().subscribe(
-      (data: Contact[]) => this.contacts = data, // Setze die Kontakte in den lokalen Zustand
+      (data: Contact[]) => this.contacts = data,
       (error) => console.error('Failed to load contacts', error)
     );
   }
 
-  drop(event: CdkDragDrop<Todo[] | TodayTask[] | InProgress[] | Done[]>) {
-    this.taskmanagerService.handleDrop(event);
+  getInProgressTasks(): void {
+    this.taskService.getTasks('inprogress').subscribe(inProgressTasks => {
+      this.inProgress = inProgressTasks;  // Nur InProgress Tasks werden geladen
+    });
   }
 
-
-
-  getInProgress(): void {
-    this.inProgressService.getInProgress().subscribe(progress => {
-      this.inProgress = progress; // Nur Aufgaben für Do Today laden
-    });
+  drop(event: CdkDragDrop<Todo[] | InProgress[]>) {
+    this.taskmanagerService.handleDrop(event);
   }
 
   toggleDelayed(progress: InProgress): void {
     progress.delayed = !progress.delayed;
-    
-    // Verwende den todayTaskService, um die Änderungen im Backend zu speichern
-    this.inProgressService.updateInProgress(progress).subscribe(
+
+    // Verwende den TaskService für die Statusaktualisierung
+    this.taskService.updateTask(progress).subscribe(
       () => {
         console.log('Task updated successfully:', progress);
       },
@@ -99,11 +78,11 @@ export class InProgressComponent implements OnInit {
       data: {
         name: '',
         description: '',
-        contacts: this.contacts, // Alle verfügbaren Kontakte
-        selectedContacts: [] // Initial keine ausgewählten Kontakte
+        contacts: this.contacts,
+        selectedContacts: []
       }
     });
-  
+
     dialogRef.afterClosed().subscribe((result: TaskDialogData & { selectedContacts: Contact[] }) => {
       if (result) {
         const newTask: InProgress = {
@@ -112,23 +91,24 @@ export class InProgressComponent implements OnInit {
           delayed: false,
           user: this.getUserId(),
           description: result.description,
-          contacts: result.selectedContacts || [] // Übergeben der ausgewählten Kontakte
+          contacts: result.selectedContacts || [],
+          status: 'inprogress'
         };
-  
-        console.log('Adding new TodayTask:', newTask);
-        this.inProgressService.addInProgress(newTask).subscribe(
+
+        console.log('Adding new InProgressTask:', newTask);
+        this.taskService.addTask(newTask).subscribe(
           addedTask => {
-            console.log('Added TodayTask:', addedTask);
+            console.log('Added InProgressTask:', addedTask);
             this.inProgress.push(addedTask);
           },
           error => {
-            console.error('Fehler beim Hinzufügen der TodayTask:', error);
+            console.error('Fehler beim Hinzufügen der InProgressTask:', error);
           }
         );
       }
     });
   }
-  
+
   getUserId(): number {
     const token = this.getToken();
     if (token) {
@@ -148,21 +128,21 @@ export class InProgressComponent implements OnInit {
   private getToken(): string | null {
     return localStorage.getItem('access_token');
   }
-  
+
   deleteInProgress(id: number): void {
-    this.inProgressService.deleteInProgress(id).subscribe(
+    this.taskService.deleteTask(id).subscribe(
       () => {
         this.inProgress = this.inProgress.filter(progress => progress.id !== id);
       },
       (error) => {
-        console.error('Fehler beim Löschen der TodayTask:', error);
+        console.error('Fehler beim Löschen der InProgressTask:', error);
       }
     );
   }
 
   loadContacts(): void {
     this.contactService.getContacts().subscribe(contacts => {
-      this.allContacts = contacts; // Kontakte zur Auswahl bereitstellen
+      this.allContacts = contacts;
     });
   }
 
@@ -172,29 +152,28 @@ export class InProgressComponent implements OnInit {
       data: {
         name: progress.text,
         description: progress.description,
-        contacts: this.allContacts, // Alle verfügbaren Kontakte
-        selectedContacts: progress.contacts // Bereits zugewiesene Kontakte
+        contacts: this.allContacts.length > 0 ? this.allContacts : [],
+        selectedContacts: progress.contacts.length > 0 ? progress.contacts : []
       }
     });
-  
+
     dialogRef.afterClosed().subscribe((result: TaskDialogData & { selectedContacts: Contact[] }) => {
       if (result) {
         progress.text = result.name;
         progress.description = result.description;
         progress.contacts = result.selectedContacts || [];
-        
-        this.inProgressService.updateInProgress(progress).subscribe(() => {
+
+        this.taskService.updateTask(progress).subscribe(() => {
           console.log('Updated task with new contacts');
-  
+
           const index = this.inProgress.findIndex(t => t.id === progress.id);
           if (index !== -1) {
             this.inProgress[index] = progress;
           }
-  
+
           this.selectedTodo = progress;
         });
       }
     });
   }
-  
 }

@@ -7,18 +7,9 @@ import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialogModule } from '@angular/material/dialog';
-
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
-
-
-export interface ContactDialogData {
-  
-  name: string;
-  email: string;
-  phoneNumber: string;
-}
-
+import { ContactDialogData } from '../task.model';
 
 @Component({
   selector: 'app-contact-dialog',
@@ -54,6 +45,4 @@ export class ContactDialogComponent {
   close(): void {
     this.dialogRef.close();
   }
-
- 
 }

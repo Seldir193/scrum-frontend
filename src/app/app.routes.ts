@@ -4,8 +4,6 @@ import { LoginComponent } from './login/login.component';
 import { TodoComponent } from './todo/todo.component';
 import { AuthGuard } from './auth.guard';
 
-
-
 export const routes: Routes = [
     { path: '', component: SignupComponent },
     { path: 'signup', component: SignupComponent },

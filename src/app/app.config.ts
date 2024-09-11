@@ -15,16 +15,10 @@ import { ContactDialogComponent } from './contact-dialog/contact-dialog.componen
 import { HeaderComponent } from './header/header.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { DoTodayComponent } from './do-today/do-today.component';
-import { TodayTaskService } from './today-task.service';
 import { InProgressComponent } from './in-progress/in-progress.component';
-import { InProgressService } from './in-progress.service';
 import { DoneComponent } from './done/done.component';
-import { DoneService } from './done.service';
 import { TaskmanagerService } from './taskmanager.service';
-
-
-
-
+import { TaskService } from './task.service';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -42,14 +36,9 @@ export const appConfig: ApplicationConfig = {
     HeaderComponent,
     ReactiveFormsModule,
     DoTodayComponent,
-    TodayTaskService,
     InProgressComponent,
-    InProgressService,
     DoneComponent,
-    DoneService,
-    TaskmanagerService
-  
-  
-
+    TaskmanagerService,
+    TaskService
   ]
 };
