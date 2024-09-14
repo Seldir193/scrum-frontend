@@ -1,7 +1,3 @@
-
-
-
-
 <h1 mat-dialog-title>Task</h1>
 <div mat-dialog-content class="dialog-content">
   <mat-form-field appearance="fill" class="full-width">
@@ -14,7 +10,7 @@
     <textarea matInput [(ngModel)]="task.description"></textarea>
   </mat-form-field>
 
-  <mat-form-field appearance="fill">
+  <mat-form-field appearance="fill" class="custom-width">
     <mat-label>Select Contacts</mat-label>
     <mat-select [(ngModel)]="selectedContacts" multiple>
       <mat-option *ngFor="let contact of allContacts"  [value]="contact">
@@ -22,14 +18,7 @@
       </mat-option>
     </mat-select>
   </mat-form-field>
-
-
-
-
-
 </div>
-
-
 
 <div mat-dialog-actions>
   <button mat-button (click)="onNoClick()">Cancel</button>

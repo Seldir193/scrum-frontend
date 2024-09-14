@@ -13,3 +13,15 @@
     margin: 8px 0; /* Abstände zwischen den Feldern */
   }
   
+  .custom-width {
+    width:350px;
+  }
+
+
+  @media (max-width: 500px) {
+    .custom-width {
+      max-width:350px;
+      width:100%;
+    }
+  }
+

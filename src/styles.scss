@@ -16,23 +16,11 @@ body { margin: 0;
         gap:unset;
     }
 
-    .container{
-        padding:unset;
-    }
-
-    .example-list ul {
-        display: flex;
-        justify-content: center;
-    }
-
-  
-
-
     /* Stellt sicher, dass jeweils zwei Task-Container nebeneinander stehen */
     .todo-container, .do-today-container, .in-progress-container, .done-container {
         //width: 48%;    /* Jeweils zwei Container mit einem kleinen Abstand */
         max-width: none; 
-        margin-bottom: 20px; 
+        //margin-bottom: 20px; 
         height:unset;
     }
 
@@ -44,7 +32,13 @@ body { margin: 0;
         width: 100%;
         margin: 10px 0;
     }
+
+    .example-list{
+        min-height:100vh;
+    }
 }
+
+
 
 /* Für Bildschirme unter 768px: Task-Container in einer Spalte */
 @media (max-width: 670px) {
@@ -54,7 +48,14 @@ body { margin: 0;
         gap:unset;
     }
 
-  
+    .example-list ul {
+        display: flex;
+        justify-content: center;
+    }
+
+    .example-list{
+        min-height:unset;
+    }
 
 
     .contacts-list {
