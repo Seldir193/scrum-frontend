@@ -1,4 +1,73 @@
 /* You can add global styles to this file, and also import other style files */
 
 html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+body { margin: 0;
+     font-family: Roboto, "Helvetica Neue", sans-serif; 
+     //overflow: hidden;
+     height: 100vh;
+    }
+
+/* Für Bildschirme unter 1370px, 2 Container nebeneinander */
+@media (max-width: 1370px) {
+    .tasks-container {
+        display: flex;
+        flex-wrap: wrap;   /* Erlaubt Zeilenumbruch für Flexbox-Elemente */
+        justify-content: space-between;
+        gap:unset;
+    }
+
+    .container{
+        padding:unset;
+    }
+
+    .example-list ul {
+        display: flex;
+        justify-content: center;
+    }
+
+  
+
+
+    /* Stellt sicher, dass jeweils zwei Task-Container nebeneinander stehen */
+    .todo-container, .do-today-container, .in-progress-container, .done-container {
+        //width: 48%;    /* Jeweils zwei Container mit einem kleinen Abstand */
+        max-width: none; 
+        margin-bottom: 20px; 
+        height:unset;
+    }
+
+    .contacts-list {
+        width: 100%;  /* Volle Breite für die Kontaktliste */
+    }
+
+    .button {
+        width: 100%;
+        margin: 10px 0;
+    }
+}
+
+/* Für Bildschirme unter 768px: Task-Container in einer Spalte */
+@media (max-width: 670px) {
+    .tasks-container {
+        flex-direction: column;
+        min-height: 100vh;
+        gap:unset;
+    }
+
+  
+
+
+    .contacts-list {
+        width: 100%;
+    }
+
+    .button {
+        width: 100%;
+        margin: 10px 0;
+    }
+
+    .main-container{
+        width:unset;
+    }
+    
+}

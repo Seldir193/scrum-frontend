@@ -19,6 +19,9 @@ import { InProgressComponent } from './in-progress/in-progress.component';
 import { DoneComponent } from './done/done.component';
 import { TaskmanagerService } from './taskmanager.service';
 import { TaskService } from './task.service';
+import { ContactDetailsDialogComponent } from './contact-details-dialog/contact-details-dialog.component'; 
+
+
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -39,6 +42,7 @@ export const appConfig: ApplicationConfig = {
     InProgressComponent,
     DoneComponent,
     TaskmanagerService,
-    TaskService
+    TaskService,
+    ContactDetailsDialogComponent
   ]
 };

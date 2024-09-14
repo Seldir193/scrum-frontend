@@ -10,11 +10,15 @@ import { TaskService } from '../task.service';  // Import TaskService
 import { TodayTask, Todo, Contact, TaskDialogData } from '../task.model';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { TaskDialogComponent } from '../task-dialog/task-dialog.component';
+import { MatButtonModule } from '@angular/material/button';
+import { ContactDetailsDialogComponent } from '../contact-details-dialog/contact-details-dialog.component';
+import { MatTooltipModule } from '@angular/material/tooltip';
+
 
 @Component({
   selector: 'app-do-today',
   standalone: true,
-  imports: [CommonModule, FormsModule,DragDropModule],
+  imports: [CommonModule,MatButtonModule, FormsModule,DragDropModule,MatTooltipModule],
   templateUrl: './do-today.component.html',
   styleUrls: ['./do-today.component.scss']
 })
@@ -52,6 +56,16 @@ export class DoTodayComponent implements OnInit {
     this.taskService.getTasks('todaytasks').subscribe(todayTasks => {
       this.todayTasks = todayTasks;  // Nur DoToday Tasks werden geladen
     });
+  }
+
+  openContactDialog(contact: any): void {
+    this.dialog.open(ContactDetailsDialogComponent, {
+      data: contact
+    });
+  }
+
+  getHiddenContacts(contacts: any[]): string {
+    return contacts.slice(5).map(contact => contact.name).join(', ');
   }
 
   drop(event: CdkDragDrop<Todo[] | TodayTask[]>) {

@@ -3,33 +3,40 @@
 
 
 
-  <div class="done-container  example-container" cdkDropListGroup>
+  <div class=" tasks-container example-container" cdkDropListGroup>
     <div class="example-list" 
          id="doneContainer"
          cdkDropList 
          [cdkDropListData]="done" 
          [cdkDropListConnectedTo]="['todoContainer', 'todayContainer','inProgressContainer', 'doneContainer']"
          (cdkDropListDropped)="drop($event)">
-      <h3>Done</h3>
-      <img (click)="openAddDoneDialog()" src="assets/img/plus.svg" alt="Add Task">
-    
-  
+      <h1>Done
+          <img (click)="openAddDoneDialog()" src="assets/img/plus.svg" alt="Add Task">
+      </h1>
     <ul>
-      <li *ngFor="let task of done" cdkDrag class="todo-card example-box">
+      <li *ngFor="let task of done" cdkDrag class="example-box">
         <input type="checkbox" [(ngModel)]="task.delayed" (change)="toggleDelayed(task)" />
         <div class="edit-card">
           <h2>{{ task.text }}</h2>
           <p>Description: {{ task.description }}</p>
           <p>Contacts:</p>
-          <ul>
-            <li *ngFor="let contact of task.contacts">
-              <strong>{{ contact.name }}</strong><br>
-              Email: {{ contact.email }}<br>
-              Phone: {{ contact.phoneNumber }}
+          <ul class="contact-list">
+            <li *ngFor="let contact of task.contacts.slice(0, 5)" class="contact-circle"
+           
+            (click)="openContactDialog(contact)" >
+              <strong>{{ contact.name[0] }}</strong>
             </li>
+            <li *ngIf="task.contacts.length > 5" 
+              class="contact-circle extra-contacts" 
+              
+              matTooltip="{{ getHiddenContacts(task.contacts) }}">
+            +{{ task.contacts.length - 5 }}
+          </li>
           </ul>
-          <button (click)="addContactsDone(task)">Edit</button>
-          <button (click)="deleteDone(task.id)">Delete</button>
+          <div class="button-container">
+             <button (click)="addContactsDone(task)" mat-fab color="primary" extended>Edit</button>
+             <button (click)="deleteDone(task.id)" mat-fab class="custom-fab" extended>Delete</button>
+          </div>
         </div>
       </li>
     </ul>

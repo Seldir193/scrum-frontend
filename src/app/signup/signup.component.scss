@@ -38,3 +38,9 @@ button:hover{
     background-color: white;
     transition: transform 0.3s ease-in-out, filter 0.3s ease-in-out, background-color 0.3s ease-in-out;
 }
+
+.container{
+    display: flex;
+    align-items: center;
+    height: 100vh;
+}

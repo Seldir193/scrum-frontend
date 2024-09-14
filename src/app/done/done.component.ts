@@ -10,11 +10,14 @@ import { TaskService } from '../task.service';  // Import TaskService
 import { Done, Todo, Contact, TaskDialogData } from '../task.model';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { TaskDialogComponent } from '../task-dialog/task-dialog.component';
+import { MatButtonModule } from '@angular/material/button';
+import { ContactDetailsDialogComponent } from '../contact-details-dialog/contact-details-dialog.component';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @Component({
   selector: 'app-done',
   standalone: true,
-  imports: [CommonModule, FormsModule,DragDropModule],
+  imports: [CommonModule, FormsModule,MatButtonModule,DragDropModule,MatTooltipModule],
   templateUrl: './done.component.html',
   styleUrls: ['./done.component.scss']
 })
@@ -26,6 +29,7 @@ export class DoneComponent implements OnInit {
   contacts: Contact[] = [];
   done: Done[] = [];
   selectedTodo: Todo | null = null;
+  
 
   constructor(
     private contactService: ContactService,
@@ -52,6 +56,16 @@ export class DoneComponent implements OnInit {
     this.taskService.getTasks('done').subscribe(doneTasks => {
       this.done = doneTasks;  // Nur Done Tasks werden geladen
     });
+  }
+
+  openContactDialog(contact: any): void {
+    this.dialog.open(ContactDetailsDialogComponent, {
+      data: contact
+    });
+  }
+
+  getHiddenContacts(contacts: any[]): string {
+    return contacts.slice(5).map(contact => contact.name).join(', ');
   }
 
   drop(event: CdkDragDrop<Todo[] | Done[]>) {

@@ -1,216 +1,244 @@
-.container {
-    display: flex;
-    justify-content: space-around;
-  }
-  
-  .todo-list, .do-today-list {
-    width: 45%;
-  }
-  
+@import "./../../styles.scss";
 
-
-
-
-  
-
-
-.main-container {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start; /* Beide Container am oberen Rand ausrichten */
-  }
-  
-  .todo-container {
-    flex: 1;
-    margin-right: 20px; /* Abstand zwischen Todo- und Kontaktliste */
-  }
-  
-  .contacts-list {
-    flex: 1;
-    max-width: 300px; /* Optionale Begrenzung der Breite der Kontaktliste */
-  }
-
-ul{
-    list-style: none;
-    padding:0;
+ul {
+  list-style: none;
+  padding: 0;
+  margin:0;
 }
 
-
-
-input[type="text"]{
-    border:none;
-    background: transparent;
-    width:70%;
+.tasks-container {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  min-height: 100vh; 
+  padding: 10px;
+  border: 2px solid #ccc; 
+  padding: 10px;
+  border-radius: 8px; 
+  overflow-y: scroll;    
+  list-style-type: none;  
+  -ms-overflow-style: none;  
+  scrollbar-width: none;
 }
 
-button{
-    margin-left:10px;
+.todo-container::-webkit-scrollbar {
+  display: none;      
 }
 
-.left-life{
-    width:16px;
-    height:16px;
-    align-content: center;
-    margin-top: 15px;
-    cursor: pointer;
-    border-radius: 50%;
-    background-color: white;
-    transition: transform 0.3s ease-in-out, filter 0.3s ease-in-out, background-color 0.3s ease-in-out;
+input[type="text"] {
+  border: none;
+  background: transparent;
+  width: 70%;
 }
 
-
-.logout-container{
-    width:300px;
-    margin:0 auto;
-    text-align: center;
+button {
+  margin-left: 10px;
 }
 
-.button{
-    padding:10px;
-    background-color: #dc3545;
-    color:white;
-    border:none;
-    border-radius: 4px;
-    cursor: pointer;
+.left-life {
+  width: 16px;
+  height: 16px;
+  align-content: center;
+  margin-top: 15px;
+  cursor: pointer;
+  border-radius: 50%;
+  background-color: white;
+  transition: transform 0.3s ease-in-out, filter 0.3s ease-in-out,
+    background-color 0.3s ease-in-out;
 }
 
-.button:hover{
-    background-color: #c82333;
+.button {
+  padding: 10px;
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
 }
 
+.button:hover {
+  background-color: #c82333;
+}
+
+.edit-card {
+  border: 1px solid #e0e0e0;
+  box-shadow: 0px 0px 10px 3px rgba(0, 0, 0, 0.08);
+  border-radius: 24px;
+  padding: 16px;
+  margin-bottom: 10px;
+  background-color: #fff;
+  width:230px;
+  cursor:pointer;
 
 
-  
-  .edit-card {
-    border: 1px solid #e0e0e0;
-    box-shadow: 0px 0px 10px 3px rgba(0, 0, 0, 0.08);
-    border-radius: 24px;
-   // width: 230px;
-    padding: 16px;
-    margin-bottom: 10px;
-    background-color: #fff;
-    
-    h2 {
-        margin: 0 0 16px;
-      }
-    
-      button {
-        margin: 0 8px;
-      }
-  }
-  
-
-  .todo-card {
-    border: 0px 0px 10px 3px rgba(0, 0, 0, 0.08);
-    border-radius: 24px;
-    width: 230px;
-    padding: 16px;
-    margin-bottom: 10px;
-  }
-  
-  .contacts-list h3 {
-    margin: 0;
+  h2  {
+    margin: 0 0 16px;
+    width: 220px;
+    height: 38px;
+    font-family: "Open Sans", sans-serif;
+    font-weight: 700;
     font-size: 16px;
-    padding:10px;
+    line-height: 19.2px;
+    color: rgba(69, 137, 255, 1);
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    text-overflow: ellipsis;
   }
-  
-  .contacts-list ul {
-    list-style-type: none;
-    padding: 0;
-  }
-  
-  .contacts-list li {
-    margin: 5px 0;
-    padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-  }
-  
 
+  p{
+    width: 220px;
+    height: 38px;
+    font-family: "Inter";
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 19.2px;
+    color: rgba(168, 168, 168, 1);
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    white-space: normal;
+    text-overflow: ellipsis;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+  }
+}
 
+.cdk-drag-preview {
+  box-sizing: border-box;
+  border-radius: 4px;
+  box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.2),
+    0 8px 10px 1px rgba(0, 0, 0, 0.14), 0 3px 14px 2px rgba(0, 0, 0, 0.12);
+}
 
-  .container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 20px;
-  }
-  
-  .main-container {
-    display: flex;
-    justify-content: space-between;
-    width: 100%;
-  }
-  
-  .contacts-list {
-    width: 25%; /* Oder eine andere Breite nach Bedarf */
-    margin-right: 20px; /* Abstand zwischen Contacts und Tasks */
-  }
-  
-  
-  .todo-container, .do-today-container {
-    width: 50%; /* Gleiche Breite für To-Do und Do Today */
-    
-  }
-  
-  .todo-card {
-    margin-bottom: 20px; /* Abstand zwischen den Aufgaben */
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
+.cdk-drag-placeholder {
+  opacity: 0;
+}
+
+.cdk-drag-animating {
+  transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+.example-list.cdk-drop-list-dragging .example-box:not(.cdk-drag-placeholder) {
+  transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+.example-list {
+
+  img {
+    width: 30px;
+    height: 30px;
     cursor: pointer;
   }
-  
- 
-
- 
-
-
-
-
-
-
-
-
-
-
- 
-  
-  .cdk-drag-preview {
-    box-sizing: border-box;
-    border-radius: 4px;
-    box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.2),
-                0 8px 10px 1px rgba(0, 0, 0, 0.14),
-                0 3px 14px 2px rgba(0, 0, 0, 0.12);
-  }
-  
-  .cdk-drag-placeholder {
-    opacity: 0;
-  }
-  
-  .cdk-drag-animating {
-    transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
-  }
-  
-  
-  
-  .example-list.cdk-drop-list-dragging .example-box:not(.cdk-drag-placeholder) {
-    transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
-  }
-  
-
-  .example-list{
-    /* Distributes space between the items */
- 
-    img{
-        width:30px;
-        height:30px;
-        cursor: pointer;
-    }
-
-    h3{
-      font-size: 20px;
-  }
-
 }
+
+h1{
+  display: flex;
+  justify-content: space-between;
+  color: rgb(66, 82, 110);
+  font-weight: bold;
+}
+
+li.example-box {
+  margin-bottom: 10px; /* Abstand zwischen den Karten */
+  background-color: lightgray; /* Sicherstellen, dass die Karte einen weißen Hintergrund hat */
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 10px;
+}
+
+.contact-list {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  gap:5px;
+}
+
+.contact-circle {
+  width:30px;
+  height: 30px;
+  border-radius: 50%;
+  background-color: #2196F3; 
+  color: white; 
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  font-weight: bold;
+  margin-right: 5px; 
+}
+
+.extra-contacts {
+  background-color: greenyellow; 
+}
+
+.contact-circle strong {
+  display: block;
+  margin: 0;
+  padding: 0;
+  line-height: 1; 
+}
+
+.button-container{
+  display: flex;
+  justify-content: center;
+  gap:20px;
+}
+
+.custom-fab {
+  background-color: white !important;   
+  color: blue !important;               
+  border: 2px solid blue !important;    
+  transition: background-color 0.3s ease, color 0.3s ease; 
+}
+
+.custom-fab:hover {
+  background-color: red !important;     
+  color: white !important;              
+  border-color: red !important;         
+}
+
+.example-box:hover {
+  background-color: lightblue;
+  transition: background-color 0.3s ease; /* Weicher Übergang */
+}
+
+/* Fixiere den Titel (h1) */
+.tasks-container h1 {
+  position: sticky;   /* Fixiert das h1-Element */
+  top: 0;             /* Fixiere es oben am Container */
+  background-color: white;  /* Hintergrundfarbe, um es sichtbar zu halten */
+  z-index: 1000;      /* Stellt sicher, dass es über dem Inhalt bleibt */
+  padding: 10px;
+  margin: 0;
+  border-bottom: 2px solid #ccc; /* Optional: ein unterer Rand für bessere Abtrennung */
+}
+
+/* Scrollbarer Bereich für die Task-Liste */
+.example-list ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  overflow-y: scroll;    
+  list-style-type: none;  
+  -ms-overflow-style: none;  
+  scrollbar-width: none;
+  max-height: calc(100vh - 60px);  /* Maximale Höhe für die Liste, um das h1 zu berücksichtigen */
+}
+
+@media (max-width: 1370px) {
+  .tasks-container {
+      min-height:unset;
+  }
+}
+
+
+
+
+
+
+
+
 

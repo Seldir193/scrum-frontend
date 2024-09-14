@@ -12,17 +12,19 @@ import { HeaderComponent } from '../header/header.component';
 import { ContactService } from '../contact.service'; 
 import { CdkDragDrop} from '@angular/cdk/drag-drop';
 import { TaskmanagerService } from '../taskmanager.service';
-import { TaskService } from '../task.service'; // Importierter TaskService
-import { Todo, Contact, TaskDialogData, ContactDialogData } from '../task.model';
+import { TaskService } from '../task.service'; 
+import { Todo, Contact, TaskDialogData } from '../task.model';
 import { DoTodayComponent } from '../do-today/do-today.component';
 import { InProgressComponent } from '../in-progress/in-progress.component';
 import { DoneComponent } from '../done/done.component';
 import { DragDropModule } from '@angular/cdk/drag-drop';
+import { ContactDetailsDialogComponent } from '../contact-details-dialog/contact-details-dialog.component';
+import { MatTooltip } from '@angular/material/tooltip';
 
-@Component({
+ @Component({
   selector: 'app-todo',
   standalone: true,
-  imports: [CommonModule, FormsModule,DragDropModule,HeaderComponent, TaskDialogComponent, MatButtonModule, MatDatepickerModule, MatNativeDateModule, ContactDialogComponent,DoTodayComponent,InProgressComponent,DoneComponent],
+  imports: [CommonModule, FormsModule,DragDropModule,HeaderComponent,MatTooltip, TaskDialogComponent, MatButtonModule, MatDatepickerModule, MatNativeDateModule, ContactDialogComponent,DoTodayComponent,InProgressComponent,DoneComponent],
   templateUrl: './todo.component.html',
   styleUrls: ['./todo.component.scss']
 })
@@ -38,7 +40,7 @@ export class TodoComponent implements OnInit {
      public dialog: MatDialog,
      private contactService: ContactService,
      private taskmanagerService: TaskmanagerService,
-     private taskService: TaskService  // Verwende den TaskService
+     private taskService: TaskService 
   ){}
 
   ngOnInit(): void {
@@ -47,8 +49,7 @@ export class TodoComponent implements OnInit {
       this.checkAuthentication();
     };
     this.getContacts();
-    this.loadContacts();
-    this.getTasks();  // Verwende getTasks anstelle von loadTodos
+    this.getTasks();  
   }
 
   private getContacts(): void {
@@ -63,7 +64,7 @@ export class TodoComponent implements OnInit {
     if (!token || this.isTokenExpired(token)) {
       this.router.navigate(['/login']);
     } else {
-      this.getTasks();  // Verwende getTasks anstelle von getTodos
+      this.getTasks();  
     }
   }
 
@@ -78,21 +79,23 @@ export class TodoComponent implements OnInit {
   }
 
   drop(event: CdkDragDrop<Todo[]>) {
-    this.taskmanagerService.handleDrop(event);  // Leite das Event an den TaskmanagerService weiter
+    this.taskmanagerService.handleDrop(event);  
+  }
+
+  openContactShowDialog(contact: any): void {
+    this.dialog.open(ContactDetailsDialogComponent, {
+      data: contact
+    });
+  }
+
+  getHiddenContacts(contacts: any[]): string {
+    return contacts.slice(5).map(contact => contact.name).join(', ');
   }
 
   editTodoText(todo: Todo, newText: string) {
     if (newText.trim()) {
       todo.text = newText;
       this.taskService.updateTask(todo).subscribe();
-    }
-  }
-
-  deleteContact(id: number | undefined): void {
-    if (id !== undefined) {
-      this.contactService.deleteContact(id).subscribe(() => {
-        this.contacts = this.contacts.filter(contact => contact.id !== id);
-      });
     }
   }
 
@@ -184,39 +187,6 @@ export class TodoComponent implements OnInit {
     });
   }
 
-  private loadContacts(): void {
-    this.contactService.getContacts().subscribe(
-      (contacts: Contact[]) => {
-        this.contacts = contacts;
-      },
-      (error) => {
-        console.error('Failed to load contacts', error);
-      }
-    );
-  }
-
-  openContactDialog(): void {
-    const dialogRef = this.dialog.open(ContactDialogComponent, {
-      width: '400px',
-      data: { name: '', email: '', phoneNumber: '' }
-    });
-  
-    dialogRef.afterClosed().subscribe((result: ContactDialogData) => {
-      if (result) {
-        const duplicateContact = this.contacts.find(contact => contact.email === result.email);
-  
-        if (duplicateContact) {
-          console.error('Kontakt mit dieser E-Mail-Adresse existiert bereits.');
-          return;
-        }
-  
-        this.contactService.addContact(result).subscribe(newContact => {
-          this.contacts.push(newContact);
-        });
-      }
-    });
-  }
-  
   addNewTask(): void {
     const dialogRef = this.dialog.open(TaskDialogComponent, {
       width: '400px',

@@ -10,11 +10,15 @@ import { TaskService } from '../task.service';  // Import TaskService
 import { InProgress, Todo, Contact, TaskDialogData } from '../task.model';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { TaskDialogComponent } from '../task-dialog/task-dialog.component';
+import { MatButtonModule } from '@angular/material/button';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { ContactDialogComponent } from '../contact-dialog/contact-dialog.component';
+import { ContactDetailsDialogComponent } from '../contact-details-dialog/contact-details-dialog.component';
 
 @Component({
   selector: 'app-in-progress',
   standalone: true,
-  imports: [CommonModule, FormsModule,DragDropModule],
+  imports: [CommonModule,MatButtonModule, FormsModule,DragDropModule,MatTooltipModule,ContactDialogComponent],
   templateUrl: './in-progress.component.html',
   styleUrls: ['./in-progress.component.scss']
 })
@@ -26,7 +30,8 @@ export class InProgressComponent implements OnInit {
   contacts: Contact[] = [];
   inProgress: InProgress[] = [];
   selectedTodo: Todo | null = null;
-
+  
+  
   constructor(
     private contactService: ContactService,
     private dialog: MatDialog,
@@ -46,6 +51,16 @@ export class InProgressComponent implements OnInit {
       (data: Contact[]) => this.contacts = data,
       (error) => console.error('Failed to load contacts', error)
     );
+  }
+
+  getHiddenContacts(contacts: any[]): string {
+    return contacts.slice(5).map(contact => contact.name).join(', ');
+  }
+
+  openContactDialog(contact: any): void {
+    this.dialog.open(ContactDetailsDialogComponent, {
+      data: contact
+    });
   }
 
   getInProgressTasks(): void {

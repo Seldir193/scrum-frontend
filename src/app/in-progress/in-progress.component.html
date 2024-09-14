@@ -4,34 +4,44 @@
 
 
 
-  <div class="in-progress-container example-container" cdkDropListGroup>
-    <div class="example-list" cdkDropList
+  <div class="tasks-container example-container" cdkDropListGroup>
+    <div class="example-list " cdkDropList
          id="inProgressContainer"
          [cdkDropListData]="inProgress"
          [cdkDropListConnectedTo]="['todoContainer', 'todayContainer','inProgressContainer', 'doneContainer']"
          (cdkDropListDropped)="drop($event)">
-      <h3>In Progress</h3>
-      <img (click)="openAddInProgressDialog()" src="assets/img/plus.svg" alt="Add Task">
-    
-  
+      <h1>In Progress
+        <img (click)="openAddInProgressDialog()" src="assets/img/plus.svg" alt="Add Task">
+      </h1>
+
     <ul>
-      <li *ngFor="let progress of inProgress" cdkDrag class="todo-card example-box">
+      <li *ngFor="let progress of inProgress" cdkDrag  class="example-box">
         <input type="checkbox" [(ngModel)]="progress.delayed" (change)="toggleDelayed(progress)" />
         <div class="edit-card">
           <h2>{{ progress.text }}</h2>
           <p>Description: {{ progress.description }}</p>
           <p>Contacts:</p>
-          <ul>
-            <li *ngFor="let contact of progress.contacts">
-              <strong>{{ contact.name }}</strong><br>
-              Email: {{ contact.email }}<br>
-              Phone: {{ contact.phoneNumber }}
+          <ul class="contact-list">
+            <li *ngFor="let contact of progress.contacts.slice(0, 5)" class="contact-circle"  
+             
+            (click)="openContactDialog(contact)">
+              <strong>{{ contact.name[0] }}</strong>
             </li>
+            <li *ngIf="progress.contacts.length > 5" 
+              class="contact-circle extra-contacts" 
+               
+              matTooltip="{{ getHiddenContacts(progress.contacts) }}">
+            +{{ progress.contacts.length - 5 }}
+          </li>
           </ul>
-          <button (click)="addContactsInProgress(progress)">Edit</button>
-          <button (click)="deleteInProgress(progress.id)">Delete</button>
+          <div class="button-container">
+             <button (click)="addContactsInProgress(progress)" mat-fab color="primary" extended>Edit</button>
+             <button (click)="deleteInProgress(progress.id)" mat-fab class="custom-fab"  extended>Delete</button>
+          </div>
         </div>
       </li>
     </ul>
   </div>
 </div>
+
+

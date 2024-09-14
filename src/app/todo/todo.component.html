@@ -2,50 +2,37 @@
 <app-header></app-header>
 
 <div class="container">
-
   <div class="main-container">
-
-    <div class="contacts-list " >
-      <h3>Contacts</h3>
-      <ul>
-        <li *ngFor="let contact of contacts">
-          <strong>{{ contact.name }}</strong><br>
-          Email: {{ contact.email }}<br>
-          Phone: {{ contact.phoneNumber }}
-          <button (click)="deleteContact(contact.id)">Delete</button> 
-        </li>
-      </ul>
-      <button (click)="openContactDialog()">Add New Contact</button>
-    </div>
-
     <div class="tasks-container example-container " cdkDropListGroup>
-      
-      <!-- Todo Container -->
-      <div class=" example-list" cdkDropList id="todoContainer"
-            
+      <div class="todo-container example-list" cdkDropList id="todoContainer"    
            [cdkDropListData]="todos"
            [cdkDropListConnectedTo]="['todoContainer', 'todayContainer','inProgressContainer', 'doneContainer']"
            (cdkDropListDropped)="drop($event)">
-        <h1>To-do</h1>
-        <img (click)="addNewTask()" src="assets/img/plus.svg" alt="Add Task">
-        
-        <!-- Task List for 'To-do' -->
+           <h1>To-do
+            <img (click)="addNewTask()" src="assets/img/plus.svg" alt="Add Task">
+          </h1>
         <ul>
-          <li *ngFor="let todo of todos" cdkDrag class="todo-card example-box ">
+          <li *ngFor="let todo of todos" cdkDrag class="example-box ">
             <input type="checkbox" [(ngModel)]="todo.delayed" (change)="toggleDelayed(todo)" />
             <div class="edit-card">
               <h2>{{ todo.text }}</h2>
               <p>Description: {{ todo.description }}</p>
               <p>Contacts:</p>
-              <ul>
-                <li *ngFor="let contact of todo.contacts">
-                  <strong>{{ contact.name }}</strong><br>
-                  Email: {{ contact.email }}<br>
-                  Phone: {{ contact.phoneNumber }}
+              <ul class="contact-list">
+                <li *ngFor="let contact of todo.contacts.slice(0, 5)" class="contact-circle"
+                (click)="openContactShowDialog(contact)">
+                  <strong>{{ contact.name[0] }}</strong>
                 </li>
+                <li *ngIf="todo.contacts.length > 5" 
+                  class="contact-circle extra-contacts" 
+                  matTooltip="{{ getHiddenContacts(todo.contacts) }}">
+                +{{ todo.contacts.length - 5 }}
+              </li>
               </ul>
-              <button (click)="openEditDialog(todo)">Edit</button>
-              <button (click)="deleteTodo(todo.id)">Delete</button>
+              <div class="button-container">
+                 <button  (click)="openEditDialog(todo)"mat-fab color="primary" extended>Edit</button>
+                 <button (click)="deleteTodo(todo.id)" mat-fab  class="custom-fab"  extended>Delete</button>
+              </div>
             </div>
           </li>
         </ul>
@@ -59,9 +46,6 @@
       
       <!-- Done Component -->
       <app-done></app-done>
-      
     </div>
-
   </div>
-
 </div>

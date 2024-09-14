@@ -1,0 +1,20 @@
+<app-header></app-header>
+<div class="container">
+<div class="contacts-list " >
+    <h1>Contacts</h1>
+    <ul class="contact-container">
+      <li *ngFor="let contact of contacts" class="example-box">
+        <strong>{{ contact.name }}</strong><br>
+        <p> Email: {{ contact.email }}<br></p>
+        <p> Phone: {{ contact.phoneNumber }}</p>
+        <div >
+           <button (click)="deleteContact(contact.id)" mat-fab class="custom-fab" extended>Delete</button> 
+        </div>
+      </li>
+      
+    </ul>
+    <div class="button-container">
+        <button (click)="openContactDialog()"mat-fab color="primary" extended >Add New Contact</button>
+     </div>
+  </div>
+</div>

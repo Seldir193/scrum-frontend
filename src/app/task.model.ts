@@ -1,8 +1,10 @@
 export interface Contact {
+
     id?: number;
     name: string;
     email: string;
     phoneNumber: string;
+   
   }
   
   export interface BaseTask {

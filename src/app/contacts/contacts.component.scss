@@ -1,0 +1,199 @@
+
+@import "./../../styles.scss";
+
+  ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    height: 32px;
+  }
+  
+  input[type="text"] {
+    border: none;
+    background: transparent;
+    width: 70%;
+  }
+  
+  .button {
+    padding: 10px;
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .button:hover {
+    background-color: #c82333;
+  }
+  
+  .contacts-list ul {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    list-style-type: none;
+    padding: 0;
+  }
+  
+ 
+  /* Für die Kontaktliste */
+  .contacts-list {
+    flex: 1;
+    width: 100%;
+  }
+  
+  /* Titel */
+  h1 {
+    display: flex;
+    justify-content: center;
+    color: rgb(66, 82, 110);
+    font-weight: bold;
+  }
+  
+  
+  /* Button Hover */
+  .custom-fab {
+    background-color: white !important;   
+    color: blue !important;               
+    border: 2px solid blue !important;    
+    transition: background-color 0.3s ease, color 0.3s ease; 
+  }
+  
+  .custom-fab:hover {
+    background-color: red !important;     
+    color: white !important;              
+    border-color: red !important;         
+  }
+  
+  /* Kontaktkarten */
+  li {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .example-box:hover {
+    background-color: lightblue;
+    transition: background-color 0.3s ease; /* Weicher Übergang */
+  }
+  
+
+
+   /* Scrollbar entfernen */
+   .contact-container::-webkit-scrollbar {
+    display: none;  /* Scrollbalken in Chrome, Safari und Opera ausblenden */
+  }
+  
+  /* Kontakt-Container */
+  .contact-container {
+    min-height: 100vh;  /* Volle Höhe */
+    overflow-y: scroll; /* Vertikales Scrollen */
+    list-style-type: none;  /* Entfernt Aufzählungszeichen */
+    padding: 0;
+    margin: 0;
+    -ms-overflow-style: none;  
+    scrollbar-width: none;
+  
+    strong {
+      margin: 0 0 16px;
+      width: 220px;
+      height: 38px;
+      font-family: "Open Sans", sans-serif;
+      font-weight: 700;
+      font-size: 16px;
+      color: rgba(69, 137, 255, 1);
+      word-wrap: break-word;
+      text-overflow: ellipsis;
+    }
+  
+    p {
+      width: 220px;
+      height: 38px;
+      font-family: "Inter";
+      font-weight: 400;
+      font-size: 16px;
+      color: rgba(168, 168, 168, 1);
+      overflow: hidden;
+      text-overflow: ellipsis;
+      word-wrap: break-word;
+    }
+  }
+  
+  /* Flexbox für den Container */
+  .container {
+    display: flex;
+    justify-content: center;
+    overflow-y: scroll;
+    max-height: 100vh;
+    list-style-type: none;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+    /* Button-Container */
+    .button-container {
+        position: fixed;
+        bottom: 20px;  /* Abstand vom unteren Rand */
+        left: 0;
+        right: 0;
+        z-index: 1000;  /* Damit er immer sichtbar bleibt */
+        justify-content: center;
+        display: flex;
+        gap: 20px;
+      }
+
+      .button-container button {
+        width: 90%;
+        max-width: 400px;
+        margin: 0 auto;
+        padding: 15px;
+        font-size: 16px;
+        border-radius: 8px;
+      }
+      
+
+     /* Kontaktliste-Elemente */
+  .contacts-list li {
+    margin: 5px 0;
+    padding: 10px;
+    border: 4px solid #ddd;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  /* Mobile Ansicht */
+  @media (max-width: 768px) {
+  
+  
+    .button-container button {
+      width: 90%;
+      max-width: 400px;
+      margin: 0 auto;
+      padding: 15px;
+      font-size: 16px;
+      border-radius: 8px;
+    }
+  }
+  
