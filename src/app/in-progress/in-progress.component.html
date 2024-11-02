@@ -20,6 +20,7 @@
       <li *ngFor="let progress of inProgress" cdkDrag  class="example-box">
         <input type="checkbox" [(ngModel)]="progress.delayed" (change)="toggleDelayed(progress)" />
         <div class="edit-card">
+          <h3 >{{ progress.category}}</h3>
           <h2>{{ progress.text }}</h2>
           <p>Description: {{ progress.description }}</p>  
           <p>Due Date: {{ progress.dueDate | date }}</p> 

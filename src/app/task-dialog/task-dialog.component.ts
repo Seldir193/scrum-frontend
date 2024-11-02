@@ -39,11 +39,15 @@ export class TaskDialogComponent implements OnInit {
   allContacts: Contact[] = [];
 
   
-
-  priorityOptions = [
+priorityOptions = [
     { value: 'urgent', viewValue: 'Urgent' },
     { value: 'medium', viewValue: 'Medium' },
     { value: 'low', viewValue: 'Low' }
+];
+
+categoryOptions = [
+  { value: 'Technical Tasks', viewValue: 'Technical Tasks' },
+  { value: 'User Story', viewValue: 'User Story' }
 ];
 
 
@@ -54,7 +58,7 @@ export class TaskDialogComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: TaskDialogData,
     private contactService: ContactService
   ) {
-    this.task = data || { name: '', description: '', contacts: [], selectedContacts: [], priority: '', dueDate: null };
+    this.task = data || { name: '', description: '', contacts: [], selectedContacts: [], priority: '', dueDate: null, category: 'Technical Tasks' };
     if (data) {
       this.task = { ...data };
       this.selectedContacts = data.selectedContacts || [];
@@ -89,7 +93,8 @@ export class TaskDialogComponent implements OnInit {
       selectedContacts: this.selectedContacts,
       priority: this.task.priority ,
       //dueDate: this.task.dueDate 
-      dueDate: this.task.dueDate ? this.task.dueDate.toISOString() : null // ISO-Format
+      dueDate: this.task.dueDate ? this.task.dueDate.toISOString() : null, // ISO-Format
+      category: this.task.category 
      
        
     });

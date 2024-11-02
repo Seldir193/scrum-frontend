@@ -1,5 +1,17 @@
 <h1 mat-dialog-title>Task</h1>
 <div mat-dialog-content class="dialog-content">
+
+  <mat-form-field appearance="fill">
+    <mat-label>Kategorie*</mat-label>
+    <mat-select [(ngModel)]="task.category" name="category">
+      <mat-option *ngFor="let option of categoryOptions" [value]="option.value">
+        {{ option.viewValue }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+
+
   <mat-form-field appearance="fill" class="full-width">
     <mat-label>Task Name</mat-label>
     <input matInput [(ngModel)]="task.name" />

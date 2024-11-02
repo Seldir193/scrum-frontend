@@ -152,11 +152,12 @@ export class TodoComponent implements OnInit {
         contacts: this.contacts,
         selectedContacts: todo ? todo.contacts : [],
         priority: todo.priority,
-        dueDate: todo.dueDate
+        dueDate: todo.dueDate,
+        category: todo.category 
       }
     });
   
-    dialogRef.afterClosed().subscribe((result: TaskDialogData & { selectedContacts: Contact[], priority: string, dueDate: Date | null }) => {
+    dialogRef.afterClosed().subscribe((result: TaskDialogData & { selectedContacts: Contact[], priority: string, dueDate: Date | null,category:string }) => {
       if (result) {
         // Wenn der bestehende Todo bearbeitet wird
         if (todo) {
@@ -165,6 +166,7 @@ export class TodoComponent implements OnInit {
           todo.contacts = result.selectedContacts || [];
           todo.priority = result.priority;
           todo.dueDate = result.dueDate;
+          todo.category = result.category
   
           // Anstatt das Due Date hier zu formatieren, übergeben wir das `todo` direkt an den TaskService
           this.taskService.updateTask(todo).subscribe(() => {
@@ -206,7 +208,8 @@ export class TodoComponent implements OnInit {
         contacts: this.contacts,
         selectedContacts: [],
         priority: '',
-        dueDate: null
+        dueDate: null,
+        category: 'Technical Tasks' 
       }
     });
   
@@ -223,7 +226,8 @@ export class TodoComponent implements OnInit {
           contacts: result.selectedContacts || [],
           status: 'todos',
           priority: result.priority,
-          dueDate: result.dueDate
+          dueDate: result.dueDate,
+          category: result.category 
         };
   
         // Task hinzufügen und im Backend speichern

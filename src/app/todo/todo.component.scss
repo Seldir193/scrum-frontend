@@ -80,6 +80,27 @@ input[type="text"] {
   width:230px;
   cursor:pointer;
 
+  h3{
+    margin: 0 0 16px;
+    width: 220px;
+    height: 38px;
+    font-family: "Open Sans", sans-serif;
+    font-weight: 700;
+    font-size: 16px;
+    line-height: 19.2px;
+    color: white;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    text-overflow: ellipsis;
+    background-color:  RGB(0, 56, 255);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border:none;
+    border-radius: 8px;
+    
+  }
+
 
   h2  {
     margin: 0 0 16px;
@@ -328,6 +349,7 @@ li.example-box {
   border-radius: 5px;
   margin-bottom: 15px;
 }
+
 
 @media (max-width: 1370px) {
   .tasks-container {

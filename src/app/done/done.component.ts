@@ -99,7 +99,8 @@ export class DoneComponent implements OnInit {
         contacts: this.contacts,
         selectedContacts: [],
         priority: '',
-        dueDate: null
+        dueDate: null,
+        category: 'Technical Tasks' 
       }
     });
 
@@ -114,7 +115,8 @@ export class DoneComponent implements OnInit {
           contacts: result.selectedContacts || [],
           status: 'done',
           priority: result.priority ,
-          dueDate: result.dueDate
+          dueDate: result.dueDate,
+          category: result.category,
         };
 
         console.log('Adding new DoneTask:', newTask);
@@ -178,17 +180,19 @@ export class DoneComponent implements OnInit {
         contacts: this.allContacts.length > 0 ? this.allContacts : [],
         selectedContacts: done.contacts.length > 0 ? done.contacts : [],
         priority: done.priority,
-        dueDate: done.dueDate // Füge dueDate hinzu
+        dueDate: done.dueDate, // Füge dueDate hinzu
+        category: done.category 
       }
     });
   
-    dialogRef.afterClosed().subscribe((result: TaskDialogData & { selectedContacts: Contact[], priority: string, dueDate: Date | null }) => {
+    dialogRef.afterClosed().subscribe((result: TaskDialogData & { selectedContacts: Contact[], priority: string, dueDate: Date | null,category:string }) => {
       if (result) {
         done.text = result.name;
         done.description = result.description;
         done.contacts = result.selectedContacts || [];
         done.priority = result.priority;
         done.dueDate = result.dueDate; // Aktualisiere das dueDate
+        done.category = result.category;
   
         // Formatiere dueDate zu due_date für das Backend
         const formattedDueDate = done.dueDate ? new Date(done.dueDate).toISOString().split('T')[0] : null;

@@ -15,6 +15,7 @@
       <li *ngFor="let task of todayTasks" cdkDrag class="example-box">
         <input type="checkbox" [(ngModel)]="task.delayed" (change)="toggleDelayed(task)" />
         <div class="edit-card">
+          <h3 >{{ task.category}}</h3>
           <h2>{{ task.text }}</h2>
           <p>Description: {{ task.description }}</p> 
          

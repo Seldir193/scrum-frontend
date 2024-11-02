@@ -103,7 +103,8 @@ export class InProgressComponent implements OnInit {
         contacts: this.contacts,
         selectedContacts: [],
         priority: '',
-        dueDate: null
+        dueDate: null,
+        category: 'Technical Tasks' 
       }
     });
 
@@ -118,7 +119,8 @@ export class InProgressComponent implements OnInit {
           contacts: result.selectedContacts || [],
           status: 'inprogress',
           priority: result.priority ,
-          dueDate: result.dueDate
+          dueDate: result.dueDate,
+          category: result.category,
         };
 
         console.log('Adding new InProgressTask:', newTask);
@@ -182,18 +184,19 @@ export class InProgressComponent implements OnInit {
         contacts: this.allContacts.length > 0 ? this.allContacts : [],
         selectedContacts: progress.contacts.length > 0 ? progress.contacts : [],
         priority: progress.priority,
-        dueDate: progress.dueDate
+        dueDate: progress.dueDate,
+        category: progress.category 
       }
     });
 
-    dialogRef.afterClosed().subscribe((result: TaskDialogData & { selectedContacts: Contact[],priority: string,dueDate: Date | null }) => {
+    dialogRef.afterClosed().subscribe((result: TaskDialogData & { selectedContacts: Contact[],priority: string,dueDate: Date | null ,category:string }) => {
       if (result) {
         progress.text = result.name;
         progress.description = result.description;
         progress.contacts = result.selectedContacts || [];
         progress.priority = result.priority;
         progress.dueDate = result.dueDate;
-        
+        progress.category = result.category;
         
 
         const formattedDueDate = progress.dueDate ? new Date(progress.dueDate).toISOString().split('T')[0] : null;

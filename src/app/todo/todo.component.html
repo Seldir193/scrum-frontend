@@ -16,6 +16,7 @@
           <li *ngFor="let todo of todos" cdkDrag class="example-box ">
             <input type="checkbox" [(ngModel)]="todo.delayed" (change)="toggleDelayed(todo)" />
             <div class="edit-card">
+              <h3 >{{ todo.category}}</h3>
               <h2>{{ todo.text }}</h2>
               <p>Description: {{ todo.description }}</p>
               <p>Due Date: {{ todo.dueDate | date }}</p> 

@@ -17,7 +17,7 @@ export interface Contact {
     status?: string;
     priority?: 'urgent' | 'medium' | 'low'; 
     dueDate?:string | Date |null ; 
-    
+    category?: string;
    
   }
 
@@ -49,6 +49,7 @@ export interface Contact {
     selectedContacts: Contact[];
     priority?: 'urgent' | 'medium' | 'low';
     dueDate?: Date |null ;
+    category?: string;
 
     
   }
