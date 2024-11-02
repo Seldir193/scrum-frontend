@@ -1,15 +1,76 @@
-
 <div class="container">
-<div class="form-container">
-    <form (ngSubmit)="register()">
-      <h2>Registrierung</h2>
-      <input [(ngModel)]="username" placeholder="Benutzername" name="username" required>
-      <input type="email" [(ngModel)]="email" placeholder="E-Mail-Adresse" name="email" required>
-      <input type="password" [(ngModel)]="password" placeholder="Passwort" name="password" required>
-      <button>Registrierung</button>
-    </form>
+  <div class="form-container">
     <img class="left-life" src="assets/img/left.svg" alt="Zur Login-Seite" (click)="navigateToLogin()">
-</div>
-</div>
 
+    <form (ngSubmit)="register()" #signupForm="ngForm">
+      <h2>Registrierung</h2>
+      <input 
+        [(ngModel)]="username" 
+        placeholder="Benutzername" 
+        name="username" 
+        required 
+        minlength="3"
+        #usernameField="ngModel"
+      >
+      <div *ngIf="usernameField.invalid && (usernameField.dirty || usernameField.touched)">
+        <small *ngIf="usernameField.errors?.['required']">Benutzername ist erforderlich.</small>
+        <small *ngIf="usernameField.errors?.['minlength']">Benutzername muss mindestens 3 Zeichen enthalten.</small>
+      </div>
 
+      <input 
+        type="email" 
+        [(ngModel)]="email" 
+        placeholder="E-Mail-Adresse" 
+        name="email" 
+        required 
+        email 
+        #emailField="ngModel"
+      >
+      <div *ngIf="emailField.invalid && (emailField.dirty || emailField.touched)">
+        <small *ngIf="emailField.errors?.['required']">E-Mail-Adresse ist erforderlich.</small>
+        <small *ngIf="emailField.errors?.['email']">Ungültige E-Mail-Adresse.</small>
+      </div>
+      <div *ngIf="registrationError" class="error-message">
+        {{ registrationError }}
+      </div>
+
+      <input 
+        type="password" 
+        [(ngModel)]="password" 
+        placeholder="Passwort" 
+        name="password" 
+        required 
+        minlength="3"
+        #passwordField="ngModel"
+      >
+      <div *ngIf="passwordField.invalid && (passwordField.dirty || passwordField.touched)">
+        <small *ngIf="passwordField.errors?.['required']">Passwort ist erforderlich.</small>
+        <small *ngIf="passwordField.errors?.['minlength']">Passwort muss mindestens 3 Zeichen enthalten.</small>
+      </div>
+
+      <div class="checkbox-container">
+        <input 
+          type="checkbox" 
+          id="privacyPolicy" 
+          [(ngModel)]="acceptedPrivacyPolicy" 
+          name="privacyPolicy" 
+          required
+        >
+        <label for="privacyPolicy">
+          Ich akzeptiere die <a href="/privacy-policy" target="_blank">Datenschutzrichtlinie</a>
+        </label>
+      </div>
+
+      <div *ngIf="!acceptedPrivacyPolicy && showPrivacyWarning" class="warning">
+        Bitte akzeptieren Sie die Datenschutzrichtlinie, um sich zu registrieren.
+      </div>
+
+      <button [disabled]="!isFormValid()" class="submit-button">Registrierung</button>
+    </form>
+   
+    <div class="imprint">
+       <a (click)="navigateToLegalNotice()" class="legal-notice-link">Impressum</a>
+    </div>
+
+  </div>
+</div>

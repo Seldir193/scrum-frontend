@@ -63,11 +63,18 @@ export class InProgressComponent implements OnInit {
     });
   }
 
+  
+
   getInProgressTasks(): void {
     this.taskService.getTasks('inprogress').subscribe(inProgressTasks => {
-      this.inProgress = inProgressTasks;  // Nur InProgress Tasks werden geladen
+      this.inProgress = inProgressTasks.map(task => ({
+        ...task,
+        dueDate: task.due_date // Mapping von `due_date` auf `dueDate` für das Frontend
+      }));
+      console.log(this.inProgress); // Debugging, um sicherzustellen, dass `dueDate` existiert
     });
   }
+  
 
   drop(event: CdkDragDrop<Todo[] | InProgress[]>) {
     this.taskmanagerService.handleDrop(event);
@@ -94,7 +101,9 @@ export class InProgressComponent implements OnInit {
         name: '',
         description: '',
         contacts: this.contacts,
-        selectedContacts: []
+        selectedContacts: [],
+        priority: '',
+        dueDate: null
       }
     });
 
@@ -107,7 +116,9 @@ export class InProgressComponent implements OnInit {
           user: this.getUserId(),
           description: result.description,
           contacts: result.selectedContacts || [],
-          status: 'inprogress'
+          status: 'inprogress',
+          priority: result.priority ,
+          dueDate: result.dueDate
         };
 
         console.log('Adding new InProgressTask:', newTask);
@@ -115,6 +126,7 @@ export class InProgressComponent implements OnInit {
           addedTask => {
             console.log('Added InProgressTask:', addedTask);
             this.inProgress.push(addedTask);
+            this.getInProgressTasks();
           },
           error => {
             console.error('Fehler beim Hinzufügen der InProgressTask:', error);
@@ -168,22 +180,32 @@ export class InProgressComponent implements OnInit {
         name: progress.text,
         description: progress.description,
         contacts: this.allContacts.length > 0 ? this.allContacts : [],
-        selectedContacts: progress.contacts.length > 0 ? progress.contacts : []
+        selectedContacts: progress.contacts.length > 0 ? progress.contacts : [],
+        priority: progress.priority,
+        dueDate: progress.dueDate
       }
     });
 
-    dialogRef.afterClosed().subscribe((result: TaskDialogData & { selectedContacts: Contact[] }) => {
+    dialogRef.afterClosed().subscribe((result: TaskDialogData & { selectedContacts: Contact[],priority: string,dueDate: Date | null }) => {
       if (result) {
         progress.text = result.name;
         progress.description = result.description;
         progress.contacts = result.selectedContacts || [];
+        progress.priority = result.priority;
+        progress.dueDate = result.dueDate;
+        
+        
 
-        this.taskService.updateTask(progress).subscribe(() => {
+        const formattedDueDate = progress.dueDate ? new Date(progress.dueDate).toISOString().split('T')[0] : null;
+        const updatedTask = { ...progress, due_date: formattedDueDate, status: 'inprogress' }; // dueDate zu due_date für das Backend
+  
+
+        this.taskService.updateTask(updatedTask).subscribe(() => {
           console.log('Updated task with new contacts');
 
           const index = this.inProgress.findIndex(t => t.id === progress.id);
           if (index !== -1) {
-            this.inProgress[index] = progress;
+            this.inProgress[index] = { ...progress, dueDate: result.dueDate };
           }
 
           this.selectedTodo = progress;

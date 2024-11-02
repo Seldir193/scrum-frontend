@@ -14,10 +14,29 @@
     <mat-label>Select Contacts</mat-label>
     <mat-select [(ngModel)]="selectedContacts" multiple>
       <mat-option *ngFor="let contact of allContacts"  [value]="contact">
-        {{ contact.name }} ({{ contact.email }}) - {{ contact.phoneNumber }}
+        {{ contact.name }} ({{ contact.email }}) - {{ contact.phone_number }}
       </mat-option>
     </mat-select>
   </mat-form-field>
+
+  <mat-form-field appearance="fill" class="full-width">
+    <mat-label>Priority</mat-label>
+    <mat-select [(ngModel)]="task.priority">
+      <mat-option *ngFor="let option of priorityOptions" [value]="option.value">
+        {{ option.viewValue }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field appearance="fill" class="full-width">
+    <mat-label>Due Date</mat-label>
+    <input matInput [matDatepicker]="picker" [(ngModel)]="task.dueDate" />
+    <mat-hint>MM/DD/YYYY</mat-hint>
+    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+    <mat-datepicker #picker></mat-datepicker>
+  </mat-form-field>
+  
+  
 </div>
 
 <div mat-dialog-actions>

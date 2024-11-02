@@ -3,7 +3,7 @@ export interface Contact {
     id?: number;
     name: string;
     email: string;
-    phoneNumber: string;
+    phone_number: string;
    
   }
   
@@ -15,7 +15,14 @@ export interface Contact {
     description?: string;
     contacts: Contact[];
     status?: string;
+    priority?: 'urgent' | 'medium' | 'low'; 
+    dueDate?:string | Date |null ; 
+    
+   
   }
+
+ 
+
   
   export interface Todo extends BaseTask {
     // Spezifische Felder für Todo, falls notwendig
@@ -40,10 +47,14 @@ export interface Contact {
     description?: string;       // Optionale Beschreibung des Tasks
     contacts: Contact[];
     selectedContacts: Contact[];
+    priority?: 'urgent' | 'medium' | 'low';
+    dueDate?: Date |null ;
+
+    
   }
 
   export interface ContactDialogData {
     name: string;
     email: string;
-    phoneNumber: string;
+    phone_number: string;
   }

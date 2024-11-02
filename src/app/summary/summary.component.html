@@ -1,0 +1,41 @@
+<app-header></app-header>
+
+<div class="greeting-message">
+    <h2>{{ greetingMessage }}</h2>
+  </div>
+
+<div class="summary-container">
+    <div class="summary-box">
+      <h3>Last Task Created</h3>
+      <p>{{ lastTaskDate }}</p>
+    </div>
+    <div class="summary-box">
+      <h3>Total Tasks</h3>
+      <p>{{ totalTasks }}</p>
+    </div>
+    <div class="summary-box" *ngIf="statusCounts">
+      <h3>To-Do Tasks</h3>
+      <p>{{ statusCounts.todos || 0 }}</p>
+    </div>
+    <div class="summary-box" *ngIf="statusCounts">
+      <h3>Today's Tasks</h3>
+      <p>{{ statusCounts.todaytasks || 0 }}</p>
+    </div>
+    <div class="summary-box" *ngIf="statusCounts">
+      <h3>In Progress</h3>
+      <p>{{ statusCounts.inprogress || 0 }}</p>
+    </div>
+    <div class="summary-box"*ngIf="statusCounts" >
+      <h3>Done</h3>
+      <p>{{ statusCounts.done || 0 }}</p>
+    </div>
+  </div>
+  
+
+
+
+
+
+
+
+  

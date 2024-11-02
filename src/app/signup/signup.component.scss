@@ -22,7 +22,14 @@ button{
     border:none;
     border-radius: 4px;
     cursor:pointer;
+
+    &:disabled {
+        background-color: #d3d3d3; // Grau für deaktivierten Zustand
+        color: #ffffff;
+        cursor: not-allowed;
+      }
 }
+
 
 button:hover{
     background-color: #218838;
@@ -43,4 +50,15 @@ button:hover{
     display: flex;
     align-items: center;
     height: 100vh;
+}
+
+.imprint{
+    display: flex;
+    justify-content: center;
+    padding: 20px;
+    cursor: pointer;
+
+    a{
+        color:blue;
+    }
 }

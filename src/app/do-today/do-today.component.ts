@@ -28,6 +28,7 @@ export class DoTodayComponent implements OnInit {
   selectedContacts: Contact[] = [];
   newTodo: Todo = { id: 0, text: '', delayed: false, user: 0, contacts: [] };
   contacts: Contact[] = [];
+  
   todayTasks: TodayTask[] = [];
   selectedTodo: Todo | null = null;
 
@@ -45,6 +46,7 @@ export class DoTodayComponent implements OnInit {
     this.getContacts();
   }
 
+  
   private getContacts(): void {
     this.contactService.getContacts().subscribe(
       (data: Contact[]) => this.contacts = data,
@@ -54,10 +56,16 @@ export class DoTodayComponent implements OnInit {
 
   getTodayTasks(): void {
     this.taskService.getTasks('todaytasks').subscribe(todayTasks => {
-      this.todayTasks = todayTasks;  // Nur DoToday Tasks werden geladen
+      this.todayTasks = todayTasks.map(task => ({
+        ...task,
+        dueDate: task.due_date // Mapping von `due_date` auf `dueDate` für das Frontend
+      }));
+      console.log(this.todayTasks); // Debugging, um sicherzustellen, dass `dueDate` existiert
     });
   }
 
+
+  
   openContactDialog(contact: any): void {
     this.dialog.open(ContactDetailsDialogComponent, {
       data: contact
@@ -86,6 +94,7 @@ export class DoTodayComponent implements OnInit {
     );
   }
 
+  
   openAddDoTodayDialog(): void {
     const dialogRef = this.dialog.open(TaskDialogComponent, {
       width: '400px',
@@ -93,11 +102,14 @@ export class DoTodayComponent implements OnInit {
         name: '',
         description: '',
         contacts: this.contacts,
-        selectedContacts: []
+        selectedContacts: [],
+        priority: '',
+        dueDate: null
+       
       }
     });
 
-    dialogRef.afterClosed().subscribe((result: TaskDialogData & { selectedContacts: Contact[] }) => {
+    dialogRef.afterClosed().subscribe((result: TaskDialogData & { selectedContacts: Contact[]  }) => {
       if (result) {
         const newTask: TodayTask = {
           id: 0,
@@ -105,23 +117,27 @@ export class DoTodayComponent implements OnInit {
           delayed: false,
           user: this.getUserId(),
           description: result.description,
-          contacts: result.selectedContacts || [],
-          status: 'todaytasks'
+          contacts: result.selectedContacts || [], 
+          status: 'todaytasks',
+          priority: result.priority ,
+          dueDate: result.dueDate
         };
 
-        console.log('Adding new TodayTask:', newTask);
-        this.taskService.addTask(newTask).subscribe(
-          addedTask => {
-            console.log('Added TodayTask:', addedTask);
-            this.todayTasks.push(addedTask);
-          },
-          error => {
-            console.error('Fehler beim Hinzufügen der TodayTask:', error);
-          }
-        );
+    console.log('Adding new TodayTask:', newTask);
+    this.taskService.addTask(newTask).subscribe(
+      addedTask => {
+        console.log('Added TodayTask:', addedTask);
+        this.todayTasks.push(addedTask);
+        this.getTodayTasks();
+      },
+      error => {
+        console.error('Fehler beim Hinzufügen der TodayTask:', error);
       }
+    );
+  }
     });
   }
+ 
 
   getUserId(): number {
     const token = this.getToken();
@@ -167,24 +183,32 @@ export class DoTodayComponent implements OnInit {
         name: task.text,
         description: task.description,
         contacts: this.allContacts.length > 0 ? this.allContacts : [],
-        selectedContacts: task.contacts.length > 0 ? task.contacts : []
+        selectedContacts: task.contacts.length > 0 ? task.contacts : [],
+        priority: task.priority,
+        dueDate: task.dueDate // Füge dueDate hinzu
       }
     });
-
-    dialogRef.afterClosed().subscribe((result: TaskDialogData & { selectedContacts: Contact[] }) => {
+  
+    dialogRef.afterClosed().subscribe((result: TaskDialogData & { selectedContacts: Contact[], priority: string, dueDate: Date | null }) => {
       if (result) {
         task.text = result.name;
         task.description = result.description;
         task.contacts = result.selectedContacts || [];
-
-        this.taskService.updateTask(task).subscribe(() => {
-          console.log('Updated task with new contacts');
-
+        task.priority = result.priority;
+        task.dueDate = result.dueDate; // Aktualisiere das dueDate
+  
+        const formattedDueDate = task.dueDate ? new Date(task.dueDate).toISOString().split('T')[0] : null;
+        const updatedTask = { ...task, due_date: formattedDueDate }; // dueDate zu due_date für das Backend
+  
+        this.taskService.updateTask(updatedTask).subscribe(() => {
+          console.log('Updated task with new contacts and due date');
+  
+          // Finde die Position der Aufgabe und aktualisiere sie in der Liste
           const index = this.todayTasks.findIndex(t => t.id === task.id);
           if (index !== -1) {
-            this.todayTasks[index] = task;
+            this.todayTasks[index] = { ...task, dueDate: formattedDueDate }; // Mappe due_date zu dueDate für das Frontend
           }
-
+  
           this.selectedTodo = task;
         });
       }

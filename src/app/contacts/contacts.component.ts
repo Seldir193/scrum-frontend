@@ -48,7 +48,7 @@ export class ContactsComponent {
   openContactDialog(): void {
     const dialogRef = this.dialog.open(ContactDialogComponent, {
       width: '400px',
-      data: { name: '', email: '', phoneNumber: '' }
+      data: { name: '', email: '', phone_number: '' }
     });
   
     dialogRef.afterClosed().subscribe((result: ContactDialogData) => {

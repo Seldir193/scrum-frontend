@@ -11,12 +11,15 @@
            <h1>To-do
             <img (click)="addNewTask()" src="assets/img/plus.svg" alt="Add Task">
           </h1>
-        <ul>
+          <p *ngIf="todos.length === 0" class="no-tasks-message">No tasks to do today</p>
+        <ul *ngIf="todos.length > 0">
           <li *ngFor="let todo of todos" cdkDrag class="example-box ">
             <input type="checkbox" [(ngModel)]="todo.delayed" (change)="toggleDelayed(todo)" />
             <div class="edit-card">
               <h2>{{ todo.text }}</h2>
               <p>Description: {{ todo.description }}</p>
+              <p>Due Date: {{ todo.dueDate | date }}</p> 
+              <p >Priority: {{ todo.priority }}</p>
               <p>Contacts:</p>
               <ul class="contact-list">
                 <li *ngFor="let contact of todo.contacts.slice(0, 5)" class="contact-circle"

@@ -1,0 +1,30 @@
+/* summary.component.scss */
+.summary-container {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  
+  .summary-box {
+    background: #f0f0f0;
+    padding: 1rem;
+    border-radius: 5px;
+    width: calc(33.33% - 1rem);
+    text-align: center;
+  }
+  
+  .summary-box h3 {
+    margin-bottom: 0.5rem;
+  }
+  
+  .summary-box p {
+    font-size: 1.5rem;
+    font-weight: bold;
+  }
+
+  .greeting-message{
+    display: flex;
+    justify-content: center;
+  }
+  

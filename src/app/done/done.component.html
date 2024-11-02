@@ -13,12 +13,16 @@
       <h1>Done
           <img (click)="openAddDoneDialog()" src="assets/img/plus.svg" alt="Add Task">
       </h1>
-    <ul>
+
+      <p *ngIf="done.length === 0" class="no-tasks-message">No tasks to do today</p>
+    <ul *ngIf="done.length > 0">
       <li *ngFor="let task of done" cdkDrag class="example-box">
         <input type="checkbox" [(ngModel)]="task.delayed" (change)="toggleDelayed(task)" />
         <div class="edit-card">
           <h2>{{ task.text }}</h2>
-          <p>Description: {{ task.description }}</p>
+          <p>Description: {{ task.description }}</p> 
+          <p>Due Date: {{ task.dueDate | date }}</p> 
+          <p >Priority: {{ task.priority }}</p>
           <p>Contacts:</p>
           <ul class="contact-list">
             <li *ngFor="let contact of task.contacts.slice(0, 5)" class="contact-circle"

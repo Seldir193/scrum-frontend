@@ -7,14 +7,24 @@
     <h1>Do Today
         <img (click)="openAddDoTodayDialog()" src="assets/img/plus.svg" alt="Add Task">
     </h1>
+
+    <!-- Anzeige einer Nachricht, wenn keine TodayTasks vorhanden sind -->
+    <p *ngIf="todayTasks.length === 0" class="no-tasks-message">No tasks to do today</p>
     <!-- Task List for 'Do Today' -->
-    <ul>
+    <ul *ngIf="todayTasks.length > 0">
       <li *ngFor="let task of todayTasks" cdkDrag class="example-box">
         <input type="checkbox" [(ngModel)]="task.delayed" (change)="toggleDelayed(task)" />
         <div class="edit-card">
           <h2>{{ task.text }}</h2>
-          <p>Description: {{ task.description }}</p>
+          <p>Description: {{ task.description }}</p> 
+         
+          <p>Due Date: {{ task.dueDate | date }}</p> 
+          
+
+          
+          <p >Priority: {{ task.priority }}</p>
           <p>Contacts:</p>
+          
           <ul class="contact-list">
             <li *ngFor="let contact of task.contacts.slice(0, 5)" class="contact-circle"
             (click)="openContactDialog(contact)">

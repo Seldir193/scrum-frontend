@@ -13,6 +13,8 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { MatSelectModule } from '@angular/material/select';
 import { Contact,TaskDialogData } from '../task.model';
 
+
+
 @Component({
   selector: 'app-task-dialog',
   standalone: true,
@@ -25,7 +27,8 @@ import { Contact,TaskDialogData } from '../task.model';
     MatDialogModule,
     MatDatepickerModule,
     MatNativeDateModule,
-    MatSelectModule
+    MatSelectModule,
+    
   ],
   templateUrl: './task-dialog.component.html',
   styleUrls: ['./task-dialog.component.scss']
@@ -35,15 +38,30 @@ export class TaskDialogComponent implements OnInit {
   selectedContacts: Contact[] = [];
   allContacts: Contact[] = [];
 
+  
+
+  priorityOptions = [
+    { value: 'urgent', viewValue: 'Urgent' },
+    { value: 'medium', viewValue: 'Medium' },
+    { value: 'low', viewValue: 'Low' }
+];
+
+
+  
+
   constructor(
     public dialogRef: MatDialogRef<TaskDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: TaskDialogData,
-    private contactService: ContactService // Injiziere den ContactService
+    private contactService: ContactService
   ) {
-    this.task = data || { name: '', description: '', contacts: [], selectedContacts: [] };
+    this.task = data || { name: '', description: '', contacts: [], selectedContacts: [], priority: '', dueDate: null };
     if (data) {
       this.task = { ...data };
       this.selectedContacts = data.selectedContacts || [];
+
+      if (typeof data.dueDate === 'string') {
+        this.task.dueDate = new Date(data.dueDate);
+      }
       
     }
   }
@@ -64,10 +82,16 @@ export class TaskDialogComponent implements OnInit {
   }
 
   save(): void {
+    console.log('Due Date in save before sending to backend:', this.task.dueDate); 
     this.dialogRef.close({
       name: this.task.name,
       description: this.task.description,
-      selectedContacts: this.selectedContacts
+      selectedContacts: this.selectedContacts,
+      priority: this.task.priority ,
+      //dueDate: this.task.dueDate 
+      dueDate: this.task.dueDate ? this.task.dueDate.toISOString() : null // ISO-Format
+     
+       
     });
   }
 

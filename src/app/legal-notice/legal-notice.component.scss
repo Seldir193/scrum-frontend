@@ -1,0 +1,27 @@
+.privacyContainer{
+    padding:40px;
+    gap: 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+.left-life{
+    width:16px;
+    height:16px;
+    align-content: center;
+    cursor: pointer;
+    border-radius: 50%;
+    background-color: white;
+    transition: transform 0.3s ease-in-out, filter 0.3s ease-in-out, background-color 0.3s ease-in-out;
+}
+
+.summaryContainer{
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+
+    h1{
+        font-size: 61px;
+        font-weight: 700;
+    }
+}

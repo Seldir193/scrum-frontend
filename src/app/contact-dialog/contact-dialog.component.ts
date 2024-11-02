@@ -27,7 +27,7 @@ import { ContactDialogData } from '../task.model';
   styleUrls: ['./contact-dialog.component.scss']
 })
 export class ContactDialogComponent {
-  contact: ContactDialogData = { name: '', email: '', phoneNumber: '' };
+  contact: ContactDialogData = { name: '', email: '', phone_number: '' };
 
 
   constructor(

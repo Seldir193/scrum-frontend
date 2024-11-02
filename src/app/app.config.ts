@@ -10,7 +10,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatDialogModule } from '@angular/material/dialog';
 import { TaskDialogComponent } from './task-dialog/task-dialog.component'; 
 import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MatNativeDateModule } from '@angular/material/core';
+import { MatNativeDateModule,MAT_DATE_LOCALE,DateAdapter, MAT_DATE_FORMATS, } from '@angular/material/core';
 import { ContactDialogComponent } from './contact-dialog/contact-dialog.component';
 import { HeaderComponent } from './header/header.component';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -21,6 +21,8 @@ import { TaskmanagerService } from './taskmanager.service';
 import { TaskService } from './task.service';
 import { ContactDetailsDialogComponent } from './contact-details-dialog/contact-details-dialog.component'; 
 
+import { MatMomentDateModule, MomentDateAdapter, MAT_MOMENT_DATE_FORMATS} from '@angular/material-moment-adapter';
+
 
 
 export const appConfig: ApplicationConfig = {
@@ -28,6 +30,9 @@ export const appConfig: ApplicationConfig = {
     provideRouter(routes),
     provideHttpClient(),
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }, provideAnimationsAsync(),
+    { provide: DateAdapter, useClass: MomentDateAdapter, deps: [MAT_DATE_LOCALE] },
+    { provide: MAT_DATE_FORMATS, useValue: MAT_MOMENT_DATE_FORMATS },
+    { provide: MAT_DATE_LOCALE, useValue: 'de-DE' }, 
     MatInputModule,
     MatFormFieldModule,
     MatButtonModule,
@@ -43,6 +48,8 @@ export const appConfig: ApplicationConfig = {
     DoneComponent,
     TaskmanagerService,
     TaskService,
-    ContactDetailsDialogComponent
+    ContactDetailsDialogComponent,
+    MatMomentDateModule,
+    
   ]
 };

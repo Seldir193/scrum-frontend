@@ -5,9 +5,11 @@
 
     <mat-menu #menu="matMenu">
 
-      <button mat-menu-item [routerLink]="['/todo']">Home</button>
-      <button mat-menu-item [routerLink]="['/contacts']">Manage Contacts</button>
+      <button mat-menu-item [routerLink]="['/summary']" routerLinkActive="active-link">Summary</button>
+      <button mat-menu-item [routerLink]="['/todo']">Board</button>
+      <button mat-menu-item [routerLink]="['/contacts']">Contacts</button>
       <button mat-menu-item (click)="logout()">Logout</button>
+      
     </mat-menu>
   
   </div>

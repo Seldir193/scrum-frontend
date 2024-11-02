@@ -6,7 +6,7 @@
       <li *ngFor="let contact of contacts" class="example-box">
         <strong>{{ contact.name }}</strong><br>
         <p> Email: {{ contact.email }}<br></p>
-        <p> Phone: {{ contact.phoneNumber }}</p>
+        <p> Phone: {{ contact.phone_number }}</p>
         <div >
            <button (click)="deleteContact(contact.id)" mat-fab class="custom-fab" extended>Delete</button> 
         </div>

@@ -8,7 +8,7 @@ import { Router } from '@angular/router';
   providedIn: 'root'
 })
 export class AuthService {
-  private baseUrl = 'http://localhost:8000/';  // Stelle sicher, dass diese URL korrekt ist
+  private baseUrl = 'http://localhost:8000/api/';  // Stelle sicher, dass diese URL korrekt ist
 
 constructor(private http: HttpClient, private router: Router) {}
 

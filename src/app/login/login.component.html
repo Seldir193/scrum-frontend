@@ -1,13 +1,34 @@
-
 <div class="container">
-<div class="form-container">
-  <form [formGroup]="form" (ngSubmit)="login()">
-    <h2>Anmelden</h2>
-    <input type="username" formControlName="username" placeholder="Username"  required/>
-    <input type="password" formControlName="password" placeholder="Passwort"  required/>
-    <button type="submit">Anmelden</button>
-    
-  </form>
-  <img class="left-life" src="assets/img/right.svg" alt="Zur Login-Seite" (click)="navigateToLogin()">
-</div>
+  <div class="form-container">
+    <img class="left-life" src="assets/img/right.svg" alt="Zur Login-Seite" (click)="navigateToLogin()">
+    <form [formGroup]="form" (ngSubmit)="login()">
+      <h2>Anmelden</h2>
+      
+      <!-- Username Input -->
+      <input type="text" formControlName="username" placeholder="Benutzername" required>
+      <div *ngIf="form.get('username')?.invalid && (form.get('username')?.dirty || form.get('username')?.touched)">
+        <small *ngIf="form.get('username')?.errors?.['required']">Benutzername ist erforderlich.</small>
+        <small *ngIf="form.get('username')?.errors?.['minlength']">Benutzername muss mindestens 3 Zeichen enthalten.</small>
+      </div>
+
+      <!-- Password Input -->
+      <input type="password" formControlName="password" placeholder="Passwort" required>
+      <div *ngIf="form.get('password')?.invalid && (form.get('password')?.dirty || form.get('password')?.touched)">
+        <small *ngIf="form.get('password')?.errors?.['required']">Passwort ist erforderlich.</small>
+        <small *ngIf="form.get('password')?.errors?.['minlength']">Passwort muss mindestens 3 Zeichen enthalten.</small>
+      </div>
+
+      <div class="checkbox-container">
+        <input type="checkbox" formControlName="rememberMe" id="rememberMe">
+        <label for="rememberMe">Remember Me</label>
+      </div>
+
+      <!-- Login Button -->
+      <button [disabled]="form.invalid" class="submit-button">Anmelden</button>
+      
+      <!-- Display login error message -->
+      <div *ngIf="loginError" class="error-message">{{ loginError }}</div>
+    </form>
+    <button (click)="guestLogin()" class="guest-button">Login als Gast</button>
+  </div>
 </div>
