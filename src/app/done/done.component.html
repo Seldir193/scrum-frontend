@@ -7,16 +7,17 @@
     <div class="example-list" 
          id="doneContainer"
          cdkDropList 
-         [cdkDropListData]="done" 
+         [cdkDropListData]="filteredDoneTasks" 
          [cdkDropListConnectedTo]="['todoContainer', 'todayContainer','inProgressContainer', 'doneContainer']"
          (cdkDropListDropped)="drop($event)">
       <h1>Done
           <img (click)="openAddDoneDialog()" src="assets/img/plus.svg" alt="Add Task">
       </h1>
 
-      <p *ngIf="done.length === 0" class="no-tasks-message">No tasks to do today</p>
-    <ul *ngIf="done.length > 0">
-      <li *ngFor="let task of done" cdkDrag class="example-box">
+      <p *ngIf="filteredDoneTasks.length === 0 && searchTerm.trim() === ''" class="no-tasks-message">No done tasks</p>
+      <p *ngIf="filteredDoneTasks.length === 0 && searchTerm.trim() !== ''" class="no-tasks-message">No results found</p>
+    <ul *ngIf="filteredDoneTasks.length > 0">
+      <li *ngFor="let task of filteredDoneTasks" cdkDrag class="example-box"(click)="openTaskDetailsDialog(task)" >
         <input type="checkbox" [(ngModel)]="task.delayed" (change)="toggleDelayed(task)" />
         <div class="edit-card">
           <h3 >{{ task.category}}</h3>
@@ -39,8 +40,8 @@
           </li>
           </ul>
           <div class="button-container">
-             <button (click)="addContactsDone(task)" mat-fab color="primary" extended>Edit</button>
-             <button (click)="deleteDone(task.id)" mat-fab class="custom-fab" extended>Delete</button>
+             <button (click)="addContactsDone(task ,$event )" mat-fab color="primary" extended>Edit</button>
+             <button (click)="deleteDone(task.id , $event)" mat-fab class="custom-fab" extended>Delete</button>
           </div>
         </div>
       </li>

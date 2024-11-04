@@ -2,18 +2,27 @@
 <app-header></app-header>
 
 <div class="container">
+  <div class="search-container">
+    <input type="text" [(ngModel)]="searchTerm" placeholder="Seacrh tasks..." (input)="filterTasks()">
+  </div>
   <div class="main-container">
+
+   
+
+
     <div class="tasks-container example-container " cdkDropListGroup>
       <div class="todo-container example-list" cdkDropList id="todoContainer"    
-           [cdkDropListData]="todos"
+           [cdkDropListData]="filteredTodos"
            [cdkDropListConnectedTo]="['todoContainer', 'todayContainer','inProgressContainer', 'doneContainer']"
            (cdkDropListDropped)="drop($event)">
            <h1>To-do
             <img (click)="addNewTask()" src="assets/img/plus.svg" alt="Add Task">
           </h1>
-          <p *ngIf="todos.length === 0" class="no-tasks-message">No tasks to do today</p>
-        <ul *ngIf="todos.length > 0">
-          <li *ngFor="let todo of todos" cdkDrag class="example-box ">
+          <p *ngIf="filteredTodos.length === 0 && searchTerm.trim() === ''" class="no-tasks-message">No tasks to do today</p>
+        <p *ngIf="filteredTodos.length === 0 && searchTerm.trim() !== ''" class="no-tasks-message">Keine Ergebnisse gefunden</p>
+        
+        <ul *ngIf="filteredTodos.length > 0">
+          <li *ngFor="let todo of filteredTodos" cdkDrag class="example-box " (click)="openTaskDetailsDialog(todo)"> 
             <input type="checkbox" [(ngModel)]="todo.delayed" (change)="toggleDelayed(todo)" />
             <div class="edit-card">
               <h3 >{{ todo.category}}</h3>
@@ -34,8 +43,8 @@
               </li>
               </ul>
               <div class="button-container">
-                 <button  (click)="openEditDialog(todo)"mat-fab color="primary" extended>Edit</button>
-                 <button (click)="deleteTodo(todo.id)" mat-fab  class="custom-fab"  extended>Delete</button>
+                 <button  (click)="openEditDialog(todo, $event)"mat-fab color="primary" extended>Edit</button>
+                 <button (click)="deleteTodo(todo.id, $event)" mat-fab  class="custom-fab"  extended>Delete</button>
               </div>
             </div>
           </li>
@@ -43,13 +52,13 @@
       </div>
 
       <!-- Do Today Component -->
-      <app-do-today></app-do-today>
+      <app-do-today [doTodayTasks]="doTodayTasks" [filteredDoTodayTasks]="filteredDoTodayTasks" [searchTerm]="searchTerm"></app-do-today>
       
       <!-- In Progress Component -->
-      <app-in-progress></app-in-progress>
+      <app-in-progress  [inProgressTasks]="inProgressTasks" [filteredInProgressTasks]="filteredInProgressTasks" [searchTerm]="searchTerm"></app-in-progress>
       
       <!-- Done Component -->
-      <app-done></app-done>
+      <app-done [doneTasks]="doneTasks" [filteredDoneTasks]="filteredDoneTasks" [searchTerm]="searchTerm"></app-done>
     </div>
   </div>
 </div>

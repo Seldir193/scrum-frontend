@@ -1,52 +1,49 @@
 
-  
 
 
+<div class="tasks-container example-container" cdkDropListGroup>
+  <div class="example-list " cdkDropList
+       id="inProgressContainer"
+       [cdkDropListData]="filteredInProgressTasks"
+       [cdkDropListConnectedTo]="['todoContainer', 'todayContainer','inProgressContainer', 'doneContainer']"
+       (cdkDropListDropped)="drop($event)">
+    <h1>In Progress
+      <img (click)="openAddInProgressDialog()" src="assets/img/plus.svg" alt="Add Task">
+    </h1>
 
-
-  <div class="tasks-container example-container" cdkDropListGroup>
-    <div class="example-list " cdkDropList
-         id="inProgressContainer"
-         [cdkDropListData]="inProgress"
-         [cdkDropListConnectedTo]="['todoContainer', 'todayContainer','inProgressContainer', 'doneContainer']"
-         (cdkDropListDropped)="drop($event)">
-      <h1>In Progress
-        <img (click)="openAddInProgressDialog()" src="assets/img/plus.svg" alt="Add Task">
-      </h1>
-
-      <p *ngIf="inProgress.length === 0" class="no-tasks-message">No tasks to do today</p>
-
-    <ul *ngIf="inProgress.length > 0" >
-      <li *ngFor="let progress of inProgress" cdkDrag  class="example-box">
-        <input type="checkbox" [(ngModel)]="progress.delayed" (change)="toggleDelayed(progress)" />
-        <div class="edit-card">
-          <h3 >{{ progress.category}}</h3>
-          <h2>{{ progress.text }}</h2>
-          <p>Description: {{ progress.description }}</p>  
-          <p>Due Date: {{ progress.dueDate | date }}</p> 
-          <p >Priority: {{ progress.priority }}</p>
-          <p>Contacts:</p>
-          <ul class="contact-list">
-            <li *ngFor="let contact of progress.contacts.slice(0, 5)" class="contact-circle"  
-             
-            (click)="openContactDialog(contact)">
-              <strong>{{ contact.name[0] }}</strong>
-            </li>
-            <li *ngIf="progress.contacts.length > 5" 
-              class="contact-circle extra-contacts" 
-               
-              matTooltip="{{ getHiddenContacts(progress.contacts) }}">
-            +{{ progress.contacts.length - 5 }}
+    <p *ngIf="filteredInProgressTasks.length === 0 && searchTerm.trim() === ''" class="no-tasks-message">No tasks in progress</p>
+    <p *ngIf="filteredInProgressTasks.length === 0 && searchTerm.trim() !== ''" class="no-tasks-message">No results found</p>
+    
+  <ul *ngIf="filteredInProgressTasks.length > 0">
+    <li *ngFor="let progress of filteredInProgressTasks" cdkDrag  class="example-box" (click)="openTaskDetailsDialog(progress)">
+      <input type="checkbox" [(ngModel)]="progress.delayed" (change)="toggleDelayed(progress)" />
+      <div class="edit-card">
+        <h3 >{{ progress.category}}</h3>
+        <h2>{{ progress.text }}</h2>
+        <p>Description: {{ progress.description }}</p>  
+        <p>Due Date: {{ progress.dueDate | date }}</p> 
+        <p >Priority: {{ progress.priority }}</p>
+        <p>Contacts:</p>
+        <ul class="contact-list">
+          <li *ngFor="let contact of progress.contacts.slice(0, 5)" class="contact-circle"  
+           
+          (click)="openContactDialog(contact)">
+            <strong>{{ contact.name[0] }}</strong>
           </li>
-          </ul>
-          <div class="button-container">
-             <button (click)="addContactsInProgress(progress)" mat-fab color="primary" extended>Edit</button>
-             <button (click)="deleteInProgress(progress.id)" mat-fab class="custom-fab"  extended>Delete</button>
-          </div>
+          <li *ngIf="progress.contacts.length > 5" 
+            class="contact-circle extra-contacts" 
+             
+            matTooltip="{{ getHiddenContacts(progress.contacts) }}">
+          +{{ progress.contacts.length - 5 }}
+        </li>
+        </ul>
+        <div class="button-container">
+           <button (click)="addContactsInProgress(progress,$event )" mat-fab color="primary" extended>Edit</button>
+           <button (click)="deleteInProgress(progress.id, $event )" mat-fab class="custom-fab"  extended>Delete</button>
         </div>
-      </li>
-    </ul>
-  </div>
+      </div>
+    </li>
+  </ul>
 </div>
-
+</div>
 

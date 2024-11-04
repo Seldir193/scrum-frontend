@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit ,Input,SimpleChanges} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ContactService } from '../contact.service';
@@ -13,6 +13,7 @@ import { TaskDialogComponent } from '../task-dialog/task-dialog.component';
 import { MatButtonModule } from '@angular/material/button';
 import { ContactDetailsDialogComponent } from '../contact-details-dialog/contact-details-dialog.component';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { TaskDetailsDialogComponent } from '../task-details-dialog/task-details-dialog.component';
 
 @Component({
   selector: 'app-done',
@@ -22,6 +23,11 @@ import { MatTooltipModule } from '@angular/material/tooltip';
   styleUrls: ['./done.component.scss']
 })
 export class DoneComponent implements OnInit {
+  @Input() doneTasks: Done[] = [];
+  @Input() filteredDoneTasks: Done[] = [];
+  @Input() searchTerm: string = '';
+
+
   todos: Todo[] = [];
   allContacts: Contact[] = [];
   selectedContacts: Contact[] = [];
@@ -45,6 +51,20 @@ export class DoneComponent implements OnInit {
     this.getContacts();
   }
 
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['searchTerm']) {
+      this.filterTasks();
+    }
+  }
+
+
+  filterTasks(): void {
+    this.filteredDoneTasks = this.doneTasks.filter(task =>
+      task.text.toLowerCase().includes(this.searchTerm.toLowerCase())
+    );
+  }
+  
+
   private getContacts(): void {
     this.contactService.getContacts().subscribe(
       (data: Contact[]) => this.contacts = data,
@@ -54,13 +74,17 @@ export class DoneComponent implements OnInit {
 
   getDoneTasks(): void {
     this.taskService.getTasks('done').subscribe(doneTasks => {
-      this.done = doneTasks.map(task => ({
+      this.doneTasks = doneTasks.map(task => ({
         ...task,
-        dueDate: task.due_date // Mapping von `due_date` auf `dueDate` für das Frontend
+        dueDate: task.due_date
       }));
-      console.log(this.done); // Debugging, um sicherzustellen, dass `dueDate` existiert
+      this.filteredDoneTasks = [...this.doneTasks];
+    }, error => {
+      console.error('Failed to load in-progress tasks:', error);
     });
   }
+
+
   
   openContactDialog(contact: any): void {
     this.dialog.open(ContactDetailsDialogComponent, {
@@ -154,16 +178,24 @@ export class DoneComponent implements OnInit {
     return localStorage.getItem('access_token');
   }
 
-  deleteDone(id: number): void {
-    this.taskService.deleteTask(id).subscribe(
-      () => {
-        this.done = this.done.filter(done => done.id !== id);
-      },
-      (error) => {
-        console.error('Fehler beim Löschen der DoneTask:', error);
-      }
-    );
+  
+
+  deleteDone(id: number, event?: MouseEvent): void {
+    if (event) {
+      event.stopPropagation();
+    }
+    this.taskService.deleteTask(id).subscribe(() => {
+      // Entferne den Task aus allen relevanten Listen
+      this.doneTasks = this.doneTasks.filter(task => task.id !== id);
+      this.done = this.done.filter(task => task.id !== id); // Entferne auch aus `done`
+      this.filteredDoneTasks = [...this.doneTasks]; // Aktualisiere die gefilterte Liste
+    }, error => {
+      console.error('Error deleting done task:', error);
+    });
   }
+  
+
+  
 
   loadContacts(): void {
     this.contactService.getContacts().subscribe(contacts => {
@@ -171,7 +203,8 @@ export class DoneComponent implements OnInit {
     });
   }
 
-  addContactsDone(done: Done): void {
+  addContactsDone(done: Done, event: MouseEvent ):  void {
+    event.stopPropagation();
     const dialogRef = this.dialog.open(TaskDialogComponent, {
       width: '400px',
       data: {
@@ -212,4 +245,28 @@ export class DoneComponent implements OnInit {
       }
     });
   }
+
+  openTaskDetailsDialog(done: Done): void {
+    // Öffne den Dialog für die Task-Details
+    const dialogRef = this.dialog.open(TaskDetailsDialogComponent, {
+      width: '500px',
+      data: done
+    });
+  
+    // Verarbeite das Ergebnis nach dem Schließen des Dialogs
+    dialogRef.afterClosed().subscribe(result => {
+      if (result?.deleted) {
+        // Entferne den gelöschten Task aus der lokalen Liste
+        this.doneTasks = this.doneTasks.filter(t => t.id !== done.id);
+        this.filteredDoneTasks = [...this.doneTasks];
+      } else if (result?.updated) {
+        // Optional: Aktualisiere die Liste der Tasks, falls nötig
+        this.getDoneTasks();
+      }
+    });
+  }
+  
+
+  
+
 }

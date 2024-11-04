@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+
+import { Component, OnInit,Input,SimpleChanges } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ContactService } from '../contact.service';
@@ -14,6 +15,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { ContactDialogComponent } from '../contact-dialog/contact-dialog.component';
 import { ContactDetailsDialogComponent } from '../contact-details-dialog/contact-details-dialog.component';
+import { TaskDetailsDialogComponent } from '../task-details-dialog/task-details-dialog.component';
 
 @Component({
   selector: 'app-in-progress',
@@ -23,6 +25,11 @@ import { ContactDetailsDialogComponent } from '../contact-details-dialog/contact
   styleUrls: ['./in-progress.component.scss']
 })
 export class InProgressComponent implements OnInit {
+  @Input() inProgressTasks: InProgress[] = [];
+  @Input() filteredInProgressTasks: InProgress[] = [];
+  @Input() searchTerm: string = '';
+
+
   todos: Todo[] = [];
   allContacts: Contact[] = [];
   selectedContacts: Contact[] = [];
@@ -30,7 +37,6 @@ export class InProgressComponent implements OnInit {
   contacts: Contact[] = [];
   inProgress: InProgress[] = [];
   selectedTodo: Todo | null = null;
-  
   
   constructor(
     private contactService: ContactService,
@@ -45,6 +51,21 @@ export class InProgressComponent implements OnInit {
     this.loadContacts();
     this.getContacts();
   }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['searchTerm']) {
+      this.filterTasks();
+    }
+  }
+
+  // Filterfunktion
+  filterTasks(): void {
+    this.filteredInProgressTasks = this.inProgressTasks.filter(task =>
+      task.text.toLowerCase().includes(this.searchTerm.toLowerCase())
+    );
+  }
+
+ 
 
   private getContacts(): void {
     this.contactService.getContacts().subscribe(
@@ -67,13 +88,16 @@ export class InProgressComponent implements OnInit {
 
   getInProgressTasks(): void {
     this.taskService.getTasks('inprogress').subscribe(inProgressTasks => {
-      this.inProgress = inProgressTasks.map(task => ({
+      this.inProgressTasks = inProgressTasks.map(task => ({
         ...task,
-        dueDate: task.due_date // Mapping von `due_date` auf `dueDate` für das Frontend
+        dueDate: task.due_date
       }));
-      console.log(this.inProgress); // Debugging, um sicherzustellen, dass `dueDate` existiert
+      this.filteredInProgressTasks = [...this.inProgressTasks];
+    }, error => {
+      console.error('Failed to load in-progress tasks:', error);
     });
   }
+  
   
 
   drop(event: CdkDragDrop<Todo[] | InProgress[]>) {
@@ -158,16 +182,23 @@ export class InProgressComponent implements OnInit {
     return localStorage.getItem('access_token');
   }
 
-  deleteInProgress(id: number): void {
-    this.taskService.deleteTask(id).subscribe(
-      () => {
-        this.inProgress = this.inProgress.filter(progress => progress.id !== id);
-      },
-      (error) => {
-        console.error('Fehler beim Löschen der InProgressTask:', error);
-      }
-    );
+
+  deleteInProgress(id: number, event?: MouseEvent): void {
+    if (event) {
+      event.stopPropagation();
+    }
+    this.taskService.deleteTask(id).subscribe(() => {
+      // Entferne den Task aus allen relevanten Listen
+      this.inProgressTasks = this.inProgressTasks.filter(task => task.id !== id);
+      this.inProgress = this.inProgress.filter(task => task.id !== id); // Entferne auch aus inProgress
+      this.filteredInProgressTasks = [...this.inProgressTasks]; // Aktualisiere die gefilterte Liste
+    }, error => {
+      console.error('Error deleting in-progress task:', error);
+    });
   }
+  
+
+  
 
   loadContacts(): void {
     this.contactService.getContacts().subscribe(contacts => {
@@ -175,7 +206,8 @@ export class InProgressComponent implements OnInit {
     });
   }
 
-  addContactsInProgress(progress: InProgress): void {
+  addContactsInProgress(progress: InProgress, event: MouseEvent): void {
+    event.stopPropagation(); 
     const dialogRef = this.dialog.open(TaskDialogComponent, {
       width: '400px',
       data: {
@@ -216,4 +248,28 @@ export class InProgressComponent implements OnInit {
       }
     });
   }
+
+  openTaskDetailsDialog(progress: InProgress): void {
+    // Öffne den Dialog für die Task-Details
+    const dialogRef = this.dialog.open(TaskDetailsDialogComponent, {
+      width: '500px',
+      data: progress
+    });
+  
+    // Verarbeite das Ergebnis nach dem Schließen des Dialogs
+    dialogRef.afterClosed().subscribe(result => {
+      if (result?.deleted) {
+        // Entferne den gelöschten Task aus der lokalen Liste
+        this.inProgressTasks = this.inProgressTasks.filter(t => t.id !== progress.id);
+        this.filteredInProgressTasks = [...this.inProgressTasks];
+      } else if (result?.updated) {
+        // Optional: Aktualisiere die Liste der Tasks, falls nötig
+        this.getInProgressTasks();
+      }
+    });
+  }
+  
+  
+  
+  
 }
