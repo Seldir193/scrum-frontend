@@ -10,3 +10,6 @@
     margin: 8px 0; /* Abstände zwischen den Feldern */
   }
   
+  ::ng-deep .mat-mdc-dialog-surface {
+    border-radius: 30px !important;
+  }

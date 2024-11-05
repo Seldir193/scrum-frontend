@@ -22,10 +22,13 @@ import { ContactDetailsDialogComponent } from '../contact-details-dialog/contact
 import { MatTooltip } from '@angular/material/tooltip';
 import { TaskDetailsDialogComponent } from '../task-details-dialog/task-details-dialog.component';
 
+import { MatIconModule } from '@angular/material/icon';
+
+
  @Component({
   selector: 'app-todo',
   standalone: true,
-  imports: [CommonModule, FormsModule,DragDropModule,HeaderComponent,MatTooltip, TaskDialogComponent, MatButtonModule, MatDatepickerModule, MatNativeDateModule, ContactDialogComponent,DoTodayComponent,InProgressComponent,DoneComponent],
+  imports: [CommonModule,MatIconModule, FormsModule,DragDropModule,HeaderComponent,MatTooltip, TaskDialogComponent, MatButtonModule, MatDatepickerModule, MatNativeDateModule, ContactDialogComponent,DoTodayComponent,InProgressComponent,DoneComponent],
   templateUrl: './todo.component.html',
   styleUrls: ['./todo.component.scss']
 })
@@ -361,6 +364,15 @@ filteredDoneTasks: Todo[] = [];
       );
     }
    
+  }
+
+
+
+scrollToSection(sectionId: string): void {
+    const element = document.getElementById(sectionId);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+    }
   }
 }
 

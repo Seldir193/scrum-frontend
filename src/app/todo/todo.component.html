@@ -1,6 +1,24 @@
 
 <app-header></app-header>
 
+
+<div class="mobile-nav-container">
+  <button (click)="scrollToSection('todoContainer')" mat-icon-button>
+    <mat-icon>assignment</mat-icon> 
+  </button>
+  <button (click)="scrollToSection('todayContainer')" mat-icon-button>
+    <mat-icon>today</mat-icon> 
+  </button>
+  <button (click)="scrollToSection('inProgressContainer')" mat-icon-button>
+    <mat-icon>hourglass_full</mat-icon> 
+  </button>
+  <button (click)="scrollToSection('doneContainer')" mat-icon-button>
+    <mat-icon>done</mat-icon> 
+  </button>
+</div>
+
+
+
 <div class="container">
   <div class="search-container">
     <input type="text" [(ngModel)]="searchTerm" placeholder="Seacrh tasks..." (input)="filterTasks()">
@@ -46,6 +64,7 @@
                  <button  (click)="openEditDialog(todo, $event)"mat-fab color="primary" extended>Edit</button>
                  <button (click)="deleteTodo(todo.id, $event)" mat-fab  class="custom-fab"  extended>Delete</button>
               </div>
+
             </div>
           </li>
         </ul>

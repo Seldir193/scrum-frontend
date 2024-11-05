@@ -1,4 +1,3 @@
-
 import { Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { CommonModule } from '@angular/common';
@@ -28,19 +27,21 @@ import { ContactDialogData } from '../task.model';
 })
 export class ContactDialogComponent {
   contact: ContactDialogData = { name: '', email: '', phone_number: '' };
+  isEditMode: boolean;
 
 
   constructor(
     public dialogRef: MatDialogRef<ContactDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: ContactDialogData
   ) {
+    this.isEditMode = !!data.id;
     if (data) {
       this.contact = data;
     }
   }
  
 
-  createContact(): void {
+  save(): void {
     this.dialogRef.close(this.contact);
   }
 

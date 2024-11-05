@@ -2,19 +2,25 @@
 <div class="container">
 <div class="contacts-list " >
     <h1>Contacts</h1>
+    <div *ngFor="let group of groupedContacts | keyvalue : sortGroups">
+      <h2>{{ group.key }}</h2>
     <ul class="contact-container">
-      <li *ngFor="let contact of contacts" class="example-box">
+      <li *ngFor="let contact of group.value" class="example-box" (click)="openEditContactDialog(contact)">
         <strong>{{ contact.name }}</strong><br>
+        
         <p> Email: {{ contact.email }}<br></p>
         <p> Phone: {{ contact.phone_number }}</p>
         <div >
-           <button (click)="deleteContact(contact.id)" mat-fab class="custom-fab" extended>Delete</button> 
+           <button (click)="deleteContact(contact.id); $event.stopPropagation()" mat-fab class="custom-fab" extended>Delete</button> 
         </div>
       </li>
       
     </ul>
+    </div>
     <div class="button-container">
         <button (click)="openContactDialog()"mat-fab color="primary" extended >Add New Contact</button>
      </div>
   </div>
 </div>
+
+

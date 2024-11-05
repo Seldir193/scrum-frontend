@@ -253,6 +253,7 @@ li.example-box {
   gap:20px;
 }
 
+
 .custom-fab {
   background-color: white !important;   
   color: blue !important;               
@@ -376,6 +377,54 @@ li.example-box {
     box-shadow: 0 0 5px rgba(33, 150, 243, 0.5);
   }
 }
+
+.mobile-nav-container {
+  display: none;
+  position: fixed;
+  bottom: 0px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #fff;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+  border-radius: 8px;
+  padding: 8px;
+  z-index: 1000;
+  width:100%;
+}
+
+/* Buttons in der mobilen Navigation */
+.mobile-nav-container button {
+  margin: 4px;
+  flex: 1;
+}
+
+/* Nur auf kleinen Bildschirmen anzeigen */
+@media (max-width: 768px) {
+  .mobile-nav-container {
+    display: flex;
+    flex-direction: row;
+    gap: 8px;
+    background-color: #4589ff;
+    z-index: 9999;
+
+    .mat-mdc-icon-button .mat-icon {
+      z-index: 1;
+      position: relative;
+      color: white;
+  }
+}
+}
+
+
+
+
+
+
+
+
+
+
+
 
 
 @media (max-width: 1370px) {

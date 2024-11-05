@@ -10,6 +10,8 @@ import { ContactDialogComponent } from '../contact-dialog/contact-dialog.compone
 import { MatButtonModule } from '@angular/material/button';
 import { HeaderComponent } from '../header/header.component';
 
+
+
 @Component({
   selector: 'app-contacts',
   standalone: true,
@@ -20,15 +22,31 @@ import { HeaderComponent } from '../header/header.component';
 
 export class ContactsComponent {
   contacts: Contact[] = [];
+  groupedContacts: { [key: string]: Contact[] } = {};
+  sortGroups = (a: any, b: any) => (a.key < b.key ? -1 : 1);
+
+ 
 
   constructor(private contactService: ContactService, private router: Router,public dialog: MatDialog,){
     this.loadContacts();
+  }
+
+  private groupContacts(): void {
+    this.groupedContacts = this.contacts.reduce((groups, contact) => {
+      const letter = contact.name.charAt(0).toUpperCase();
+      if (!groups[letter]) {
+        groups[letter] = [];
+      }
+      groups[letter].push(contact);
+      return groups;
+    }, {} as { [key: string]: Contact[] });
   }
 
   private loadContacts(): void {
     this.contactService.getContacts().subscribe(
       (contacts: Contact[]) => {
         this.contacts = contacts;
+        this.groupContacts(); 
       },
       (error) => {
         console.error('Failed to load contacts', error);
@@ -40,6 +58,7 @@ export class ContactsComponent {
     if (id !== undefined) {
       this.contactService.deleteContact(id).subscribe(() => {
         this.contacts = this.contacts.filter(contact => contact.id !== id);
+        this.groupContacts(); 
       });
     }
   }
@@ -62,10 +81,36 @@ export class ContactsComponent {
   
         this.contactService.addContact(result).subscribe(newContact => {
           this.contacts.push(newContact);
+          this.groupContacts(); 
         });
       }
     });
   }
 
+  openEditContactDialog(contact: Contact): void {
+    const dialogRef = this.dialog.open(ContactDialogComponent, {
+      width: '400px',
+      data: { ...contact }  // Übergebe den ausgewählten Kontakt an den Dialog
+    });
+  
+    dialogRef.afterClosed().subscribe((updatedContact: ContactDialogData) => {
+      if (updatedContact) {
+        this.contactService.updateContact(updatedContact).subscribe(() => {
+          // Aktualisiere den Kontakt in der lokalen Liste nach erfolgreicher Bearbeitung
+          const index = this.contacts.findIndex(c => c.id === updatedContact.id);
+          if (index !== -1) {
+            this.contacts[index] = { ...updatedContact };
+            this.groupContacts();
+          }
+        });
+      }
+    });
+  }
+
+
+
+
+  
+  
 
   }

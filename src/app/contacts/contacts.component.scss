@@ -40,6 +40,12 @@
   .contacts-list {
     flex: 1;
     width: 100%;
+
+    h2{
+      padding:20px;
+      display: flex;
+      justify-content: center;
+    }
   }
   
   /* Titel */
@@ -87,7 +93,7 @@
   
   /* Kontakt-Container */
   .contact-container {
-    min-height: 100vh;  /* Volle Höhe */
+    height: auto;  /* Volle Höhe */
     overflow-y: scroll; /* Vertikales Scrollen */
     list-style-type: none;  /* Entfernt Aufzählungszeichen */
     padding: 0;
@@ -161,6 +167,10 @@
     border-radius: 5px;
     cursor: pointer;
   }
+
+
+
+
 
 
 

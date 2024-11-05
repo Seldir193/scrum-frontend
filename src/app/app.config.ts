@@ -20,10 +20,7 @@ import { DoneComponent } from './done/done.component';
 import { TaskmanagerService } from './taskmanager.service';
 import { TaskService } from './task.service';
 import { ContactDetailsDialogComponent } from './contact-details-dialog/contact-details-dialog.component'; 
-
 import { MatMomentDateModule, MomentDateAdapter, MAT_MOMENT_DATE_FORMATS} from '@angular/material-moment-adapter';
-
-
 
 export const appConfig: ApplicationConfig = {
   providers: [

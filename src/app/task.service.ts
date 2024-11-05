@@ -13,6 +13,8 @@ export class TaskService {
   private summaryUrl = 'http://localhost:8000/api/task_summary/';
   private userInfoUrl = 'http://localhost:8000/api/user_info/';
 
+  private removeContactFromTasksUrl = 'http://localhost:8000/api/remove_contact_from_tasks/'; // Hier URL als Konstante hinzufügen
+
 
   constructor(private http: HttpClient) {}
 

@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable ,throwError,tap } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { of } from 'rxjs';
 import { Contact } from './task.model';
+
 
 
 @Injectable({
@@ -35,6 +36,7 @@ export class ContactService {
   addContact(contact: Contact): Observable<Contact> {
     return this.http.post<Contact>(this.apiUrl, contact, { headers: this.getAuthHeaders() });
   }
+
 
   updateContact(contact: Contact): Observable<void> {
     return this.http.patch<void>(`${this.apiUrl}${contact.id}/`, contact, { headers: this.getAuthHeaders() });

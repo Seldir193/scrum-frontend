@@ -25,15 +25,27 @@ export class HeaderComponent {
     this.taskService.logout().subscribe(
       () => {
         console.log("Logout successful, removing tokens and redirecting to login.");
-        localStorage.removeItem('access_token');
-        localStorage.removeItem('refresh_token');
-        this.router.navigate(['/login']);
+        this.handleLogout();
       },
       (error) => {
         console.error("Logout failed:", error);
+        // Benutzer trotzdem ausloggen, auch wenn der Logout-Aufruf fehlschlägt
+        this.handleLogout();
       }
     );
   }
+  
+  private handleLogout(): void {
+    localStorage.removeItem('access_token');
+    localStorage.removeItem('refresh_token');
+    this.router.navigate(['/login']);
+  }
+  
+
+
+
+
+ 
 }
 
 
