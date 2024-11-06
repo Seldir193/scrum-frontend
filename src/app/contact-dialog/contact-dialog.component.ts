@@ -10,7 +10,6 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { ContactDialogData } from '../task.model';
 
-
 @Component({
   selector: 'app-contact-dialog',
   standalone: true,
@@ -29,7 +28,6 @@ export class ContactDialogComponent {
   contact: ContactDialogData = { name: '', email: '', phone_number: '' };
   isEditMode: boolean;
 
-
   constructor(
     public dialogRef: MatDialogRef<ContactDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: ContactDialogData
@@ -40,7 +38,6 @@ export class ContactDialogComponent {
     }
   }
  
-
   save(): void {
     this.dialogRef.close(this.contact);
   }
@@ -48,5 +45,4 @@ export class ContactDialogComponent {
   close(): void {
     this.dialogRef.close();
   }
-
 }

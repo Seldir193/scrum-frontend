@@ -8,14 +8,14 @@ import { Router } from '@angular/router';
   providedIn: 'root'
 })
 export class AuthService {
-  private baseUrl = 'http://localhost:8000/api/';  // Stelle sicher, dass diese URL korrekt ist
+  private baseUrl = 'http://localhost:8000/api/';  
 
-constructor(private http: HttpClient, private router: Router) {}
+  constructor(private http: HttpClient, private router: Router) {}
 
 login(username: string, password: string): Observable<any> {
   return this.http.post<any>(`${this.baseUrl}login/`, { username, password }).pipe(
     tap(response => {
-      console.log('Login response:', response);  // Debugging
+      console.log('Login response:', response);  
       if (response.access && response.refresh) {
         localStorage.setItem('access_token', response.access);
         localStorage.setItem('refresh_token', response.refresh);
@@ -24,9 +24,9 @@ login(username: string, password: string): Observable<any> {
       }
     }),
     catchError(error => {
-      console.error('Login error status:', error.status);  // HTTP-Status-Code
-      console.error('Login error message:', error.message);  // Fehlermeldung
-      console.error('Login error details:', error.error);    // Detaillierte Fehlermeldung vom Server
+      console.error('Login error status:', error.status);  
+      console.error('Login error message:', error.message);  
+      console.error('Login error details:', error.error);    
       return throwError(() => new Error('Login failed, please try again.'));
     })
   );

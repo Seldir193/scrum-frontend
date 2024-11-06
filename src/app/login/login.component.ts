@@ -12,9 +12,8 @@ import { FormsModule } from '@angular/forms';
   styleUrls: ['./login.component.scss']
 })
 export class LoginComponent implements OnInit  {
-
   form: FormGroup;
-loginError: string | null = null;
+  loginError: string | null = null;
 
 constructor(
   private fb: FormBuilder,
@@ -28,14 +27,11 @@ constructor(
   });
 }
 
-
-
 ngOnInit(): void {
   this.loadSavedCredentials();
 
   const token = localStorage.getItem('access_token');
   if (token && !this.isTokenExpired(token)) {
-    // Wenn der Token vorhanden und gültig ist, umleiten zur Todo-Seite
     this.router.navigate(['/todo']);
   }
 }
@@ -50,8 +46,6 @@ private decodeToken(token: string): any {
   const payload = token.split('.')[1];
   return JSON.parse(atob(payload));
 }
-
-
 
 login() {
   const val = this.form.value;

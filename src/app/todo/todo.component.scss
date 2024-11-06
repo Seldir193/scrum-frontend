@@ -98,9 +98,7 @@ input[type="text"] {
     align-items: center;
     border:none;
     border-radius: 8px;
-    
   }
-
 
   h2  {
     margin: 0 0 16px;
@@ -178,7 +176,6 @@ input[type="text"] {
   justify-content: space-between;
   width: 100%;
   gap: 20px;
-  //min-height: 100vh; 
   padding: 10px; 
 }
 
@@ -253,7 +250,6 @@ li.example-box {
   gap:20px;
 }
 
-
 .custom-fab {
   background-color: white !important;   
   color: blue !important;               
@@ -268,13 +264,13 @@ li.example-box {
 }
 
 .contact-container::-webkit-scrollbar {
-  display: none;       /* Scrollbalken in Chrome, Safari und Opera ausblenden */
+  display: none;      
 }
 
 .contact-container{
-    min-height: 100vh;   /* Setze die maximale Höhe für den Container */
-    overflow-y: scroll;    /* Aktiviert den vertikalen Scrollbalken */
-    list-style-type: none;  /* Entfernt die Aufzählungszeichen */
+    min-height: 100vh;   
+    overflow-y: scroll;    
+    list-style-type: none;  
     padding: 0;
     margin: 0;
     -ms-overflow-style: none;  
@@ -314,21 +310,19 @@ li.example-box {
 
 .example-box:hover {
   background-color: lightblue;
-  transition: background-color 0.3s ease; /* Weicher Übergang */
+  transition: background-color 0.3s ease; 
 }
 
-/* Fixiere den Titel (h1) */
 .tasks-container h1 {
-  position: sticky;   /* Fixiert das h1-Element */
-  top: 0;             /* Fixiere es oben am Container */
-  background-color: white;  /* Hintergrundfarbe, um es sichtbar zu halten */
-  z-index: 1000;      /* Stellt sicher, dass es über dem Inhalt bleibt */
+  position: sticky;   
+  top: 0;             
+  background-color: white;  
+  z-index: 1000;     
   padding: 10px;
   margin: 0;
-  border-bottom: 2px solid #ccc; /* Optional: ein unterer Rand für bessere Abtrennung */
+  border-bottom: 2px solid #ccc; 
 }
 
-/* Scrollbarer Bereich für die Task-Liste */
 .example-list ul {
   list-style-type: none;
   padding: 0;
@@ -337,7 +331,7 @@ li.example-box {
   list-style-type: none;  
   -ms-overflow-style: none;  
   scrollbar-width: none;
-  max-height: calc(100vh - 60px);  /* Maximale Höhe für die Liste, um das h1 zu berücksichtigen */
+  max-height: calc(100vh - 60px);  
 }
 
 .no-tasks-message {
@@ -350,8 +344,6 @@ li.example-box {
   border-radius: 5px;
   margin-bottom: 15px;
 }
-
-
 
 .search-container {
   display: flex;
@@ -370,7 +362,6 @@ li.example-box {
   border-style: solid;
   padding: 8px 16px;
   font-family: "Open Sans", sans-serif;
-
 
   &:focus {
     outline: none;
@@ -392,13 +383,11 @@ li.example-box {
   width:100%;
 }
 
-/* Buttons in der mobilen Navigation */
 .mobile-nav-container button {
   margin: 4px;
   flex: 1;
 }
 
-/* Nur auf kleinen Bildschirmen anzeigen */
 @media (max-width: 768px) {
   .mobile-nav-container {
     display: flex;
@@ -414,18 +403,6 @@ li.example-box {
   }
 }
 }
-
-
-
-
-
-
-
-
-
-
-
-
 
 @media (max-width: 1370px) {
   .tasks-container {

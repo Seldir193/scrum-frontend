@@ -1,9 +1,8 @@
-// task-dialog.component.ts
 import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { ContactService } from '../contact.service'; // Importiere den ContactService
+import { ContactService } from '../contact.service'; 
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { FormsModule,ReactiveFormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatButtonModule } from '@angular/material/button';
@@ -12,8 +11,6 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatSelectModule } from '@angular/material/select';
 import { Contact,TaskDialogData } from '../task.model';
-
-
 
 @Component({
   selector: 'app-task-dialog',
@@ -28,7 +25,7 @@ import { Contact,TaskDialogData } from '../task.model';
     MatDatepickerModule,
     MatNativeDateModule,
     MatSelectModule,
-    
+    ReactiveFormsModule
   ],
   templateUrl: './task-dialog.component.html',
   styleUrls: ['./task-dialog.component.scss']
@@ -37,7 +34,6 @@ export class TaskDialogComponent implements OnInit {
   task: TaskDialogData;
   selectedContacts: Contact[] = [];
   allContacts: Contact[] = [];
-
   
 priorityOptions = [
     { value: 'urgent', viewValue: 'Urgent' },
@@ -49,9 +45,6 @@ categoryOptions = [
   { value: 'Technical Tasks', viewValue: 'Technical Tasks' },
   { value: 'User Story', viewValue: 'User Story' }
 ];
-
-
-  
 
   constructor(
     public dialogRef: MatDialogRef<TaskDialogComponent>,
@@ -66,7 +59,6 @@ categoryOptions = [
       if (typeof data.dueDate === 'string') {
         this.task.dueDate = new Date(data.dueDate);
       }
-      
     }
   }
 
@@ -77,7 +69,7 @@ categoryOptions = [
   loadContacts(): void {
     this.contactService.getContacts().subscribe(
       (contacts: Contact[]) => {
-        this.allContacts = contacts; // Kontakte zur Auswahl bereitstellen
+        this.allContacts = contacts; 
       },
       (error) => {
         console.error('Failed to load contacts', error);
@@ -91,12 +83,9 @@ categoryOptions = [
       name: this.task.name,
       description: this.task.description,
       selectedContacts: this.selectedContacts,
-      priority: this.task.priority ,
-      //dueDate: this.task.dueDate 
-      dueDate: this.task.dueDate ? this.task.dueDate.toISOString() : null, // ISO-Format
-      category: this.task.category 
-     
-       
+      priority: this.task.priority , 
+      dueDate: this.task.dueDate ? this.task.dueDate.toISOString() : null,
+      category: this.task.category    
     });
   }
 

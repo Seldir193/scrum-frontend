@@ -1,6 +1,4 @@
-
-  <div class="tasks-container example-container" cdkDropListGroup>
-    <!-- Do Today Container -->
+ <div class="tasks-container example-container" cdkDropListGroup>
     <div class=" example-list " cdkDropList id="todayContainer"
          [cdkDropListData]="filteredDoTodayTasks"
          [cdkDropListConnectedTo]="['todoContainer', 'todayContainer','inProgressContainer', 'doneContainer']"
@@ -18,11 +16,7 @@
             <h3 >{{ task.category}}</h3>
             <h2>{{ task.text }}</h2>
             <p>Description: {{ task.description }}</p> 
-           
             <p>Due Date: {{ task.dueDate | date }}</p> 
-            
-  
-            
             <p >Priority: {{ task.priority }}</p>
             <p>Contacts:</p>
             

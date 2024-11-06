@@ -1,4 +1,3 @@
-
 import { Component, OnInit ,Input,SimpleChanges } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -7,7 +6,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { CdkDragDrop } from '@angular/cdk/drag-drop';
 import { TaskmanagerService } from '../taskmanager.service';
-import { TaskService } from '../task.service';  // Import TaskService
+import { TaskService } from '../task.service';  
 import { TodayTask, Todo, Contact, TaskDialogData } from '../task.model';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { TaskDialogComponent } from '../task-dialog/task-dialog.component';
@@ -15,7 +14,6 @@ import { MatButtonModule } from '@angular/material/button';
 import { ContactDetailsDialogComponent } from '../contact-details-dialog/contact-details-dialog.component';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { TaskDetailsDialogComponent } from '../task-details-dialog/task-details-dialog.component';
-
 
 @Component({
   selector: 'app-do-today',
@@ -29,13 +27,11 @@ export class DoTodayComponent implements OnInit {
   @Input() filteredDoTodayTasks: TodayTask[] = [];
   @Input() searchTerm: string = '';
 
-
   todos: Todo[] = [];
   allContacts: Contact[] = [];
   selectedContacts: Contact[] = [];
   newTodo: Todo = { id: 0, text: '', delayed: false, user: 0, contacts: [] };
   contacts: Contact[] = [];
-  
   todayTasks: TodayTask[] = [];
   selectedTodo: Todo | null = null;
 
@@ -44,7 +40,7 @@ export class DoTodayComponent implements OnInit {
     private dialog: MatDialog,
     private router: Router,
     private taskmanagerService: TaskmanagerService,
-    private taskService: TaskService  // Verwende den TaskService
+    private taskService: TaskService  
   ) {}
 
   ngOnInit(): void {
@@ -59,14 +55,12 @@ export class DoTodayComponent implements OnInit {
     }
   }
   
-  // Filterfunktion
   filterTasks(): void {
     this.filteredDoTodayTasks = this.todayTasks.filter(task =>
       task.text.toLowerCase().includes(this.searchTerm.toLowerCase())
     );
   }
 
-  
   private getContacts(): void {
     this.contactService.getContacts().subscribe(
       (data: Contact[]) => this.contacts = data,
@@ -74,14 +68,11 @@ export class DoTodayComponent implements OnInit {
     );
   }
 
-
-
-
   getTodayTasks(): void {
     this.taskService.getTasks('todaytasks').subscribe(todayTasks => {
       this.todayTasks = todayTasks.map(task => ({
         ...task,
-        dueDate: task.due_date // Mapping von `due_date` auf `dueDate` für das Frontend
+        dueDate: task.due_date 
       }));
       this.filteredDoTodayTasks = [...this.todayTasks];
       
@@ -89,8 +80,6 @@ export class DoTodayComponent implements OnInit {
       console.error('Failed to load today tasks:', error);
     });
   }
-  
-
   
   openContactDialog(contact: any): void {
     this.dialog.open(ContactDetailsDialogComponent, {
@@ -108,8 +97,6 @@ export class DoTodayComponent implements OnInit {
 
   toggleDelayed(task: TodayTask): void {
     task.delayed = !task.delayed;
-
-    // Verwende den TaskService für die Statusaktualisierung
     this.taskService.updateTask(task).subscribe(
       () => {
         console.log('Task updated successfully:', task);
@@ -120,7 +107,6 @@ export class DoTodayComponent implements OnInit {
     );
   }
 
-  
   openAddDoTodayDialog(): void {
     const dialogRef = this.dialog.open(TaskDialogComponent, {
       width: '400px',
@@ -132,7 +118,6 @@ export class DoTodayComponent implements OnInit {
         priority: '',
         dueDate: null,
         category: 'Technical Tasks' 
-        
       }
     });
 
@@ -167,7 +152,6 @@ export class DoTodayComponent implements OnInit {
     });
   }
  
-
   getUserId(): number {
     const token = this.getToken();
     if (token) {
@@ -188,7 +172,6 @@ export class DoTodayComponent implements OnInit {
     return localStorage.getItem('access_token');
   }
 
-  
   deleteDoTodayTask(id: number,event?: MouseEvent ): void {
     if (event) {
       event.stopPropagation();
@@ -217,7 +200,7 @@ export class DoTodayComponent implements OnInit {
         contacts: this.allContacts.length > 0 ? this.allContacts : [],
         selectedContacts: task.contacts.length > 0 ? task.contacts : [],
         priority: task.priority,
-        dueDate: task.dueDate, // Füge dueDate hinzu
+        dueDate: task.dueDate, 
         category: task.category 
       }
     });
@@ -228,34 +211,24 @@ export class DoTodayComponent implements OnInit {
         task.description = result.description;
         task.contacts = result.selectedContacts || [];
         task.priority = result.priority;
-        task.dueDate = result.dueDate; // Aktualisiere das dueDate
+        task.dueDate = result.dueDate; 
         task.category = result.category
   
         const formattedDueDate = task.dueDate ? new Date(task.dueDate).toISOString().split('T')[0] : null;
-        const updatedTask = { ...task, due_date: formattedDueDate }; // dueDate zu due_date für das Backend
+        const updatedTask = { ...task, due_date: formattedDueDate }; 
   
         this.taskService.updateTask(updatedTask).subscribe(() => {
           console.log('Updated task with new contacts and due date');
-  
-          
 
-         // Finde die Position der Aufgabe und aktualisiere sie in der Liste
          const index = this.todayTasks.findIndex(t => t.id === task.id);
          if (index !== -1) {
-           this.todayTasks[index] = { ...task, dueDate: formattedDueDate }; // Mappe due_date zu dueDate für das Frontend
+           this.todayTasks[index] = { ...task, dueDate: formattedDueDate }; 
          }
-  
           this.selectedTodo = task;
-          
-
         });
-
-
       }
     });
   }
-
- 
 
   openTaskDetailsDialog(task: TodayTask): void {
     const dialogRef = this.dialog.open(TaskDetailsDialogComponent, {
@@ -265,14 +238,11 @@ export class DoTodayComponent implements OnInit {
   
     dialogRef.afterClosed().subscribe(result => {
       if (result?.deleted) {
-        // Entferne den gelöschten Task aus der lokalen Liste
         this.todayTasks = this.todayTasks.filter(t => t.id !== task.id);
-        this.filteredDoTodayTasks = [...this.todayTasks]; // Aktualisiere die gefilterte Liste
+        this.filteredDoTodayTasks = [...this.todayTasks]; 
       } else if (result?.updated) {
-        // Optional: Aktualisiere die Liste mit den Tasks, falls nötig
         this.getTodayTasks();
       }
     });
   }
-  
 }

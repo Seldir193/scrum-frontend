@@ -24,12 +24,11 @@ button{
     cursor:pointer;
 
     &:disabled {
-        background-color: #d3d3d3; // Grau für deaktivierten Zustand
+        background-color: #d3d3d3; 
         color: #ffffff;
         cursor: not-allowed;
       }
 }
-
 
 button:hover{
     background-color: #218838;

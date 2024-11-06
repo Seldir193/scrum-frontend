@@ -21,10 +21,7 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
 import { ContactDetailsDialogComponent } from '../contact-details-dialog/contact-details-dialog.component';
 import { MatTooltip } from '@angular/material/tooltip';
 import { TaskDetailsDialogComponent } from '../task-details-dialog/task-details-dialog.component';
-
 import { MatIconModule } from '@angular/material/icon';
-
-
  @Component({
   selector: 'app-todo',
   standalone: true,
@@ -38,18 +35,15 @@ export class TodoComponent implements OnInit {
   selectedTodo: Todo | null = null;
   contacts: Contact[] = [];
   allContacts: Contact[] = [];
-
   filteredTodos: Todo[] = [];
   searchTerm: string = '';
-
   doTodayTasks: Todo[] = [];
-inProgressTasks: Todo[] = [];
-doneTasks: Todo[] = [];
-
-// Gefilterte Listen für die anderen Task-Listen
-filteredDoTodayTasks: Todo[] = [];
-filteredInProgressTasks: Todo[] = [];
-filteredDoneTasks: Todo[] = [];
+  inProgressTasks: Todo[] = [];
+  doneTasks: Todo[] = [];
+  filteredDoTodayTasks: Todo[] = [];
+  filteredInProgressTasks: Todo[] = [];
+  filteredDoneTasks: Todo[] = [];
+  
 
   constructor(
      private router: Router, 
@@ -75,7 +69,7 @@ filteredDoneTasks: Todo[] = [];
     this.taskService.getTasks('inprogress').subscribe(inProgressTasks => {
       this.inProgressTasks = inProgressTasks.map(task => ({
         ...task,
-        dueDate: task.due_date // Mapping von `due_date` auf `dueDate` für das Frontend
+        dueDate: task.due_date 
       }));
       this.filteredInProgressTasks = [...this.inProgressTasks];
     }, error => {
@@ -87,7 +81,7 @@ filteredDoneTasks: Todo[] = [];
     this.taskService.getTasks('done').subscribe(doneTasks => {
       this.doneTasks = doneTasks.map(task => ({
         ...task,
-        dueDate: task.due_date // Mapping von `due_date` auf `dueDate` für das Frontend
+        dueDate: task.due_date 
       }));
       this.filteredDoneTasks = [...this.doneTasks];
     });
@@ -103,7 +97,6 @@ filteredDoneTasks: Todo[] = [];
     });
   }
 
- 
   private getContacts(): void {
     this.contactService.getContacts().subscribe(
       (data: Contact[]) => this.contacts = data,
@@ -134,9 +127,28 @@ filteredDoneTasks: Todo[] = [];
     this.taskmanagerService.handleDrop(event);  
   }
 
-  openContactShowDialog(contact: any): void {
+  openContactShowDialog(contact: any, event: MouseEvent  ): void {
+    event.stopPropagation();          
     this.dialog.open(ContactDetailsDialogComponent, {
       data: contact
+    });
+  }
+
+  openTaskDetailsDialog(todo: Todo): void {
+    const dialogRef = this.dialog.open(TaskDetailsDialogComponent, {
+      width: '500px',
+      data: todo
+    });
+  
+    dialogRef.afterClosed().subscribe(result => {
+      if (result?.deleted) {
+        
+        this.todos = this.todos.filter(t => t.id !== todo.id);
+        this.filteredTodos = [...this.todos];
+      } else if (result?.updated) {
+       
+        this.getTasks();
+      }
     });
   }
 
@@ -155,9 +167,9 @@ filteredDoneTasks: Todo[] = [];
     this.taskService.getTasks('todos').subscribe(todosTasks => {
       this.todos = todosTasks.map(task => ({
         ...task,
-        dueDate: task.due_date // Mapping von `due_date` auf `dueDate` für das Frontend
+        dueDate: task.due_date 
       }));
-      console.log(this.todos); // Debugging, um sicherzustellen, dass `dueDate` existiert
+      console.log(this.todos); 
       this.filteredTodos = [...this.todos]; 
     });
   }
@@ -213,7 +225,7 @@ filteredDoneTasks: Todo[] = [];
   
     dialogRef.afterClosed().subscribe((result: TaskDialogData & { selectedContacts: Contact[], priority: string, dueDate: Date | null,category:string }) => {
       if (result) {
-        // Wenn der bestehende Todo bearbeitet wird
+        
         if (todo) {
           todo.text = result.name;
           todo.description = result.description;
@@ -222,11 +234,9 @@ filteredDoneTasks: Todo[] = [];
           todo.dueDate = result.dueDate;
           todo.category = result.category
   
-          // Anstatt das Due Date hier zu formatieren, übergeben wir das `todo` direkt an den TaskService
           this.taskService.updateTask(todo).subscribe(() => {
             console.log('Updated task with new contacts');
   
-            // Aktualisiere die lokale Liste der Todos
             const index = this.todos.findIndex(t => t.id === todo.id);
             if (index !== -1) {
               this.todos[index] = { ...todo };
@@ -242,8 +252,6 @@ filteredDoneTasks: Todo[] = [];
   openEditCard(todo: Todo): void {
     this.selectedTodo = todo;
   }
-
-  
 
   deleteTodo(id: number, event?: MouseEvent): void {
     if (event) {
@@ -264,9 +272,7 @@ filteredDoneTasks: Todo[] = [];
     );
   }
   
-
   addNewTask(): void {
-    // Öffne den Dialog, um einen neuen Task hinzuzufügen
     const dialogRef = this.dialog.open(TaskDialogComponent, {
       width: '400px',
       data: {
@@ -280,12 +286,10 @@ filteredDoneTasks: Todo[] = [];
       }
     });
   
-    // Bearbeite das Ergebnis nach dem Schließen des Dialogs
     dialogRef.afterClosed().subscribe((result: TaskDialogData & { selectedContacts: Contact[], priority: string, dueDate: Date | null }) => {
       if (result) {
-        // Neues Task-Objekt erstellen
         const newTask: Todo = {
-          id: 0, // Die ID wird nach dem Speichern generiert
+          id: 0, 
           text: result.name,
           delayed: false,
           user: this.getUserId(),
@@ -297,46 +301,17 @@ filteredDoneTasks: Todo[] = [];
           category: result.category 
         };
   
-        // Task hinzufügen und im Backend speichern
         this.taskService.addTask(newTask).subscribe(addedTask => {
           console.log('Added new task:', addedTask);
-          this.todos.push(addedTask); // Der neue Task wird der lokalen Liste hinzugefügt
-          this.selectedTodo = addedTask; // Der neue Task wird als "ausgewählt" markiert
-          this.getTasks(); // Aktualisiere die Liste der Tasks
+          this.todos.push(addedTask); 
+          this.selectedTodo = addedTask; 
+          this.getTasks(); 
         }, error => {
           console.error('Fehler beim Hinzufügen des neuen Tasks:', error);
         });
       }
     });
   }
-  
-
-
-  openTaskDetailsDialog(todo: Todo): void {
-    const dialogRef = this.dialog.open(TaskDetailsDialogComponent, {
-      width: '500px',
-      data: todo
-    });
-  
-    dialogRef.afterClosed().subscribe(result => {
-      if (result?.deleted) {
-        // Entferne den gelöschten Task aus der lokalen Liste
-        this.todos = this.todos.filter(t => t.id !== todo.id);
-        this.filteredTodos = [...this.todos];
-      } else if (result?.updated) {
-        // Optional: Aktualisiere die Liste mit den Tasks, falls nötig
-        this.getTasks();
-      }
-    });
-  }
-  
-
-  
-
-  
-
-
-
 
   filterTasks(): void {
     if (this.searchTerm.trim() === '') {
@@ -363,10 +338,7 @@ filteredDoneTasks: Todo[] = [];
         task.description?.toLowerCase().includes(lowerCaseSearchTerm)
       );
     }
-   
   }
-
-
 
 scrollToSection(sectionId: string): void {
     const element = document.getElementById(sectionId);

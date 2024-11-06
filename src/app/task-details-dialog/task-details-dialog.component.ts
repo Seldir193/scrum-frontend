@@ -4,7 +4,7 @@ import { MAT_DIALOG_DATA, MatDialogRef, MatDialogModule, MatDialog } from '@angu
 import { Todo } from '../task.model';
 import { TaskService } from '../task.service';
 import { MatButtonModule } from '@angular/material/button';
-import { MatIconModule } from '@angular/material/icon'; // Importieren
+import { MatIconModule } from '@angular/material/icon'; 
 import { FormsModule } from '@angular/forms';
 import { TaskDialogComponent } from '../task-dialog/task-dialog.component';
 
@@ -24,14 +24,12 @@ export class TaskDetailsDialogComponent {
     private taskService: TaskService,
     private dialog: MatDialog
   ) {}
-  // Methode zum Speichern der Änderungen
   saveChanges() {
     this.taskService.updateTask(this.task).subscribe(() => {
       this.isEditMode = false;
       this.dialogRef.close(this.task);
     });
   }
-  // Methode zum Abrufen der Kontaktnamen als String
   getContactNames(): string {
     return this.task.contacts ? this.task.contacts.map(contact => contact.name).join(', ') : '';
   }
@@ -40,7 +38,6 @@ export class TaskDetailsDialogComponent {
     this.taskService.deleteTask(this.task.id).subscribe(
       () => {
         console.log('Task deleted successfully');
-        // Dialog schließen und eine Information über das Löschen zurückgeben
         this.dialogRef.close({ deleted: true });
       },
       error => {
@@ -48,23 +45,19 @@ export class TaskDetailsDialogComponent {
       }
     );
   }
-  
-  // Methode zum Bearbeiten des Tasks
-  editTask(): void {
-    // Schließt den aktuellen Dialog, bevor der Bearbeitungs-Dialog geöffnet wird
-    this.dialogRef.close();
 
-    // Öffnet das Bearbeitungsdialogfeld
+   
+  editTask(): void {
+    this.dialogRef.close();
     const dialogRef = this.dialog.open(TaskDialogComponent, {
       width: '400px',
       data: {
-        ...this.task // Bestehende Task-Daten an den Editier-Dialog übergeben
+        ...this.task 
       }
     });
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        // Aktualisiere den Task mit den neuen Daten
         this.task.text = result.name;
         this.task.description = result.description;
         this.task.priority = result.priority;

@@ -47,6 +47,5 @@ export const appConfig: ApplicationConfig = {
     TaskService,
     ContactDetailsDialogComponent,
     MatMomentDateModule,
-    
   ]
 };

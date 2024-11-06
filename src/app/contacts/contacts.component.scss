@@ -1,4 +1,3 @@
-
 @import "./../../styles.scss";
 
   ul {
@@ -35,8 +34,6 @@
     padding: 0;
   }
   
- 
-  /* Für die Kontaktliste */
   .contacts-list {
     flex: 1;
     width: 100%;
@@ -48,7 +45,6 @@
     }
   }
   
-  /* Titel */
   h1 {
     display: flex;
     justify-content: center;
@@ -56,8 +52,6 @@
     font-weight: bold;
   }
   
-  
-  /* Button Hover */
   .custom-fab {
     background-color: white !important;   
     color: blue !important;               
@@ -71,7 +65,6 @@
     border-color: red !important;         
   }
   
-  /* Kontaktkarten */
   li {
     display: flex;
     flex-direction: column;
@@ -81,21 +74,17 @@
   
   .example-box:hover {
     background-color: lightblue;
-    transition: background-color 0.3s ease; /* Weicher Übergang */
+    transition: background-color 0.3s ease; 
   }
   
-
-
-   /* Scrollbar entfernen */
    .contact-container::-webkit-scrollbar {
-    display: none;  /* Scrollbalken in Chrome, Safari und Opera ausblenden */
+    display: none; 
   }
   
-  /* Kontakt-Container */
   .contact-container {
-    height: auto;  /* Volle Höhe */
-    overflow-y: scroll; /* Vertikales Scrollen */
-    list-style-type: none;  /* Entfernt Aufzählungszeichen */
+    height: auto;  
+    overflow-y: scroll;
+    list-style-type: none;  
     padding: 0;
     margin: 0;
     -ms-overflow-style: none;  
@@ -126,7 +115,6 @@
     }
   }
   
-  /* Flexbox für den Container */
   .container {
     display: flex;
     justify-content: center;
@@ -137,13 +125,12 @@
     scrollbar-width: none;
   }
 
-    /* Button-Container */
     .button-container {
         position: fixed;
-        bottom: 20px;  /* Abstand vom unteren Rand */
+        bottom: 20px;  
         left: 0;
         right: 0;
-        z-index: 1000;  /* Damit er immer sichtbar bleibt */
+        z-index: 1000;  
         justify-content: center;
         display: flex;
         gap: 20px;
@@ -158,8 +145,6 @@
         border-radius: 8px;
       }
       
-
-     /* Kontaktliste-Elemente */
   .contacts-list li {
     margin: 5px 0;
     padding: 10px;

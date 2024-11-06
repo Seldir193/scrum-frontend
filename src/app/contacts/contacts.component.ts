@@ -10,8 +10,6 @@ import { ContactDialogComponent } from '../contact-dialog/contact-dialog.compone
 import { MatButtonModule } from '@angular/material/button';
 import { HeaderComponent } from '../header/header.component';
 
-
-
 @Component({
   selector: 'app-contacts',
   standalone: true,
@@ -24,8 +22,6 @@ export class ContactsComponent {
   contacts: Contact[] = [];
   groupedContacts: { [key: string]: Contact[] } = {};
   sortGroups = (a: any, b: any) => (a.key < b.key ? -1 : 1);
-
- 
 
   constructor(private contactService: ContactService, private router: Router,public dialog: MatDialog,){
     this.loadContacts();
@@ -63,7 +59,6 @@ export class ContactsComponent {
     }
   }
 
-
   openContactDialog(): void {
     const dialogRef = this.dialog.open(ContactDialogComponent, {
       width: '400px',
@@ -90,13 +85,12 @@ export class ContactsComponent {
   openEditContactDialog(contact: Contact): void {
     const dialogRef = this.dialog.open(ContactDialogComponent, {
       width: '400px',
-      data: { ...contact }  // Übergebe den ausgewählten Kontakt an den Dialog
+      data: { ...contact }  
     });
   
     dialogRef.afterClosed().subscribe((updatedContact: ContactDialogData) => {
       if (updatedContact) {
         this.contactService.updateContact(updatedContact).subscribe(() => {
-          // Aktualisiere den Kontakt in der lokalen Liste nach erfolgreicher Bearbeitung
           const index = this.contacts.findIndex(c => c.id === updatedContact.id);
           if (index !== -1) {
             this.contacts[index] = { ...updatedContact };
@@ -106,11 +100,4 @@ export class ContactsComponent {
       }
     });
   }
-
-
-
-
-  
-  
-
   }

@@ -17,8 +17,8 @@ export class SignupComponent {
   username: string = '';
   email: string = '';
   password: string = '';
-  acceptedPrivacyPolicy: boolean = false; // Checkbox-Status für Datenschutzerklärung
-  showPrivacyWarning: boolean = false; // Zeigt Warnmeldung an, wenn Checkbox nicht ausgewählt ist
+  acceptedPrivacyPolicy: boolean = false; 
+  showPrivacyWarning: boolean = false; 
   registrationError: string | null = null;
 
   constructor(private http: HttpClient, private router: Router) {}
@@ -30,20 +30,17 @@ export class SignupComponent {
   }
   
   register() {
-    // Überprüfen, ob die Checkbox für die Datenschutzerklärung aktiviert ist
     if (!this.acceptedPrivacyPolicy) {
       this.showPrivacyWarning = true;
-      return; // Registrierung nicht fortsetzen
+      return; 
     }
-    this.showPrivacyWarning = false; // Warnmeldung zurücksetzen, falls Checkbox aktiviert
-
+    this.showPrivacyWarning = false; 
     const user = { username: this.username, email: this.email, password: this.password };
     
     this.http.post<any>('http://localhost:8000/api/register/', user).pipe(
       catchError(error => {
         console.error('Registration error:', error);
         if (error.error && error.error.email) {
-          // Spezifische Fehlermeldung bei doppelter E-Mail
           this.registrationError = 'Diese E-Mail-Adresse wird bereits verwendet.';
         } else {
           this.registrationError = 'Registrierung fehlgeschlagen. Bitte versuchen Sie es erneut.';
@@ -52,7 +49,7 @@ export class SignupComponent {
       })
     ).subscribe((response) => {
       if (response.message === 'User registered successfully') {
-        this.router.navigate(['/login']); // Weiterleitung zur Login-Seite bei erfolgreicher Registrierung
+        this.router.navigate(['/login']); 
       } else {
         console.error('Invalid registration response:', response);
       }
@@ -60,7 +57,7 @@ export class SignupComponent {
   }
   
   navigateToLogin() {
-    this.router.navigate(['/login']); // Navigiert zur Login-Seite
+    this.router.navigate(['/login']); 
   }
 
   navigateToLegalNotice() {

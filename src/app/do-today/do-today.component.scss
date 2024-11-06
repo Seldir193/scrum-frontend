@@ -50,7 +50,6 @@ button {
   background-color: #fff;
   width:230px;
   cursor:pointer;
-
   
   h3{
     margin: 0 0 16px;
@@ -70,7 +69,6 @@ button {
     align-items: center;
     border:none;
     border-radius: 8px;
-    
   }
 
   h2  {
@@ -234,24 +232,21 @@ li.example-box {
   border-color: red !important;         
 }
 
-
 .example-box:hover {
   background-color: lightblue;
-  transition: background-color 0.3s ease; /* Weicher Übergang */
+  transition: background-color 0.3s ease; 
 }
 
-/* Fixiere den Titel (h1) */
 .tasks-container h1 {
-  position: sticky;   /* Fixiert das h1-Element */
-  top: 0;             /* Fixiere es oben am Container */
-  background-color: white;  /* Hintergrundfarbe, um es sichtbar zu halten */
-  z-index: 1000;      /* Stellt sicher, dass es über dem Inhalt bleibt */
+  position: sticky;  
+  top: 0;             
+  background-color: white;  
+  z-index: 1000;     
   padding: 10px;
   margin: 0;
-  border-bottom: 2px solid #ccc; /* Optional: ein unterer Rand für bessere Abtrennung */
+  border-bottom: 2px solid #ccc; 
 }
 
-/* Scrollbarer Bereich für die Task-Liste */
 .example-list ul {
   list-style-type: none;
   padding: 0;
@@ -260,7 +255,7 @@ li.example-box {
   list-style-type: none;  
   -ms-overflow-style: none;  
   scrollbar-width: none;
-  max-height: calc(100vh - 60px);  /* Maximale Höhe für die Liste, um das h1 zu berücksichtigen */
+  max-height: calc(100vh - 60px);  
 }
 
 .no-tasks-message {

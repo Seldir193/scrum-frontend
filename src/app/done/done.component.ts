@@ -6,7 +6,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { CdkDragDrop } from '@angular/cdk/drag-drop';
 import { TaskmanagerService } from '../taskmanager.service';
-import { TaskService } from '../task.service';  // Import TaskService
+import { TaskService } from '../task.service';  
 import { Done, Todo, Contact, TaskDialogData } from '../task.model';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { TaskDialogComponent } from '../task-dialog/task-dialog.component';
@@ -26,8 +26,6 @@ export class DoneComponent implements OnInit {
   @Input() doneTasks: Done[] = [];
   @Input() filteredDoneTasks: Done[] = [];
   @Input() searchTerm: string = '';
-
-
   todos: Todo[] = [];
   allContacts: Contact[] = [];
   selectedContacts: Contact[] = [];
@@ -36,13 +34,12 @@ export class DoneComponent implements OnInit {
   done: Done[] = [];
   selectedTodo: Todo | null = null;
   
-
   constructor(
     private contactService: ContactService,
     private dialog: MatDialog,
     private router: Router,
     private taskmanagerService: TaskmanagerService,
-    private taskService: TaskService  // Verwende den TaskService
+    private taskService: TaskService 
   ) {}
 
   ngOnInit(): void {
@@ -57,14 +54,12 @@ export class DoneComponent implements OnInit {
     }
   }
 
-
   filterTasks(): void {
     this.filteredDoneTasks = this.doneTasks.filter(task =>
       task.text.toLowerCase().includes(this.searchTerm.toLowerCase())
     );
   }
   
-
   private getContacts(): void {
     this.contactService.getContacts().subscribe(
       (data: Contact[]) => this.contacts = data,
@@ -84,8 +79,6 @@ export class DoneComponent implements OnInit {
     });
   }
 
-
-  
   openContactDialog(contact: any): void {
     this.dialog.open(ContactDetailsDialogComponent, {
       data: contact
@@ -102,8 +95,6 @@ export class DoneComponent implements OnInit {
 
   toggleDelayed(done: Done): void {
     done.delayed = !done.delayed;
-
-    // Verwende den TaskService für die Statusaktualisierung
     this.taskService.updateTask(done).subscribe(
       () => {
         console.log('Task updated successfully:', done);
@@ -178,25 +169,19 @@ export class DoneComponent implements OnInit {
     return localStorage.getItem('access_token');
   }
 
-  
-
   deleteDone(id: number, event?: MouseEvent): void {
     if (event) {
       event.stopPropagation();
     }
-    this.taskService.deleteTask(id).subscribe(() => {
-      // Entferne den Task aus allen relevanten Listen
-      this.doneTasks = this.doneTasks.filter(task => task.id !== id);
-      this.done = this.done.filter(task => task.id !== id); // Entferne auch aus `done`
-      this.filteredDoneTasks = [...this.doneTasks]; // Aktualisiere die gefilterte Liste
+    this.taskService.deleteTask(id).subscribe(() => {  
+    this.doneTasks = this.doneTasks.filter(task => task.id !== id);
+    this.done = this.done.filter(task => task.id !== id); 
+    this.filteredDoneTasks = [...this.doneTasks]; 
     }, error => {
       console.error('Error deleting done task:', error);
     });
   }
   
-
-  
-
   loadContacts(): void {
     this.contactService.getContacts().subscribe(contacts => {
       this.allContacts = contacts;
@@ -213,7 +198,7 @@ export class DoneComponent implements OnInit {
         contacts: this.allContacts.length > 0 ? this.allContacts : [],
         selectedContacts: done.contacts.length > 0 ? done.contacts : [],
         priority: done.priority,
-        dueDate: done.dueDate, // Füge dueDate hinzu
+        dueDate: done.dueDate, 
         category: done.category 
       }
     });
@@ -224,22 +209,19 @@ export class DoneComponent implements OnInit {
         done.description = result.description;
         done.contacts = result.selectedContacts || [];
         done.priority = result.priority;
-        done.dueDate = result.dueDate; // Aktualisiere das dueDate
+        done.dueDate = result.dueDate; 
         done.category = result.category;
   
-        // Formatiere dueDate zu due_date für das Backend
         const formattedDueDate = done.dueDate ? new Date(done.dueDate).toISOString().split('T')[0] : null;
-        const updatedTask = { ...done, due_date: formattedDueDate }; // dueDate zu due_date für das Backend
+        const updatedTask = { ...done, due_date: formattedDueDate }; 
   
         this.taskService.updateTask(updatedTask).subscribe(() => {
           console.log('Updated task with new contacts and due date');
   
-          // Finde die Position der Aufgabe und aktualisiere sie in der Liste
           const index = this.done.findIndex(t => t.id === done.id);
           if (index !== -1) {
-            this.done[index] = { ...done, dueDate: result.dueDate }; // Mappe `due_date` zu `dueDate` für das Frontend
+            this.done[index] = { ...done, dueDate: result.dueDate };
           }
-  
           this.selectedTodo = done;
         });
       }
@@ -247,26 +229,18 @@ export class DoneComponent implements OnInit {
   }
 
   openTaskDetailsDialog(done: Done): void {
-    // Öffne den Dialog für die Task-Details
     const dialogRef = this.dialog.open(TaskDetailsDialogComponent, {
       width: '500px',
       data: done
     });
   
-    // Verarbeite das Ergebnis nach dem Schließen des Dialogs
     dialogRef.afterClosed().subscribe(result => {
       if (result?.deleted) {
-        // Entferne den gelöschten Task aus der lokalen Liste
         this.doneTasks = this.doneTasks.filter(t => t.id !== done.id);
         this.filteredDoneTasks = [...this.doneTasks];
       } else if (result?.updated) {
-        // Optional: Aktualisiere die Liste der Tasks, falls nötig
         this.getDoneTasks();
       }
     });
   }
-  
-
-  
-
 }

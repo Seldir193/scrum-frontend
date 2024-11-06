@@ -4,10 +4,8 @@
   <p><strong>Beschreibung:</strong> {{ task.description }}</p>
   <p><strong>Fälligkeitsdatum:</strong> {{ task.dueDate | date }}</p>
   <p><strong>Priorität:</strong> {{ task.priority }}</p>
- 
   <p>Kontakte: {{ getContactNames() }}</p>
-
-  <p><strong>Kategorie:</strong> {{ task.category }}</p> <!-- Nicht editierbar -->
+  <p><strong>Kategorie:</strong> {{ task.category }}</p> 
 </mat-dialog-content>
 <mat-dialog-actions>
   <button mat-icon-button (click)="editTask()">
@@ -18,3 +16,8 @@
   </button>
   <button mat-button (click)="dialogRef.close()">Schließen</button>
 </mat-dialog-actions>
+
+
+
+
+

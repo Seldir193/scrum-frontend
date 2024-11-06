@@ -7,9 +7,6 @@ import { Router } from '@angular/router';
 import { TaskService } from '../task.service';
 import { RouterModule } from '@angular/router';
 
-
-
-
 @Component({
   selector: 'app-header',
   standalone: true,
@@ -29,7 +26,6 @@ export class HeaderComponent {
       },
       (error) => {
         console.error("Logout failed:", error);
-        // Benutzer trotzdem ausloggen, auch wenn der Logout-Aufruf fehlschlägt
         this.handleLogout();
       }
     );
@@ -40,12 +36,6 @@ export class HeaderComponent {
     localStorage.removeItem('refresh_token');
     this.router.navigate(['/login']);
   }
-  
-
-
-
-
- 
 }
 
 

@@ -1,4 +1,3 @@
-
 import { Component, OnInit,Input,SimpleChanges } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -7,7 +6,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { CdkDragDrop } from '@angular/cdk/drag-drop';
 import { TaskmanagerService } from '../taskmanager.service';
-import { TaskService } from '../task.service';  // Import TaskService
+import { TaskService } from '../task.service';  
 import { InProgress, Todo, Contact, TaskDialogData } from '../task.model';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { TaskDialogComponent } from '../task-dialog/task-dialog.component';
@@ -29,7 +28,6 @@ export class InProgressComponent implements OnInit {
   @Input() filteredInProgressTasks: InProgress[] = [];
   @Input() searchTerm: string = '';
 
-
   todos: Todo[] = [];
   allContacts: Contact[] = [];
   selectedContacts: Contact[] = [];
@@ -43,7 +41,7 @@ export class InProgressComponent implements OnInit {
     private dialog: MatDialog,
     private router: Router,
     private taskmanagerService: TaskmanagerService,
-    private taskService: TaskService  // Verwende den TaskService
+    private taskService: TaskService  
   ) {}
 
   ngOnInit(): void {
@@ -58,14 +56,11 @@ export class InProgressComponent implements OnInit {
     }
   }
 
-  // Filterfunktion
   filterTasks(): void {
     this.filteredInProgressTasks = this.inProgressTasks.filter(task =>
       task.text.toLowerCase().includes(this.searchTerm.toLowerCase())
     );
   }
-
- 
 
   private getContacts(): void {
     this.contactService.getContacts().subscribe(
@@ -84,8 +79,6 @@ export class InProgressComponent implements OnInit {
     });
   }
 
-  
-
   getInProgressTasks(): void {
     this.taskService.getTasks('inprogress').subscribe(inProgressTasks => {
       this.inProgressTasks = inProgressTasks.map(task => ({
@@ -98,8 +91,6 @@ export class InProgressComponent implements OnInit {
     });
   }
   
-  
-
   drop(event: CdkDragDrop<Todo[] | InProgress[]>) {
     this.taskmanagerService.handleDrop(event);
   }
@@ -107,7 +98,6 @@ export class InProgressComponent implements OnInit {
   toggleDelayed(progress: InProgress): void {
     progress.delayed = !progress.delayed;
 
-    // Verwende den TaskService für die Statusaktualisierung
     this.taskService.updateTask(progress).subscribe(
       () => {
         console.log('Task updated successfully:', progress);
@@ -182,24 +172,19 @@ export class InProgressComponent implements OnInit {
     return localStorage.getItem('access_token');
   }
 
-
   deleteInProgress(id: number, event?: MouseEvent): void {
     if (event) {
       event.stopPropagation();
     }
     this.taskService.deleteTask(id).subscribe(() => {
-      // Entferne den Task aus allen relevanten Listen
-      this.inProgressTasks = this.inProgressTasks.filter(task => task.id !== id);
-      this.inProgress = this.inProgress.filter(task => task.id !== id); // Entferne auch aus inProgress
-      this.filteredInProgressTasks = [...this.inProgressTasks]; // Aktualisiere die gefilterte Liste
+    this.inProgressTasks = this.inProgressTasks.filter(task => task.id !== id);
+    this.inProgress = this.inProgress.filter(task => task.id !== id); 
+    this.filteredInProgressTasks = [...this.inProgressTasks]; 
     }, error => {
       console.error('Error deleting in-progress task:', error);
     });
   }
   
-
-  
-
   loadContacts(): void {
     this.contactService.getContacts().subscribe(contacts => {
       this.allContacts = contacts;
@@ -230,11 +215,9 @@ export class InProgressComponent implements OnInit {
         progress.dueDate = result.dueDate;
         progress.category = result.category;
         
-
         const formattedDueDate = progress.dueDate ? new Date(progress.dueDate).toISOString().split('T')[0] : null;
-        const updatedTask = { ...progress, due_date: formattedDueDate, status: 'inprogress' }; // dueDate zu due_date für das Backend
+        const updatedTask = { ...progress, due_date: formattedDueDate, status: 'inprogress' }; 
   
-
         this.taskService.updateTask(updatedTask).subscribe(() => {
           console.log('Updated task with new contacts');
 
@@ -250,26 +233,18 @@ export class InProgressComponent implements OnInit {
   }
 
   openTaskDetailsDialog(progress: InProgress): void {
-    // Öffne den Dialog für die Task-Details
     const dialogRef = this.dialog.open(TaskDetailsDialogComponent, {
       width: '500px',
       data: progress
     });
   
-    // Verarbeite das Ergebnis nach dem Schließen des Dialogs
     dialogRef.afterClosed().subscribe(result => {
       if (result?.deleted) {
-        // Entferne den gelöschten Task aus der lokalen Liste
         this.inProgressTasks = this.inProgressTasks.filter(t => t.id !== progress.id);
         this.filteredInProgressTasks = [...this.inProgressTasks];
       } else if (result?.updated) {
-        // Optional: Aktualisiere die Liste der Tasks, falls nötig
         this.getInProgressTasks();
       }
     });
   }
-  
-  
-  
-  
 }

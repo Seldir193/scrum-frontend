@@ -5,15 +5,11 @@ import { catchError } from 'rxjs/operators';
 import { of } from 'rxjs';
 import { Contact } from './task.model';
 
-
-
 @Injectable({
   providedIn: 'root'
 })
 export class ContactService {
-  
   private apiUrl = 'http://localhost:8000/api/contacts/';
-
   constructor(private http: HttpClient) {}
 
   private getAuthHeaders(): HttpHeaders {
@@ -28,7 +24,7 @@ export class ContactService {
       .pipe(
         catchError(error => {
           console.error('Fehler beim Abrufen der Kontakte:', error);
-          return of([]); // Rückgabe eines leeren Arrays im Fehlerfall
+          return of([]); 
         })
       );
   }
@@ -36,7 +32,6 @@ export class ContactService {
   addContact(contact: Contact): Observable<Contact> {
     return this.http.post<Contact>(this.apiUrl, contact, { headers: this.getAuthHeaders() });
   }
-
 
   updateContact(contact: Contact): Observable<void> {
     return this.http.patch<void>(`${this.apiUrl}${contact.id}/`, contact, { headers: this.getAuthHeaders() });

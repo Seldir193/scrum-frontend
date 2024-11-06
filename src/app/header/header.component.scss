@@ -1,5 +1,4 @@
-
-  .header-container {
+.header-container {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -14,7 +13,7 @@
     left: 0;
     display: flex;
     align-items: center;
-    margin-left: 10px; /* Optional: Abstand zum linken Rand */
+    margin-left: 10px; 
 
     button{
       color:white;
@@ -30,7 +29,6 @@
     margin:unset;
   }
   
-
   @media (max-width: 670px) {
     .menu-container {
       position: unset;

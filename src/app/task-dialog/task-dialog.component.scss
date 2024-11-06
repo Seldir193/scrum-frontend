@@ -2,30 +2,25 @@
     margin: 0 8px 16px 0;
   }
 
-
   .full-width {
     width: 100%;
   }
   
   .mat-form-field {
     width: 100%;
-    max-width: 600px; /* Breite der Eingabefelder */
-    margin: 8px 0; /* Abstände zwischen den Feldern */
+    max-width: 600px;
+    margin: 8px 0; 
   }
   
   .custom-width {
     width:350px;
   }
 
- 
+
   mat-form-field {
     width: 100%;
     margin-bottom: 15px;
   }
-
- 
-  
-  
 
   @media (max-width: 500px) {
     .custom-width {

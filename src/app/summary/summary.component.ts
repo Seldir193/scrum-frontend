@@ -1,11 +1,9 @@
-// summary.component.ts
 import { Component, OnInit } from '@angular/core';
 import { TaskService } from '../task.service';
 import { HeaderComponent } from '../header/header.component';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { DatePipe } from '@angular/common';
-
 
 @Component({
   selector: 'app-summary',
@@ -31,7 +29,6 @@ export class SummaryComponent implements OnInit {
 
     this.taskService.getTaskSummary().subscribe(data => {
       this.lastTaskDate = this.datePipe.transform(data.last_task_date, 'MMMM dd, yyyy') || 'No tasks yet';
-     // this.lastTaskDate = data.last_task_date;
       this.totalTasks = data.total_tasks;
       this.statusCounts = data.status_counts;
     });

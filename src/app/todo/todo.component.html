@@ -1,7 +1,4 @@
-
 <app-header></app-header>
-
-
 <div class="mobile-nav-container">
   <button (click)="scrollToSection('todoContainer')" mat-icon-button>
     <mat-icon>assignment</mat-icon> 
@@ -17,16 +14,11 @@
   </button>
 </div>
 
-
-
 <div class="container">
   <div class="search-container">
     <input type="text" [(ngModel)]="searchTerm" placeholder="Seacrh tasks..." (input)="filterTasks()">
   </div>
   <div class="main-container">
-
-   
-
 
     <div class="tasks-container example-container " cdkDropListGroup>
       <div class="todo-container example-list" cdkDropList id="todoContainer"    
@@ -40,7 +32,7 @@
         <p *ngIf="filteredTodos.length === 0 && searchTerm.trim() !== ''" class="no-tasks-message">Keine Ergebnisse gefunden</p>
         
         <ul *ngIf="filteredTodos.length > 0">
-          <li *ngFor="let todo of filteredTodos" cdkDrag class="example-box " (click)="openTaskDetailsDialog(todo)"> 
+          <li *ngFor="let todo of filteredTodos" cdkDrag class="example-box " (click)="openTaskDetailsDialog(todo)">
             <input type="checkbox" [(ngModel)]="todo.delayed" (change)="toggleDelayed(todo)" />
             <div class="edit-card">
               <h3 >{{ todo.category}}</h3>
@@ -49,9 +41,12 @@
               <p>Due Date: {{ todo.dueDate | date }}</p> 
               <p >Priority: {{ todo.priority }}</p>
               <p>Contacts:</p>
+              
               <ul class="contact-list">
+                
                 <li *ngFor="let contact of todo.contacts.slice(0, 5)" class="contact-circle"
-                (click)="openContactShowDialog(contact)">
+                
+                (click)="openContactShowDialog(contact, $event); $event.stopPropagation()">
                   <strong>{{ contact.name[0] }}</strong>
                 </li>
                 <li *ngIf="todo.contacts.length > 5" 
@@ -59,7 +54,9 @@
                   matTooltip="{{ getHiddenContacts(todo.contacts) }}">
                 +{{ todo.contacts.length - 5 }}
               </li>
+              
               </ul>
+              
               <div class="button-container">
                  <button  (click)="openEditDialog(todo, $event)"mat-fab color="primary" extended>Edit</button>
                  <button (click)="deleteTodo(todo.id, $event)" mat-fab  class="custom-fab"  extended>Delete</button>

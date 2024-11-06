@@ -13,7 +13,7 @@ export class LegalNoticeComponent {
   constructor(private router: Router){}
 
   navigateToLogin() {
-    this.router.navigate(['/signup']); // Navigiert zur Login-Seite
+    this.router.navigate(['/signup']); 
   }
 
 }
